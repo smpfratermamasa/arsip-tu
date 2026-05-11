@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Arsip Digital - SMP Frater Mamasa</title>
+    <title>Sistem Arsip Digital TU - SMP Frater Mamasa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,6 +13,8 @@
         .loader-container { display: flex; justify-content: center; align-items: center; padding: 2rem; }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #1e40af; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Memastikan spinner tidak menghalangi klik jika sedang transisi */
+        #loading-spinner.hidden { display: none !important; pointer-events: none; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -79,8 +81,10 @@
                 </div>
 
                 <div class="overflow-x-auto min-h-[300px] relative">
-                    <div id="loading-spinner" class="loader-container absolute inset-0 bg-white/80 z-10">
+                    <!-- Spinner diperbaiki agar tidak menutupi seluruh container jika tersembunyi -->
+                    <div id="loading-spinner" class="loader-container absolute inset-0 bg-white/90 z-20 transition-opacity duration-300">
                         <div class="loader"></div>
+                        <span class="ml-3 text-xs text-blue-900 font-medium animate-pulse">Memuat Data...</span>
                     </div>
                     <table id="data-table" class="w-full text-left">
                         <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold tracking-wider">
@@ -159,11 +163,19 @@
         let currentCategory = 'all';
         let isAdmin = false;
 
-        // Force UI loading if stuck
-        setTimeout(() => {
+        // Fungsi pembantu untuk mematikan spinner
+        const hideLoader = () => {
             const loader = document.getElementById('loading-spinner');
-            if (loader) loader.classList.add('hidden');
-        }, 2500);
+            if (loader) {
+                loader.classList.add('hidden');
+                // Pastikan pointer-events dinonaktifkan agar tidak menghalangi klik
+                loader.style.pointerEvents = 'none';
+            }
+        };
+
+        // FORCE HIDE: Jika dalam 1.5 detik Firebase belum merespon, tetap sembunyikan spinner
+        // agar pengguna bisa berinteraksi dengan menu (walaupun data mungkin masih kosong/loading di background)
+        setTimeout(hideLoader, 1500);
 
         const render = () => {
             const tableBody = document.getElementById('arsip-table');
@@ -194,7 +206,8 @@
             const count = (c) => allArsip.filter(a => a.category === c).length;
             ['masuk', 'keluar', 'sk', 'pegawai', 'absen'].forEach(id => {
                 const map = { masuk: 'surat-masuk', keluar: 'surat-keluar', sk: 'sk', pegawai: 'kepegawaian', absen: 'absen' };
-                document.getElementById('stat-' + id).innerText = count(map[id]);
+                const el = document.getElementById('stat-' + id);
+                if (el) el.innerText = count(map[id]);
             });
         };
 
@@ -204,19 +217,31 @@
                 allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 updateStats();
                 render();
-                document.getElementById('loading-spinner').classList.add('hidden');
+                hideLoader(); // Matikan spinner begitu snapshot pertama diterima
             }, (err) => {
-                console.error(err);
-                document.getElementById('loading-spinner').classList.add('hidden');
+                console.error("Firestore Error:", err);
+                hideLoader();
             });
         };
 
-        // Inisialisasi Paralel
         onAuthStateChanged(auth, (user) => {
-            if (user) startListening();
-            else {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) signInWithCustomToken(auth, __initial_auth_token);
-                else signInAnonymously(auth);
+            if (user) {
+                startListening();
+            } else {
+                // Jalankan login anonim jika belum login
+                const login = async () => {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (e) {
+                        console.error("Auth error:", e);
+                        hideLoader();
+                    }
+                };
+                login();
             }
         });
 
@@ -229,12 +254,14 @@
                 document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
                 window.toggleAdminLogin();
                 render();
+            } else {
+                alert("Kata sandi salah");
             }
         };
 
         window.changeCategory = (cat) => {
             currentCategory = cat;
-            document.querySelectorAll('#tabs button').forEach(b => b.className = "px-3 py-2 text-gray-500");
+            document.querySelectorAll('#tabs button').forEach(b => b.className = "px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition");
             document.getElementById('tab-' + cat).className = "px-3 py-2 tab-active";
             render();
         };
@@ -245,12 +272,14 @@
             document.getElementById('edit-id').value = "";
             if (id) {
                 const d = allArsip.find(a => a.id === id);
-                document.getElementById('edit-id').value = id;
-                document.getElementById('form-date').value = d.date;
-                document.getElementById('form-category').value = d.category;
-                document.getElementById('form-title').value = d.title;
-                document.getElementById('form-desc').value = d.desc;
-                document.getElementById('form-link').value = d.link;
+                if (d) {
+                    document.getElementById('edit-id').value = id;
+                    document.getElementById('form-date').value = d.date;
+                    document.getElementById('form-category').value = d.category;
+                    document.getElementById('form-title').value = d.title;
+                    document.getElementById('form-desc').value = d.desc;
+                    document.getElementById('form-link').value = d.link;
+                }
             }
             document.getElementById('form-modal').classList.remove('hidden');
         };
@@ -258,8 +287,12 @@
         window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
 
         window.deleteData = async (id) => {
-            if (confirm("Hapus data ini?")) {
-                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
+            if (confirm("Hapus data ini dari cloud?")) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
+                } catch (e) {
+                    alert("Gagal menghapus");
+                }
             }
         };
 
@@ -275,15 +308,22 @@
                 updatedAt: serverTimestamp()
             };
             try {
-                if (id) await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
-                else await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
+                if (id) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
+                } else {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
+                }
                 window.closeModal();
-            } catch (err) { alert("Gagal menyimpan"); }
+            } catch (err) { 
+                alert("Gagal menyimpan ke Cloud"); 
+            }
         };
 
         window.filterArsip = () => {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('#arsip-table tr').forEach(r => r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none");
+            document.querySelectorAll('#arsip-table tr').forEach(r => {
+                r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+            });
         };
     </script>
 </body>

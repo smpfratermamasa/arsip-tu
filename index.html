@@ -23,7 +23,7 @@
                     <div class="flex items-center space-x-3">
                         <div class="bg-white p-1 rounded-full"><i class="fas fa-school text-blue-900 text-xl"></i></div>
                         <div>
-                            <h1 class="font-bold text-lg leading-tight uppercase">TU SMP Frater Mamasa</h1>
+                            <h1 class="font-bold text-lg leading-tight uppercase">SMP Frater Mamasa</h1>
                             <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Online</p>
                         </div>
                     </div>
@@ -64,11 +64,10 @@
             <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b flex flex-col md:flex-row justify-between gap-4 items-center">
                     <div class="flex flex-wrap gap-2 text-xs" id="tabs">
-                        <button onclick="window.changeCategory('all')" id="tab-all" class="px-3 py-2 tab-active">Semua</button>
-                        <button onclick="window.changeCategory('surat-masuk')" id="tab-surat-masuk" class="px-3 py-2 text-gray-500">Masuk</button>
-                        <button onclick="window.changeCategory('surat-keluar')" id="tab-surat-keluar" class="px-3 py-2 text-gray-500">Keluar</button>
+                        <button onclick="window.changeCategory('surat-masuk')" id="tab-surat-masuk" class="px-3 py-2 tab-active">Surat Masuk</button>
+                        <button onclick="window.changeCategory('surat-keluar')" id="tab-surat-keluar" class="px-3 py-2 text-gray-500">Surat Keluar</button>
                         <button onclick="window.changeCategory('sk')" id="tab-sk" class="px-3 py-2 text-gray-500">SK</button>
-                        <button onclick="window.changeCategory('kepegawaian')" id="tab-kepegawaian" class="px-3 py-2 text-gray-500">Pegawai</button>
+                        <button onclick="window.changeCategory('kepegawaian')" id="tab-kepegawaian" class="px-3 py-2 text-gray-500">Kepegawaian</button>
                         <button onclick="window.changeCategory('absen')" id="tab-absen" class="px-3 py-2 text-gray-500">Absen</button>
                     </div>
                     <div class="flex items-center space-x-2 w-full md:w-auto">
@@ -92,18 +91,18 @@
                             </tr>
                         </thead>
                         <tbody id="arsip-table" class="text-sm divide-y divide-gray-50">
-                            <!-- Skeleton Rows -->
+                            <!-- Loading Rows -->
                             <tr class="skeleton-row">
                                 <td class="px-6 py-4"><div class="h-4 w-20 skeleton rounded"></div></td>
                                 <td class="px-6 py-4"><div class="h-4 w-40 skeleton rounded"></div></td>
                                 <td class="px-6 py-4"><div class="h-4 w-16 skeleton rounded"></div></td>
                                 <td class="px-6 py-4"><div class="h-4 w-32 skeleton rounded"></div></td>
-                                <td class="px-6 py-4"><div class="h-8 w-8 mx-auto skeleton rounded-full"></div></td>
+                                <td class="px-6 py-4 text-center"><div class="h-8 w-8 mx-auto skeleton rounded-full"></div></td>
                             </tr>
                         </tbody>
                     </table>
                     <div id="empty-state" class="hidden p-20 flex flex-col items-center justify-center text-center">
-                        <i class="fas fa-wifi text-gray-200 text-5xl mb-4"></i>
+                        <i class="fas fa-folder-open text-gray-200 text-5xl mb-4"></i>
                         <p id="empty-text" class="text-sm text-gray-500 font-medium">Memuat data dari server...</p>
                     </div>
                 </div>
@@ -134,7 +133,7 @@
                             <option value="surat-masuk">Surat Masuk</option>
                             <option value="surat-keluar">Surat Keluar</option>
                             <option value="sk">SK</option>
-                            <option value="kepegawaian">Pegawai</option>
+                            <option value="kepegawaian">Kepegawaian</option>
                             <option value="absen">Absen</option>
                         </select>
                     </div>
@@ -165,7 +164,7 @@
         const auth = getAuth(app);
 
         let allArsip = [];
-        let currentCategory = 'all';
+        let currentCategory = 'surat-masuk'; // Default kategori setelah "Semua" dihapus
         let isAdmin = false;
         let hasLoadedOnce = false;
         let unsubscribeArsip = null;
@@ -182,19 +181,20 @@
         const render = () => {
             const tableBody = document.getElementById('arsip-table');
             const emptyState = document.getElementById('empty-state');
-            const filtered = currentCategory === 'all' ? allArsip : allArsip.filter(a => a.category === currentCategory);
+            const filtered = allArsip.filter(a => a.category === currentCategory);
             
             emptyState.classList.add('hidden');
+            tableBody.innerHTML = '';
+
             if (filtered.length === 0 && hasLoadedOnce) {
-                tableBody.innerHTML = '';
-                document.getElementById('empty-text').innerText = "Belum ada data arsip";
+                document.getElementById('empty-text').innerText = "Belum ada data di kategori ini";
                 emptyState.classList.remove('hidden');
                 return;
             }
 
             if (filtered.length > 0) {
                 tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
-                    <tr class="hover:bg-blue-50/30 transition-colors">
+                    <tr class="hover:bg-blue-50/30 transition-colors border-b border-gray-50">
                         <td class="px-6 py-4 text-xs text-gray-400 font-mono">${a.date}</td>
                         <td class="px-6 py-4 font-semibold text-gray-700">${a.title}</td>
                         <td class="px-6 py-4"><span class="bg-blue-50 text-blue-700 text-[9px] px-2 py-1 rounded-md uppercase font-bold tracking-wider">${a.category.replace('-', ' ')}</span></td>
@@ -224,15 +224,9 @@
 
         // 3. Fungsi Inti Firestore
         const startListening = () => {
-            // Mencegah query tanpa auth sesuai aturan Firestore
-            if (!auth.currentUser) {
-                console.warn("Menunda pemuatan data: Belum terautentikasi");
-                return;
-            }
+            if (!auth.currentUser) return;
 
             if (unsubscribeArsip) unsubscribeArsip();
-            
-            // Mengikuti pola jalur yang diwajibkan: artifacts/{appId}/public/data/{collectionName}
             const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
             
             unsubscribeArsip = onSnapshot(colRef, (snapshot) => {
@@ -240,13 +234,14 @@
                 hasLoadedOnce = true;
                 updateStats();
                 render();
+                updateStatus("Online");
             }, (err) => {
-                console.error("Firestore Permission/Access Error:", err);
-                updateStatus("Akses Ditolak", false);
+                console.error("Firestore Access Error:", err);
+                updateStatus("Akses Terbatas", false);
             });
         };
 
-        // 4. Inisialisasi Sesi (Wajib Await sebelum Firestore)
+        // 4. Inisialisasi Sesi
         const initializeAppSession = async () => {
             try {
                 if (initialToken) {
@@ -254,27 +249,13 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-                // Setelah login berhasil, panggil listener
-                startListening();
-                updateStatus("Online");
             } catch (e) {
                 console.error("Auth Fail:", e);
-                updateStatus("Koneksi Gagal", false);
+                updateStatus("Offline", false);
             }
         };
 
-        // 5. Lifecycle Handlers
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("User terverifikasi:", user.uid);
-                startListening(); // Re-sync jika status berubah
-            }
-        });
-
-        // Jalankan inisialisasi
-        initializeAppSession();
-
-        // 6. Global Helper Functions
+        // 5. Global Helpers (Daftarkan ke window agar bisa diakses HTML)
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
         
         window.verifyAdmin = () => {
@@ -285,13 +266,20 @@
                 document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
                 window.toggleAdminLogin();
                 render();
-            } else { alert("Sandi salah!"); }
+            } else { alert("Kata sandi salah!"); }
         };
 
         window.changeCategory = (cat) => {
             currentCategory = cat;
-            document.querySelectorAll('#tabs button').forEach(b => b.className = "px-3 py-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors");
-            document.getElementById('tab-' + cat).className = "px-3 py-2 tab-active";
+            document.querySelectorAll('#tabs button').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('text-gray-500');
+            });
+            const activeTab = document.getElementById('tab-' + cat);
+            if (activeTab) {
+                activeTab.classList.add('tab-active');
+                activeTab.classList.remove('text-gray-500');
+            }
             render();
         };
 
@@ -316,18 +304,27 @@
         window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
 
         window.deleteData = async (id) => {
-            if (!auth.currentUser) return;
-            if (confirm("Hapus arsip ini?")) {
+            if (!isAdmin) return;
+            if (confirm("Hapus arsip ini secara permanen?")) {
                 try { 
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id)); 
-                } catch (e) { alert("Gagal hapus"); }
+                } catch (e) { alert("Gagal menghapus data."); }
             }
         };
 
-        document.getElementById('arsip-form').onsubmit = async (e) => {
-            e.preventDefault();
-            if (!auth.currentUser) return;
+        window.filterArsip = () => {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#arsip-table tr');
+            rows.forEach(r => {
+                if (!r.classList.contains('skeleton-row')) {
+                    r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+                }
+            });
+        };
 
+        // Form Submit
+        document.getElementById('arsip-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const id = document.getElementById('edit-id').value;
             const data = {
                 date: document.getElementById('form-date').value,
@@ -339,24 +336,25 @@
             };
             
             try {
-                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
                 if (id) { 
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data); 
                 } else { 
-                    await addDoc(colRef, data); 
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data); 
                 }
                 window.closeModal();
-            } catch (err) { alert("Gagal simpan"); }
-        };
+            } catch (err) { alert("Gagal menyimpan data."); }
+        });
 
-        window.filterArsip = () => {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('#arsip-table tr').forEach(r => {
-                if (!r.classList.contains('skeleton-row')) {
-                    r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
-                }
-            });
-        };
+        // Lifecycle
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                startListening();
+            }
+        });
+
+        // Mulai aplikasi
+        window.onload = initializeAppSession;
+
     </script>
 </body>
 </html>

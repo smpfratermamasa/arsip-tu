@@ -10,7 +10,8 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .tab-active { border-bottom: 3px solid #1e40af; color: #1e40af; font-weight: 600; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #1e40af; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        .loader-container { display: flex; justify-content: center; align-items: center; padding: 2rem; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #1e40af; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -26,7 +27,7 @@
                         </div>
                         <div>
                             <h1 class="font-bold text-lg leading-tight uppercase">SMP Frater Mamasa</h1>
-                            <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Mandiri</p>
+                            <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Online</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
@@ -88,8 +89,11 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
+                <div class="overflow-x-auto min-h-[300px]">
+                    <div id="loading-spinner" class="loader-container">
+                        <div class="loader"></div>
+                    </div>
+                    <table id="data-table" class="w-full text-left hidden">
                         <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold tracking-wider">
                             <tr>
                                 <th class="px-6 py-4">Tanggal</th>
@@ -100,13 +104,13 @@
                             </tr>
                         </thead>
                         <tbody id="arsip-table" class="text-sm divide-y divide-gray-50">
-                            <!-- Data dimuat dari LocalStorage -->
+                            <!-- Data dimuat dari Firestore -->
                         </tbody>
                     </table>
                     <div id="empty-state" class="hidden p-20 flex flex-col items-center justify-center text-center">
                         <i class="fas fa-folder-open text-gray-200 text-5xl mb-4"></i>
                         <p class="text-sm text-gray-500 font-medium">Belum ada arsip yang tersimpan</p>
-                        <p class="text-xs text-gray-400 mt-1">Gunakan mode Admin untuk menambah data baru.</p>
+                        <p class="text-xs text-gray-400 mt-1">Gunakan mode Admin untuk menambah data baru ke Cloud.</p>
                     </div>
                 </div>
             </div>
@@ -114,7 +118,7 @@
 
         <!-- Modal Login Admin -->
         <div id="admin-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
+            <div class="bg-white rounded-3xl p-8 max-sm w-full shadow-2xl">
                 <div class="text-center mb-6">
                     <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl">
                         <i class="fas fa-user-shield"></i>
@@ -136,7 +140,7 @@
                 <div class="p-6 border-b flex justify-between items-center bg-gray-50">
                     <div>
                         <h2 class="font-bold text-gray-800" id="modal-title">Tambah Arsip Baru</h2>
-                        <p class="text-[10px] text-gray-400 uppercase tracking-tighter">Data akan disimpan di browser ini</p>
+                        <p class="text-[10px] text-gray-400 uppercase tracking-tighter">Data akan tersimpan secara Online</p>
                     </div>
                     <button onclick="window.closeModal()" class="w-8 h-8 rounded-full hover:bg-gray-200 flex items-center justify-center transition text-gray-400">
                         <i class="fas fa-times"></i>
@@ -177,7 +181,7 @@
                     </div>
                     <div class="pt-4 flex space-x-3">
                         <button type="button" onclick="window.closeModal()" class="flex-1 bg-gray-100 text-gray-500 py-3 rounded-2xl font-bold text-xs uppercase transition hover:bg-gray-200">Batal</button>
-                        <button type="submit" class="flex-[2] bg-blue-600 text-white py-3 rounded-2xl font-bold text-xs uppercase shadow-lg shadow-blue-200 hover:bg-blue-700 transition">Simpan</button>
+                        <button type="submit" class="flex-[2] bg-blue-600 text-white py-3 rounded-2xl font-bold text-xs uppercase shadow-lg shadow-blue-200 hover:bg-blue-700 transition">Simpan ke Cloud</button>
                     </div>
                 </form>
             </div>
@@ -188,17 +192,66 @@
         </div>
     </div>
 
-    <script>
-        // MANAJEMEN DATA LOKAL (PENGGANTI FIREBASE)
-        const STORAGE_KEY = "smp_frater_arsip_data";
-        let allArsip = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : { apiKey: "", authDomain: "", projectId: "", storageBucket: "", messagingSenderId: "", appId: "" };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+        let allArsip = [];
         let currentCategory = 'all';
         let isAdmin = false;
 
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(allArsip));
-            updateStats();
-            render();
+        // Aturan Wajib Canvas: Pastikan Autentikasi selesai sebelum query
+        const init = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth Fail:", err);
+            }
+        };
+
+        // Jalankan init
+        init();
+
+        // Monitor Auth State & Fetch Data
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Authenticated as:", user.uid);
+                startListening();
+            }
+        });
+
+        function startListening() {
+            // Path Wajib: /artifacts/{appId}/public/data/{collectionName}
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
+            
+            onSnapshot(colRef, (snapshot) => {
+                allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Matikan loading UI
+                document.getElementById('loading-spinner').classList.add('hidden');
+                document.getElementById('data-table').classList.remove('hidden');
+                
+                updateStats();
+                render();
+            }, (error) => {
+                console.error("Firestore Listen Error:", error);
+                showToast("Koneksi cloud terputus.");
+            });
         }
 
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
@@ -213,7 +266,7 @@
                 document.getElementById('role-badge').classList.add('bg-amber-100', 'text-amber-700');
                 window.toggleAdminLogin();
                 render();
-                showToast("Berhasil masuk sebagai Admin");
+                showToast("Mode Admin Aktif");
             } else {
                 showToast("Kata sandi salah!");
             }
@@ -250,11 +303,15 @@
 
         window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
 
-        window.deleteData = (id) => {
-            if (!confirm("Hapus arsip ini?")) return;
-            allArsip = allArsip.filter(a => a.id !== id);
-            saveData();
-            showToast("Arsip dihapus");
+        window.deleteData = async (id) => {
+            if (!auth.currentUser) return;
+            if (!confirm("Hapus arsip ini dari cloud?")) return;
+            try {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
+                showToast("Arsip terhapus dari cloud");
+            } catch (err) {
+                showToast("Gagal menghapus data.");
+            }
         };
 
         function showToast(m) {
@@ -295,7 +352,6 @@
                     <td class="px-6 py-5 whitespace-nowrap text-[11px] text-gray-400 font-medium">${a.date}</td>
                     <td class="px-6 py-5">
                         <div class="font-semibold text-gray-700 text-sm">${a.title}</div>
-                        <div class="text-[10px] text-gray-400 mt-1 md:hidden italic">${a.category}</div>
                     </td>
                     <td class="px-6 py-5 hidden md:table-cell">
                         <span class="bg-gray-100 text-gray-500 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider">${a.category.replace('-', ' ')}</span>
@@ -303,14 +359,14 @@
                     <td class="px-6 py-5 text-xs text-gray-400 italic">${a.desc || '-'}</td>
                     <td class="px-6 py-5 text-center">
                         <div class="flex items-center justify-center space-x-3">
-                            <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm" title="Buka di Drive">
+                            <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm">
                                 <i class="fab fa-google-drive"></i>
                             </a>
                             ${isAdmin ? `
-                                <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition shadow-sm">
+                                <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
                                     <i class="fas fa-pen text-[10px]"></i>
                                 </button>
-                                <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition shadow-sm">
+                                <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
                                     <i class="fas fa-trash-alt text-[10px]"></i>
                                 </button>
                             ` : ''}
@@ -320,41 +376,39 @@
             `).join('');
         }
 
-        document.getElementById('arsip-form').onsubmit = (e) => {
+        document.getElementById('arsip-form').onsubmit = async (e) => {
             e.preventDefault();
+            if (!auth.currentUser) { showToast("Gagal terhubung ke Cloud."); return; }
+            
             const id = document.getElementById('edit-id').value;
             const data = {
                 date: document.getElementById('form-date').value,
                 category: document.getElementById('form-category').value,
                 title: document.getElementById('form-title').value,
                 desc: document.getElementById('form-desc').value,
-                link: document.getElementById('form-link').value
+                link: document.getElementById('form-link').value,
+                updatedAt: serverTimestamp()
             };
 
-            if (id) {
-                const idx = allArsip.findIndex(x => x.id === id);
-                allArsip[idx] = { ...data, id };
-                showToast("Arsip diperbarui");
-            } else {
-                allArsip.push({ ...data, id: Date.now().toString() });
-                showToast("Arsip disimpan");
+            try {
+                if (id) {
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
+                    showToast("Arsip diperbarui.");
+                } else {
+                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
+                    showToast("Arsip tersimpan.");
+                }
+                closeModal();
+            } catch (err) {
+                console.error("Save Error:", err);
+                showToast("Gagal menyimpan ke cloud.");
             }
-            
-            saveData();
-            closeModal();
         };
 
         window.filterArsip = () => {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const q = document.getElementById('searchInput').value.toLowerCase();
             const rows = document.querySelectorAll('#arsip-table tr');
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(query) ? "" : "none";
-            });
-        };
-
-        window.onload = () => {
-            updateStats();
-            render();
+            rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none");
         };
     </script>
 </body>

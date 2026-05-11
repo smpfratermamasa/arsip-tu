@@ -212,20 +212,43 @@
         let isAdmin = false;
         let isListening = false;
 
-        // Fungsi penanganan paksa loading jika stuck lebih dari 5 detik
-        const timeoutLoading = setTimeout(() => {
-            if (document.getElementById('data-table').classList.contains('hidden')) {
-                console.warn("Loading timeout - forcing UI display");
-                stopSpinner();
+        // Fungsi PAKSA mematikan spinner jika loading terlalu lama (3 detik)
+        const forceLoadUI = () => {
+            const spinner = document.getElementById('loading-spinner');
+            const table = document.getElementById('data-table');
+            if (spinner && !spinner.classList.contains('hidden')) {
+                console.log("Forcing UI display due to long wait...");
+                spinner.classList.add('hidden');
+                table.classList.remove('hidden');
                 render();
             }
-        }, 5000);
+        };
+        const loadTimeout = setTimeout(forceLoadUI, 3000);
 
         function stopSpinner() {
+            clearTimeout(loadTimeout);
             document.getElementById('loading-spinner').classList.add('hidden');
             document.getElementById('data-table').classList.remove('hidden');
-            clearTimeout(timeoutLoading);
         }
+
+        const startListening = () => {
+            if (isListening) return;
+            isListening = true;
+            
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
+            
+            // Listener real-time
+            onSnapshot(colRef, (snapshot) => {
+                allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                updateStats();
+                render();
+                stopSpinner(); // Matikan spinner segera setelah data pertama (atau data kosong) diterima
+            }, (error) => {
+                console.error("Firestore Error:", error);
+                stopSpinner();
+                showToast("Koneksi lambat. Menggunakan data cache.");
+            });
+        };
 
         const initAuth = async () => {
             try {
@@ -236,35 +259,19 @@
                 }
             } catch (err) {
                 console.error("Auth Fail:", err);
-                // Jika auth gagal, tetap tampilkan tabel agar tidak berputar terus
-                stopSpinner();
+                stopSpinner(); // Jika auth gagal, tetap tampilkan UI agar tidak blank
             }
         };
 
-        // Mulai autentikasi
+        // Jalankan Autentikasi
         initAuth();
 
+        // Pantau status login untuk mulai mendengarkan data
         onAuthStateChanged(auth, (user) => {
-            if (user && !isListening) {
-                isListening = true;
+            if (user) {
                 startListening();
             }
         });
-
-        function startListening() {
-            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
-            
-            onSnapshot(colRef, (snapshot) => {
-                allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                stopSpinner();
-                updateStats();
-                render();
-            }, (error) => {
-                console.error("Firestore Listen Error:", error);
-                stopSpinner();
-                showToast("Mode Offline: Gagal memuat data cloud.");
-            });
-        }
 
         // Global functions
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');

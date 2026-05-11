@@ -10,57 +10,57 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .tab-active { border-bottom: 3px solid #1e40af; color: #1e40af; font-weight: 600; }
-        .loader-container { display: flex; justify-content: center; align-items: center; padding: 2rem; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #1e40af; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* Memastikan spinner tidak menghalangi klik jika sedang transisi */
-        #loading-spinner.hidden { display: none !important; pointer-events: none; }
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
+        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body class="min-h-screen">
     <div id="app" class="flex flex-col min-h-screen">
+        <!-- Navigasi -->
         <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex items-center space-x-3">
                         <div class="bg-white p-1 rounded-full"><i class="fas fa-school text-blue-900 text-xl"></i></div>
                         <div>
-                            <h1 class="font-bold text-lg leading-tight uppercase">TU SMP Frater Mamasa</h1>
+                            <h1 class="font-bold text-lg leading-tight uppercase">SMP Frater Mamasa</h1>
                             <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Online</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <span id="role-badge" class="hidden md:inline-block bg-blue-800 px-3 py-1 rounded-full text-[10px] border border-blue-700 uppercase tracking-tighter">Mode Pegawai</span>
-                        <button onclick="window.toggleAdminLogin()" class="hover:bg-blue-800 p-2 rounded-lg transition"><i id="admin-icon" class="fas fa-lock"></i></button>
+                        <span id="auth-status" class="text-[9px] text-blue-300 uppercase italic">Menghubungkan...</span>
+                        <button onclick="window.toggleAdminLogin()" class="hover:bg-blue-800 p-2 rounded-lg transition" title="Login Admin"><i id="admin-icon" class="fas fa-lock"></i></button>
                     </div>
                 </div>
             </div>
         </nav>
 
         <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+            <!-- Statistik -->
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-blue-100 text-blue-600 rounded-lg"><i class="fas fa-file-import"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase">Masuk</p><h3 id="stat-masuk" class="text-lg font-bold">0</h3></div>
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Masuk</p><h3 id="stat-masuk" class="text-lg font-bold">0</h3></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-green-100 text-green-600 rounded-lg"><i class="fas fa-file-export"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase">Keluar</p><h3 id="stat-keluar" class="text-lg font-bold">0</h3></div>
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Keluar</p><h3 id="stat-keluar" class="text-lg font-bold">0</h3></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-purple-100 text-purple-600 rounded-lg"><i class="fas fa-gavel"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase">SK</p><h3 id="stat-sk" class="text-lg font-bold">0</h3></div>
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">SK</p><h3 id="stat-sk" class="text-lg font-bold">0</h3></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-orange-100 text-orange-600 rounded-lg"><i class="fas fa-users"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase">Pegawai</p><h3 id="stat-pegawai" class="text-lg font-bold">0</h3></div>
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Pegawai</p><h3 id="stat-pegawai" class="text-lg font-bold">0</h3></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-red-100 text-red-600 rounded-lg"><i class="fas fa-calendar-check"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase">Absen</p><h3 id="stat-absen" class="text-lg font-bold">0</h3></div>
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Absen</p><h3 id="stat-absen" class="text-lg font-bold">0</h3></div>
                 </div>
             </div>
 
+            <!-- Kartu Konten Utama -->
             <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b flex flex-col md:flex-row justify-between gap-4 items-center">
                     <div class="flex flex-wrap gap-2 text-xs" id="tabs">
@@ -76,17 +76,12 @@
                             <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-xs"></i>
                             <input type="text" id="searchInput" onkeyup="window.filterArsip()" placeholder="Cari arsip..." class="w-full border pl-9 pr-4 py-2 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 border-gray-200">
                         </div>
-                        <button id="add-btn" onclick="window.openModal()" class="hidden bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium">Tambah</button>
+                        <button id="add-btn" onclick="window.openModal()" class="hidden bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">Tambah</button>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto min-h-[300px] relative">
-                    <!-- Spinner diperbaiki agar tidak menutupi seluruh container jika tersembunyi -->
-                    <div id="loading-spinner" class="loader-container absolute inset-0 bg-white/90 z-20 transition-opacity duration-300">
-                        <div class="loader"></div>
-                        <span class="ml-3 text-xs text-blue-900 font-medium animate-pulse">Memuat Data...</span>
-                    </div>
-                    <table id="data-table" class="w-full text-left">
+                <div class="overflow-x-auto min-h-[200px]">
+                    <table class="w-full text-left">
                         <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold tracking-wider">
                             <tr>
                                 <th class="px-6 py-4">Tanggal</th>
@@ -96,7 +91,16 @@
                                 <th class="px-6 py-4 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="arsip-table" class="text-sm divide-y divide-gray-50"></tbody>
+                        <tbody id="arsip-table" class="text-sm divide-y divide-gray-50">
+                            <!-- Skeleton Loading -->
+                            <tr class="skeleton-row">
+                                <td class="px-6 py-4"><div class="h-4 w-20 skeleton rounded"></div></td>
+                                <td class="px-6 py-4"><div class="h-4 w-40 skeleton rounded"></div></td>
+                                <td class="px-6 py-4"><div class="h-4 w-16 skeleton rounded"></div></td>
+                                <td class="px-6 py-4"><div class="h-4 w-32 skeleton rounded"></div></td>
+                                <td class="px-6 py-4"><div class="h-8 w-8 mx-auto skeleton rounded-full"></div></td>
+                            </tr>
+                        </tbody>
                     </table>
                     <div id="empty-state" class="hidden p-20 flex flex-col items-center justify-center text-center">
                         <i class="fas fa-folder-open text-gray-200 text-5xl mb-4"></i>
@@ -106,7 +110,7 @@
             </div>
         </main>
 
-        <!-- Modals -->
+        <!-- Modal Login Admin -->
         <div id="admin-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center">
                 <h2 class="text-xl font-bold mb-4">Akses Admin</h2>
@@ -116,10 +120,11 @@
             </div>
         </div>
 
+        <!-- Modal Form Data -->
         <div id="form-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] flex flex-col">
                 <div class="p-6 border-b flex justify-between items-center">
-                    <h2 class="font-bold" id="modal-title">Form Arsip</h2>
+                    <h2 class="font-bold">Form Arsip</h2>
                     <button onclick="window.closeModal()" class="text-gray-400"><i class="fas fa-times"></i></button>
                 </div>
                 <form id="arsip-form" class="p-8 space-y-4 overflow-y-auto">
@@ -144,13 +149,11 @@
                 </form>
             </div>
         </div>
-
-        <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-2xl text-xs hidden z-[110]"></div>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
@@ -162,106 +165,129 @@
         let allArsip = [];
         let currentCategory = 'all';
         let isAdmin = false;
+        let hasLoadedOnce = false;
+        let unsubscribeArsip = null;
 
-        // Fungsi pembantu untuk mematikan spinner
-        const hideLoader = () => {
-            const loader = document.getElementById('loading-spinner');
-            if (loader) {
-                loader.classList.add('hidden');
-                // Pastikan pointer-events dinonaktifkan agar tidak menghalangi klik
-                loader.style.pointerEvents = 'none';
+        const updateAuthUI = (user) => {
+            const statusEl = document.getElementById('auth-status');
+            if (user) {
+                statusEl.innerText = "Terhubung";
+                statusEl.className = "text-[9px] text-green-400 uppercase font-bold";
+            } else {
+                statusEl.innerText = "Terputus";
+                statusEl.className = "text-[9px] text-red-400 uppercase font-bold";
             }
         };
-
-        // FORCE HIDE: Jika dalam 1.5 detik Firebase belum merespon, tetap sembunyikan spinner
-        // agar pengguna bisa berinteraksi dengan menu (walaupun data mungkin masih kosong/loading di background)
-        setTimeout(hideLoader, 1500);
 
         const render = () => {
             const tableBody = document.getElementById('arsip-table');
             const filtered = currentCategory === 'all' ? allArsip : allArsip.filter(a => a.category === currentCategory);
             
-            document.getElementById('empty-state').classList.toggle('hidden', filtered.length > 0);
+            document.getElementById('empty-state').classList.add('hidden');
             
-            tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
-                <tr class="hover:bg-blue-50/30">
-                    <td class="px-6 py-4 text-xs text-gray-400">${a.date}</td>
-                    <td class="px-6 py-4 font-medium text-gray-700">${a.title}</td>
-                    <td class="px-6 py-4"><span class="bg-gray-100 text-[9px] px-2 py-1 rounded uppercase">${a.category}</span></td>
-                    <td class="px-6 py-4 text-xs text-gray-400 italic">${a.desc || '-'}</td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="flex justify-center space-x-2">
-                            <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-google-drive"></i></a>
-                            ${isAdmin ? `
-                                <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-600 hover:text-white transition"><i class="fas fa-pen"></i></button>
-                                <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash"></i></button>
-                            ` : ''}
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+            if (filtered.length === 0 && hasLoadedOnce) {
+                tableBody.innerHTML = '';
+                document.getElementById('empty-state').classList.remove('hidden');
+                return;
+            }
+
+            if (filtered.length > 0) {
+                tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
+                    <tr class="hover:bg-blue-50/30 transition-colors">
+                        <td class="px-6 py-4 text-xs text-gray-400 font-mono">${a.date}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-700">${a.title}</td>
+                        <td class="px-6 py-4"><span class="bg-blue-50 text-blue-700 text-[9px] px-2 py-1 rounded-md uppercase font-bold tracking-wider">${a.category.replace('-', ' ')}</span></td>
+                        <td class="px-6 py-4 text-xs text-gray-500 italic truncate max-w-xs">${a.desc || '-'}</td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="flex justify-center space-x-2">
+                                <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fab fa-google-drive"></i></a>
+                                ${isAdmin ? `
+                                    <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-all shadow-sm"><i class="fas fa-pen"></i></button>
+                                    <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fas fa-trash"></i></button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
         };
 
         const updateStats = () => {
             const count = (c) => allArsip.filter(a => a.category === c).length;
-            ['masuk', 'keluar', 'sk', 'pegawai', 'absen'].forEach(id => {
-                const map = { masuk: 'surat-masuk', keluar: 'surat-keluar', sk: 'sk', pegawai: 'kepegawaian', absen: 'absen' };
-                const el = document.getElementById('stat-' + id);
-                if (el) el.innerText = count(map[id]);
+            const map = { masuk: 'surat-masuk', keluar: 'surat-keluar', sk: 'sk', pegawai: 'kepegawaian', absen: 'absen' };
+            Object.keys(map).forEach(key => {
+                const el = document.getElementById('stat-' + key);
+                if (el) el.innerText = count(map[key]);
             });
         };
 
-        const startListening = () => {
+        const startListening = (user) => {
+            if (!user) return;
+            
+            // Bersihkan listener lama jika ada
+            if (unsubscribeArsip) unsubscribeArsip();
+
+            // Sesuai RULE 1: /artifacts/{appId}/public/data/{collectionName}
             const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
-            onSnapshot(colRef, (snapshot) => {
+            
+            // Sesuai RULE 2: Gunakan query sederhana tanpa filter kompleks/orderBy untuk menghindari error indeks
+            unsubscribeArsip = onSnapshot(colRef, (snapshot) => {
                 allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                hasLoadedOnce = true;
                 updateStats();
                 render();
-                hideLoader(); // Matikan spinner begitu snapshot pertama diterima
             }, (err) => {
                 console.error("Firestore Error:", err);
-                hideLoader();
+                hasLoadedOnce = true;
+                render();
             });
         };
 
+        // Sesuai RULE 3: Inisialisasi Auth FIRST
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (e) {
+                console.error("Auth Error:", e);
+                // Coba anonim jika token gagal
+                try { await signInAnonymously(auth); } catch(e2) { console.error("Critical Auth Fail", e2); }
+            }
+        };
+
+        // Jalankan autentikasi
+        initAuth();
+
+        // Listen status perubahan auth untuk memicu Firestore
         onAuthStateChanged(auth, (user) => {
+            updateAuthUI(user);
             if (user) {
-                startListening();
-            } else {
-                // Jalankan login anonim jika belum login
-                const login = async () => {
-                    try {
-                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                            await signInWithCustomToken(auth, __initial_auth_token);
-                        } else {
-                            await signInAnonymously(auth);
-                        }
-                    } catch (e) {
-                        console.error("Auth error:", e);
-                        hideLoader();
-                    }
-                };
-                login();
+                startListening(user);
             }
         });
 
-        // Global functions
+        // Global Window Functions
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
+        
         window.verifyAdmin = () => {
-            if (document.getElementById('admin-password').value === 'adminfrater') {
+            const pass = document.getElementById('admin-password').value;
+            if (pass === 'adminfrater') {
                 isAdmin = true;
                 document.getElementById('add-btn').classList.remove('hidden');
                 document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
                 window.toggleAdminLogin();
                 render();
             } else {
-                alert("Kata sandi salah");
+                alert("Kata sandi salah!");
             }
         };
 
         window.changeCategory = (cat) => {
             currentCategory = cat;
-            document.querySelectorAll('#tabs button').forEach(b => b.className = "px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition");
+            document.querySelectorAll('#tabs button').forEach(b => b.className = "px-3 py-2 text-gray-500 hover:bg-gray-100 rounded-lg transition-colors");
             document.getElementById('tab-' + cat).className = "px-3 py-2 tab-active";
             render();
         };
@@ -287,17 +313,21 @@
         window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
 
         window.deleteData = async (id) => {
-            if (confirm("Hapus data ini dari cloud?")) {
+            if (!auth.currentUser) return;
+            if (confirm("Hapus permanen arsip ini?")) {
                 try {
                     await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
                 } catch (e) {
-                    alert("Gagal menghapus");
+                    console.error(e);
+                    alert("Gagal menghapus data. Pastikan Anda memiliki izin.");
                 }
             }
         };
 
         document.getElementById('arsip-form').onsubmit = async (e) => {
             e.preventDefault();
+            if (!auth.currentUser) return;
+
             const id = document.getElementById('edit-id').value;
             const data = {
                 date: document.getElementById('form-date').value,
@@ -307,6 +337,7 @@
                 link: document.getElementById('form-link').value,
                 updatedAt: serverTimestamp()
             };
+
             try {
                 if (id) {
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
@@ -314,15 +345,18 @@
                     await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
                 }
                 window.closeModal();
-            } catch (err) { 
-                alert("Gagal menyimpan ke Cloud"); 
+            } catch (err) {
+                console.error(err);
+                alert("Gagal menyimpan ke Cloud. Pastikan koneksi stabil.");
             }
         };
 
         window.filterArsip = () => {
             const q = document.getElementById('searchInput').value.toLowerCase();
             document.querySelectorAll('#arsip-table tr').forEach(r => {
-                r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+                if (!r.classList.contains('skeleton-row')) {
+                    r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+                }
             });
         };
     </script>

@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Arsip Digital - SMP Frater Mamasa</title>
+    <!-- Preconnect ke Google Fonts dan GStatic untuk mempercepat koneksi -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -168,7 +173,6 @@
         let currentCategory = 'surat-masuk';
         let isAdmin = false;
         let hasLoadedOnce = false;
-        let unsubscribeArsip = null;
 
         // 2. DOM Elements & Functions
         const updateStatus = (text, isSuccess = true) => {
@@ -251,7 +255,7 @@
             document.getElementById('stat-absen').innerText = count('absen');
         };
 
-        // 3. Event Listeners (Cara Baru)
+        // 3. Event Listeners
         document.getElementById('nav-login-btn').addEventListener('click', toggleAdminModal);
         document.getElementById('close-admin-modal').addEventListener('click', toggleAdminModal);
         document.getElementById('add-btn').addEventListener('click', () => {
@@ -292,6 +296,7 @@
             const q = e.target.value.toLowerCase();
             const rows = document.querySelectorAll('#arsip-table tr');
             rows.forEach(r => {
+                if (r.classList.contains('skeleton-row')) return;
                 r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
             });
         });
@@ -321,17 +326,29 @@
                 if (initialToken) await signInWithCustomToken(auth, initialToken);
                 else await signInAnonymously(auth);
 
+                // Gunakan onSnapshot untuk pembaruan real-time
                 onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), (snap) => {
                     allArsip = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                     hasLoadedOnce = true;
                     updateStats();
                     render();
                     updateStatus("Online");
+                }, (error) => {
+                    console.error("Firestore error:", error);
+                    updateStatus("Error Data", false);
                 });
-            } catch (e) { updateStatus("Error", false); }
+            } catch (e) { 
+                console.error("Auth error:", e);
+                updateStatus("Error Koneksi", false); 
+            }
         };
 
-        init();
+        // Tunggu DOM siap agar elemen tersedia
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
     </script>
 </body>
 </html>

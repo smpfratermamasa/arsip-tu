@@ -23,12 +23,12 @@
                     <div class="flex items-center space-x-3">
                         <div class="bg-white p-1 rounded-full"><i class="fas fa-school text-blue-900 text-xl"></i></div>
                         <div>
-                            <h1 class="font-bold text-lg leading-tight uppercase">SMP Frater Mamasa</h1>
+                            <h1 class="font-bold text-lg leading-tight uppercase">TU SMP Frater Mamasa</h1>
                             <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Online</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <span id="auth-status" class="text-[9px] text-blue-300 uppercase italic">Menghubungkan...</span>
+                        <span id="auth-status" class="text-[9px] text-blue-300 uppercase italic font-bold">Menghubungkan...</span>
                         <button onclick="window.toggleAdminLogin()" class="hover:bg-blue-800 p-2 rounded-lg transition" title="Login Admin"><i id="admin-icon" class="fas fa-lock"></i></button>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <!-- Kartu Konten Utama -->
+            <!-- Konten Utama -->
             <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b flex flex-col md:flex-row justify-between gap-4 items-center">
                     <div class="flex flex-wrap gap-2 text-xs" id="tabs">
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                <div class="overflow-x-auto min-h-[200px]">
+                <div class="overflow-x-auto min-h-[300px]">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold tracking-wider">
                             <tr>
@@ -92,7 +92,7 @@
                             </tr>
                         </thead>
                         <tbody id="arsip-table" class="text-sm divide-y divide-gray-50">
-                            <!-- Skeleton Loading -->
+                            <!-- Skeleton Rows -->
                             <tr class="skeleton-row">
                                 <td class="px-6 py-4"><div class="h-4 w-20 skeleton rounded"></div></td>
                                 <td class="px-6 py-4"><div class="h-4 w-40 skeleton rounded"></div></td>
@@ -103,14 +103,14 @@
                         </tbody>
                     </table>
                     <div id="empty-state" class="hidden p-20 flex flex-col items-center justify-center text-center">
-                        <i class="fas fa-folder-open text-gray-200 text-5xl mb-4"></i>
-                        <p class="text-sm text-gray-500 font-medium">Belum ada arsip ditemukan</p>
+                        <i class="fas fa-wifi text-gray-200 text-5xl mb-4"></i>
+                        <p id="empty-text" class="text-sm text-gray-500 font-medium">Memuat data dari server...</p>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Modal Login Admin -->
+        <!-- Modals -->
         <div id="admin-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center">
                 <h2 class="text-xl font-bold mb-4">Akses Admin</h2>
@@ -120,7 +120,6 @@
             </div>
         </div>
 
-        <!-- Modal Form Data -->
         <div id="form-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] flex flex-col">
                 <div class="p-6 border-b flex justify-between items-center">
@@ -153,14 +152,17 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
+        // 1. Konfigurasi
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
         let allArsip = [];
         let currentCategory = 'all';
@@ -168,26 +170,25 @@
         let hasLoadedOnce = false;
         let unsubscribeArsip = null;
 
-        const updateAuthUI = (user) => {
-            const statusEl = document.getElementById('auth-status');
-            if (user) {
-                statusEl.innerText = "Terhubung";
-                statusEl.className = "text-[9px] text-green-400 uppercase font-bold";
-            } else {
-                statusEl.innerText = "Terputus";
-                statusEl.className = "text-[9px] text-red-400 uppercase font-bold";
+        // 2. Fungsi UI
+        const updateStatus = (text, isSuccess = true) => {
+            const el = document.getElementById('auth-status');
+            if (el) {
+                el.innerText = text;
+                el.className = `text-[9px] uppercase font-bold ${isSuccess ? 'text-green-400' : 'text-red-400'}`;
             }
         };
 
         const render = () => {
             const tableBody = document.getElementById('arsip-table');
+            const emptyState = document.getElementById('empty-state');
             const filtered = currentCategory === 'all' ? allArsip : allArsip.filter(a => a.category === currentCategory);
             
-            document.getElementById('empty-state').classList.add('hidden');
-            
+            emptyState.classList.add('hidden');
             if (filtered.length === 0 && hasLoadedOnce) {
                 tableBody.innerHTML = '';
-                document.getElementById('empty-state').classList.remove('hidden');
+                document.getElementById('empty-text').innerText = "Belum ada data arsip";
+                emptyState.classList.remove('hidden');
                 return;
             }
 
@@ -221,55 +222,59 @@
             });
         };
 
-        const startListening = (user) => {
-            if (!user) return;
-            
-            // Bersihkan listener lama jika ada
-            if (unsubscribeArsip) unsubscribeArsip();
+        // 3. Fungsi Inti Firestore
+        const startListening = () => {
+            // Mencegah query tanpa auth sesuai aturan Firestore
+            if (!auth.currentUser) {
+                console.warn("Menunda pemuatan data: Belum terautentikasi");
+                return;
+            }
 
-            // Sesuai RULE 1: /artifacts/{appId}/public/data/{collectionName}
+            if (unsubscribeArsip) unsubscribeArsip();
+            
+            // Mengikuti pola jalur yang diwajibkan: artifacts/{appId}/public/data/{collectionName}
             const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
             
-            // Sesuai RULE 2: Gunakan query sederhana tanpa filter kompleks/orderBy untuk menghindari error indeks
             unsubscribeArsip = onSnapshot(colRef, (snapshot) => {
                 allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 hasLoadedOnce = true;
                 updateStats();
                 render();
             }, (err) => {
-                console.error("Firestore Error:", err);
-                hasLoadedOnce = true;
-                render();
+                console.error("Firestore Permission/Access Error:", err);
+                updateStatus("Akses Ditolak", false);
             });
         };
 
-        // Sesuai RULE 3: Inisialisasi Auth FIRST
-        const initAuth = async () => {
+        // 4. Inisialisasi Sesi (Wajib Await sebelum Firestore)
+        const initializeAppSession = async () => {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                if (initialToken) {
+                    await signInWithCustomToken(auth, initialToken);
                 } else {
                     await signInAnonymously(auth);
                 }
+                // Setelah login berhasil, panggil listener
+                startListening();
+                updateStatus("Online");
             } catch (e) {
-                console.error("Auth Error:", e);
-                // Coba anonim jika token gagal
-                try { await signInAnonymously(auth); } catch(e2) { console.error("Critical Auth Fail", e2); }
+                console.error("Auth Fail:", e);
+                updateStatus("Koneksi Gagal", false);
             }
         };
 
-        // Jalankan autentikasi
-        initAuth();
-
-        // Listen status perubahan auth untuk memicu Firestore
+        // 5. Lifecycle Handlers
         onAuthStateChanged(auth, (user) => {
-            updateAuthUI(user);
             if (user) {
-                startListening(user);
+                console.log("User terverifikasi:", user.uid);
+                startListening(); // Re-sync jika status berubah
             }
         });
 
-        // Global Window Functions
+        // Jalankan inisialisasi
+        initializeAppSession();
+
+        // 6. Global Helper Functions
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
         
         window.verifyAdmin = () => {
@@ -280,9 +285,7 @@
                 document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
                 window.toggleAdminLogin();
                 render();
-            } else {
-                alert("Kata sandi salah!");
-            }
+            } else { alert("Sandi salah!"); }
         };
 
         window.changeCategory = (cat) => {
@@ -314,13 +317,10 @@
 
         window.deleteData = async (id) => {
             if (!auth.currentUser) return;
-            if (confirm("Hapus permanen arsip ini?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
-                } catch (e) {
-                    console.error(e);
-                    alert("Gagal menghapus data. Pastikan Anda memiliki izin.");
-                }
+            if (confirm("Hapus arsip ini?")) {
+                try { 
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id)); 
+                } catch (e) { alert("Gagal hapus"); }
             }
         };
 
@@ -337,18 +337,16 @@
                 link: document.getElementById('form-link').value,
                 updatedAt: serverTimestamp()
             };
-
+            
             try {
-                if (id) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
-                } else {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
+                if (id) { 
+                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data); 
+                } else { 
+                    await addDoc(colRef, data); 
                 }
                 window.closeModal();
-            } catch (err) {
-                console.error(err);
-                alert("Gagal menyimpan ke Cloud. Pastikan koneksi stabil.");
-            }
+            } catch (err) { alert("Gagal simpan"); }
         };
 
         window.filterArsip = () => {

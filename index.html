@@ -48,7 +48,7 @@
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-purple-100 text-purple-600 rounded-lg"><i class="fas fa-gavel"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">SK</p><h3 id="stat-sk" class="text-lg font-bold">0</h3></div>
+                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Keputusan</p><h3 id="stat-sk" class="text-lg font-bold">0</h3></div>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-orange-100 text-orange-600 rounded-lg"><i class="fas fa-users"></i></div>
@@ -66,7 +66,7 @@
                     <div class="flex flex-wrap gap-2 text-xs" id="tabs">
                         <button onclick="window.changeCategory('surat-masuk')" id="tab-surat-masuk" class="px-3 py-2 tab-active">Surat Masuk</button>
                         <button onclick="window.changeCategory('surat-keluar')" id="tab-surat-keluar" class="px-3 py-2 text-gray-500">Surat Keluar</button>
-                        <button onclick="window.changeCategory('sk')" id="tab-sk" class="px-3 py-2 text-gray-500">SK</button>
+                        <button onclick="window.changeCategory('sk')" id="tab-sk" class="px-3 py-2 text-gray-500">Surat Keputusan</button>
                         <button onclick="window.changeCategory('kepegawaian')" id="tab-kepegawaian" class="px-3 py-2 text-gray-500">Kepegawaian</button>
                         <button onclick="window.changeCategory('absen')" id="tab-absen" class="px-3 py-2 text-gray-500">Absen</button>
                     </div>
@@ -132,7 +132,7 @@
                         <select id="form-category" class="w-full border p-3 rounded-xl text-sm">
                             <option value="surat-masuk">Surat Masuk</option>
                             <option value="surat-keluar">Surat Keluar</option>
-                            <option value="sk">SK</option>
+                            <option value="sk">Surat Keputusan</option>
                             <option value="kepegawaian">Kepegawaian</option>
                             <option value="absen">Absen</option>
                         </select>
@@ -154,7 +154,7 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        // 1. Konfigurasi
+        // 1. Inisialisasi Firebase & Variabel Global
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
@@ -164,12 +164,90 @@
         const auth = getAuth(app);
 
         let allArsip = [];
-        let currentCategory = 'surat-masuk'; // Default kategori setelah "Semua" dihapus
+        let currentCategory = 'surat-masuk';
         let isAdmin = false;
         let hasLoadedOnce = false;
         let unsubscribeArsip = null;
 
-        // 2. Fungsi UI
+        // 2. Registrasi Fungsi Global (Harus segera agar menu bisa diklik)
+        window.toggleAdminLogin = () => {
+            const modal = document.getElementById('admin-modal');
+            if (modal) modal.classList.toggle('hidden');
+        };
+
+        window.changeCategory = (cat) => {
+            currentCategory = cat;
+            document.querySelectorAll('#tabs button').forEach(b => {
+                b.classList.remove('tab-active');
+                b.classList.add('text-gray-500');
+            });
+            const activeTab = document.getElementById('tab-' + cat);
+            if (activeTab) {
+                activeTab.classList.add('tab-active');
+                activeTab.classList.remove('text-gray-500');
+            }
+            render();
+        };
+
+        window.openModal = (id = null) => {
+            const form = document.getElementById('arsip-form');
+            if (!form) return;
+            form.reset();
+            document.getElementById('edit-id').value = "";
+            if (id) {
+                const d = allArsip.find(a => a.id === id);
+                if (d) {
+                    document.getElementById('edit-id').value = id;
+                    document.getElementById('form-date').value = d.date || "";
+                    document.getElementById('form-category').value = d.category || "surat-masuk";
+                    document.getElementById('form-title').value = d.title || "";
+                    document.getElementById('form-desc').value = d.desc || "";
+                    document.getElementById('form-link').value = d.link || "";
+                }
+            }
+            document.getElementById('form-modal').classList.remove('hidden');
+        };
+
+        window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
+
+        window.verifyAdmin = () => {
+            const pass = document.getElementById('admin-password').value;
+            if (pass === 'adminfrater') {
+                isAdmin = true;
+                const addBtn = document.getElementById('add-btn');
+                const adminIcon = document.getElementById('admin-icon');
+                if (addBtn) addBtn.classList.remove('hidden');
+                if (adminIcon) adminIcon.className = "fas fa-unlock text-amber-500";
+                window.toggleAdminLogin();
+                render();
+            } else { 
+                alert("Kata sandi salah!"); 
+            }
+        };
+
+        window.deleteData = async (id) => {
+            if (!isAdmin || !auth.currentUser) return;
+            if (confirm("Hapus arsip ini secara permanen?")) {
+                try { 
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id)); 
+                } catch (e) { 
+                    console.error(e);
+                    alert("Gagal menghapus data."); 
+                }
+            }
+        };
+
+        window.filterArsip = () => {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#arsip-table tr');
+            rows.forEach(r => {
+                if (!r.classList.contains('skeleton-row')) {
+                    r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
+                }
+            });
+        };
+
+        // 3. Logika Rendering & Data
         const updateStatus = (text, isSuccess = true) => {
             const el = document.getElementById('auth-status');
             if (el) {
@@ -181,6 +259,8 @@
         const render = () => {
             const tableBody = document.getElementById('arsip-table');
             const emptyState = document.getElementById('empty-state');
+            if (!tableBody) return;
+
             const filtered = allArsip.filter(a => a.category === currentCategory);
             
             emptyState.classList.add('hidden');
@@ -197,7 +277,11 @@
                     <tr class="hover:bg-blue-50/30 transition-colors border-b border-gray-50">
                         <td class="px-6 py-4 text-xs text-gray-400 font-mono">${a.date}</td>
                         <td class="px-6 py-4 font-semibold text-gray-700">${a.title}</td>
-                        <td class="px-6 py-4"><span class="bg-blue-50 text-blue-700 text-[9px] px-2 py-1 rounded-md uppercase font-bold tracking-wider">${a.category.replace('-', ' ')}</span></td>
+                        <td class="px-6 py-4">
+                            <span class="bg-blue-50 text-blue-700 text-[9px] px-2 py-1 rounded-md uppercase font-bold tracking-wider">
+                                ${a.category === 'sk' ? 'Surat Keputusan' : a.category.replace('-', ' ')}
+                            </span>
+                        </td>
                         <td class="px-6 py-4 text-xs text-gray-500 italic truncate max-w-xs">${a.desc || '-'}</td>
                         <td class="px-6 py-4 text-center">
                             <div class="flex justify-center space-x-2">
@@ -222,13 +306,11 @@
             });
         };
 
-        // 3. Fungsi Inti Firestore
         const startListening = () => {
             if (!auth.currentUser) return;
-
             if (unsubscribeArsip) unsubscribeArsip();
+
             const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
-            
             unsubscribeArsip = onSnapshot(colRef, (snapshot) => {
                 allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 hasLoadedOnce = true;
@@ -236,95 +318,31 @@
                 render();
                 updateStatus("Online");
             }, (err) => {
-                console.error("Firestore Access Error:", err);
+                console.error("Firestore Error:", err);
                 updateStatus("Akses Terbatas", false);
             });
         };
 
-        // 4. Inisialisasi Sesi
-        const initializeAppSession = async () => {
+        // 4. Inisialisasi Aplikasi
+        const initialize = async () => {
             try {
                 if (initialToken) {
                     await signInWithCustomToken(auth, initialToken);
                 } else {
                     await signInAnonymously(auth);
                 }
+                startListening();
             } catch (e) {
                 console.error("Auth Fail:", e);
-                updateStatus("Offline", false);
+                updateStatus("Koneksi Gagal", false);
             }
         };
 
-        // 5. Global Helpers (Daftarkan ke window agar bisa diakses HTML)
-        window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
-        
-        window.verifyAdmin = () => {
-            const pass = document.getElementById('admin-password').value;
-            if (pass === 'adminfrater') {
-                isAdmin = true;
-                document.getElementById('add-btn').classList.remove('hidden');
-                document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
-                window.toggleAdminLogin();
-                render();
-            } else { alert("Kata sandi salah!"); }
-        };
-
-        window.changeCategory = (cat) => {
-            currentCategory = cat;
-            document.querySelectorAll('#tabs button').forEach(b => {
-                b.classList.remove('tab-active');
-                b.classList.add('text-gray-500');
-            });
-            const activeTab = document.getElementById('tab-' + cat);
-            if (activeTab) {
-                activeTab.classList.add('tab-active');
-                activeTab.classList.remove('text-gray-500');
-            }
-            render();
-        };
-
-        window.openModal = (id = null) => {
-            const form = document.getElementById('arsip-form');
-            form.reset();
-            document.getElementById('edit-id').value = "";
-            if (id) {
-                const d = allArsip.find(a => a.id === id);
-                if (d) {
-                    document.getElementById('edit-id').value = id;
-                    document.getElementById('form-date').value = d.date;
-                    document.getElementById('form-category').value = d.category;
-                    document.getElementById('form-title').value = d.title;
-                    document.getElementById('form-desc').value = d.desc;
-                    document.getElementById('form-link').value = d.link;
-                }
-            }
-            document.getElementById('form-modal').classList.remove('hidden');
-        };
-
-        window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
-
-        window.deleteData = async (id) => {
-            if (!isAdmin) return;
-            if (confirm("Hapus arsip ini secara permanen?")) {
-                try { 
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id)); 
-                } catch (e) { alert("Gagal menghapus data."); }
-            }
-        };
-
-        window.filterArsip = () => {
-            const q = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#arsip-table tr');
-            rows.forEach(r => {
-                if (!r.classList.contains('skeleton-row')) {
-                    r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
-                }
-            });
-        };
-
-        // Form Submit
+        // Form Submit Listener
         document.getElementById('arsip-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (!isAdmin || !auth.currentUser) return;
+
             const id = document.getElementById('edit-id').value;
             const data = {
                 date: document.getElementById('form-date').value,
@@ -336,24 +354,25 @@
             };
             
             try {
+                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
                 if (id) { 
                     await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data); 
                 } else { 
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data); 
+                    await addDoc(colRef, data); 
                 }
                 window.closeModal();
-            } catch (err) { alert("Gagal menyimpan data."); }
-        });
-
-        // Lifecycle
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                startListening();
+            } catch (err) { 
+                console.error(err);
+                alert("Gagal menyimpan data."); 
             }
         });
 
-        // Mulai aplikasi
-        window.onload = initializeAppSession;
+        // Jalankan saat ready
+        if (document.readyState === 'complete') {
+            initialize();
+        } else {
+            window.addEventListener('load', initialize);
+        }
 
     </script>
 </body>

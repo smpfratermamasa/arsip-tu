@@ -17,34 +17,25 @@
 </head>
 <body class="min-h-screen">
     <div id="app" class="flex flex-col min-h-screen">
-        <!-- Navigasi -->
         <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex items-center space-x-3">
-                        <div class="bg-white p-1 rounded-full">
-                            <i class="fas fa-school text-blue-900 text-xl"></i>
-                        </div>
+                        <div class="bg-white p-1 rounded-full"><i class="fas fa-school text-blue-900 text-xl"></i></div>
                         <div>
                             <h1 class="font-bold text-lg leading-tight uppercase">SMP Frater Mamasa</h1>
                             <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Online</p>
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <span id="role-badge" class="hidden md:inline-block bg-blue-800 px-3 py-1 rounded-full text-[10px] border border-blue-700 uppercase tracking-tighter">
-                            Mode Pegawai
-                        </span>
-                        <button onclick="window.toggleAdminLogin()" class="hover:bg-blue-800 p-2 rounded-lg transition" title="Login Admin">
-                            <i id="admin-icon" class="fas fa-lock"></i>
-                        </button>
+                        <span id="role-badge" class="hidden md:inline-block bg-blue-800 px-3 py-1 rounded-full text-[10px] border border-blue-700 uppercase tracking-tighter">Mode Pegawai</span>
+                        <button onclick="window.toggleAdminLogin()" class="hover:bg-blue-800 p-2 rounded-lg transition"><i id="admin-icon" class="fas fa-lock"></i></button>
                     </div>
                 </div>
             </div>
         </nav>
 
         <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-            
-            <!-- Dashboard Statistik -->
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
                     <div class="p-2 bg-blue-100 text-blue-600 rounded-lg"><i class="fas fa-file-import"></i></div>
@@ -69,139 +60,96 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between gap-4 items-center">
+                <div class="p-6 border-b flex flex-col md:flex-row justify-between gap-4 items-center">
                     <div class="flex flex-wrap gap-2 text-xs" id="tabs">
                         <button onclick="window.changeCategory('all')" id="tab-all" class="px-3 py-2 tab-active">Semua</button>
-                        <button onclick="window.changeCategory('surat-masuk')" id="tab-surat-masuk" class="px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition">Masuk</button>
-                        <button onclick="window.changeCategory('surat-keluar')" id="tab-surat-keluar" class="px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition">Keluar</button>
-                        <button onclick="window.changeCategory('sk')" id="tab-sk" class="px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition">SK</button>
-                        <button onclick="window.changeCategory('kepegawaian')" id="tab-kepegawaian" class="px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition">Pegawai</button>
-                        <button onclick="window.changeCategory('absen')" id="tab-absen" class="px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition">Absen</button>
+                        <button onclick="window.changeCategory('surat-masuk')" id="tab-surat-masuk" class="px-3 py-2 text-gray-500">Masuk</button>
+                        <button onclick="window.changeCategory('surat-keluar')" id="tab-surat-keluar" class="px-3 py-2 text-gray-500">Keluar</button>
+                        <button onclick="window.changeCategory('sk')" id="tab-sk" class="px-3 py-2 text-gray-500">SK</button>
+                        <button onclick="window.changeCategory('kepegawaian')" id="tab-kepegawaian" class="px-3 py-2 text-gray-500">Pegawai</button>
+                        <button onclick="window.changeCategory('absen')" id="tab-absen" class="px-3 py-2 text-gray-500">Absen</button>
                     </div>
                     <div class="flex items-center space-x-2 w-full md:w-auto">
                         <div class="relative flex-grow">
                             <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-xs"></i>
                             <input type="text" id="searchInput" onkeyup="window.filterArsip()" placeholder="Cari arsip..." class="w-full border pl-9 pr-4 py-2 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 border-gray-200">
                         </div>
-                        <button id="add-btn" onclick="window.openModal()" class="hidden bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 shadow-lg shadow-blue-200 transition">
-                            <i class="fas fa-plus mr-2"></i> Tambah
-                        </button>
+                        <button id="add-btn" onclick="window.openModal()" class="hidden bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium">Tambah</button>
                     </div>
                 </div>
 
-                <div class="overflow-x-auto min-h-[300px]">
-                    <div id="loading-spinner" class="loader-container">
+                <div class="overflow-x-auto min-h-[300px] relative">
+                    <div id="loading-spinner" class="loader-container absolute inset-0 bg-white/80 z-10">
                         <div class="loader"></div>
                     </div>
-                    <table id="data-table" class="w-full text-left hidden">
+                    <table id="data-table" class="w-full text-left">
                         <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold tracking-wider">
                             <tr>
                                 <th class="px-6 py-4">Tanggal</th>
-                                <th class="px-6 py-4">Judul / Nomor Dokumen</th>
+                                <th class="px-6 py-4">Judul Dokumen</th>
                                 <th class="px-6 py-4">Kategori</th>
                                 <th class="px-6 py-4">Keterangan</th>
-                                <th class="px-6 py-4 text-center">Buka File</th>
+                                <th class="px-6 py-4 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody id="arsip-table" class="text-sm divide-y divide-gray-50">
-                            <!-- Data dimuat dari Firestore -->
-                        </tbody>
+                        <tbody id="arsip-table" class="text-sm divide-y divide-gray-50"></tbody>
                     </table>
                     <div id="empty-state" class="hidden p-20 flex flex-col items-center justify-center text-center">
                         <i class="fas fa-folder-open text-gray-200 text-5xl mb-4"></i>
-                        <p class="text-sm text-gray-500 font-medium">Belum ada arsip yang tersimpan</p>
-                        <p class="text-xs text-gray-400 mt-1">Gunakan mode Admin untuk menambah data baru ke Cloud.</p>
+                        <p class="text-sm text-gray-500 font-medium">Belum ada arsip ditemukan</p>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Modal Login Admin -->
+        <!-- Modals -->
         <div id="admin-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl p-8 max-sm w-full shadow-2xl">
-                <div class="text-center mb-6">
-                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h2 class="text-xl font-bold text-gray-800">Akses Admin</h2>
-                    <p class="text-gray-500 text-xs mt-1">Masukkan kata sandi untuk mengelola arsip</p>
-                </div>
-                <input type="password" id="admin-password" placeholder="Kata Sandi..." class="w-full border-2 border-gray-100 p-3 rounded-2xl mb-6 outline-none focus:border-blue-500 transition text-center text-lg tracking-widest">
-                <div class="flex flex-col space-y-3">
-                    <button onclick="window.verifyAdmin()" class="w-full bg-blue-600 text-white py-3 rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition uppercase text-xs tracking-widest">Verifikasi</button>
-                    <button onclick="window.toggleAdminLogin()" class="w-full text-xs text-gray-400 font-medium hover:text-gray-600 transition">Kembali</button>
-                </div>
+            <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center">
+                <h2 class="text-xl font-bold mb-4">Akses Admin</h2>
+                <input type="password" id="admin-password" placeholder="Kata Sandi..." class="w-full border-2 border-gray-100 p-3 rounded-2xl mb-6 text-center text-lg outline-none focus:border-blue-500">
+                <button onclick="window.verifyAdmin()" class="w-full bg-blue-600 text-white py-3 rounded-2xl font-bold uppercase text-xs">Verifikasi</button>
+                <button onclick="window.toggleAdminLogin()" class="mt-4 text-xs text-gray-400">Tutup</button>
             </div>
         </div>
 
-        <!-- Form Modal -->
         <div id="form-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-hidden flex flex-col">
-                <div class="p-6 border-b flex justify-between items-center bg-gray-50">
-                    <div>
-                        <h2 class="font-bold text-gray-800" id="modal-title">Tambah Arsip Baru</h2>
-                        <p class="text-[10px] text-gray-400 uppercase tracking-tighter">Data akan tersimpan secara Online</p>
-                    </div>
-                    <button onclick="window.closeModal()" class="w-8 h-8 rounded-full hover:bg-gray-200 flex items-center justify-center transition text-gray-400">
-                        <i class="fas fa-times"></i>
-                    </button>
+            <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] flex flex-col">
+                <div class="p-6 border-b flex justify-between items-center">
+                    <h2 class="font-bold" id="modal-title">Form Arsip</h2>
+                    <button onclick="window.closeModal()" class="text-gray-400"><i class="fas fa-times"></i></button>
                 </div>
-                <form id="arsip-form" class="p-8 space-y-5 overflow-y-auto">
+                <form id="arsip-form" class="p-8 space-y-4 overflow-y-auto">
                     <input type="hidden" id="edit-id">
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Tanggal Dokumen</label>
-                            <input type="date" id="form-date" required class="w-full border-2 border-gray-100 p-3 rounded-xl text-sm focus:border-blue-500 outline-none transition">
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Kategori Arsip</label>
-                            <select id="form-category" class="w-full border-2 border-gray-100 p-3 rounded-xl text-sm focus:border-blue-500 outline-none transition bg-white">
-                                <option value="surat-masuk">Surat Masuk</option>
-                                <option value="surat-keluar">Surat Keluar</option>
-                                <option value="sk">Surat Keputusan (SK)</option>
-                                <option value="kepegawaian">Data Pegawai</option>
-                                <option value="absen">Rekap Absen</option>
-                            </select>
-                        </div>
+                        <input type="date" id="form-date" required class="w-full border p-3 rounded-xl text-sm">
+                        <select id="form-category" class="w-full border p-3 rounded-xl text-sm">
+                            <option value="surat-masuk">Surat Masuk</option>
+                            <option value="surat-keluar">Surat Keluar</option>
+                            <option value="sk">SK</option>
+                            <option value="kepegawaian">Pegawai</option>
+                            <option value="absen">Absen</option>
+                        </select>
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Judul Dokumen / No. Surat</label>
-                        <input type="text" id="form-title" placeholder="Contoh: SK Pembagian Tugas Guru 2024" required class="w-full border-2 border-gray-100 p-3 rounded-xl text-sm focus:border-blue-500 outline-none transition">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Keterangan Tambahan</label>
-                        <textarea id="form-desc" rows="2" placeholder="Catatan singkat..." class="w-full border-2 border-gray-100 p-3 rounded-xl text-sm focus:border-blue-500 outline-none transition"></textarea>
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold text-blue-600 uppercase ml-1">Link Google Drive</label>
-                        <div class="relative">
-                            <i class="fab fa-google-drive absolute left-4 top-4 text-blue-500"></i>
-                            <input type="url" id="form-link" placeholder="https://drive.google.com/..." required class="w-full border-2 border-blue-100 pl-12 pr-4 py-3 rounded-xl text-sm bg-blue-50 focus:border-blue-500 outline-none transition">
-                        </div>
-                    </div>
+                    <input type="text" id="form-title" placeholder="Judul Dokumen" required class="w-full border p-3 rounded-xl text-sm">
+                    <textarea id="form-desc" placeholder="Keterangan" class="w-full border p-3 rounded-xl text-sm"></textarea>
+                    <input type="url" id="form-link" placeholder="Link Google Drive" required class="w-full border p-3 rounded-xl text-sm bg-blue-50">
                     <div class="pt-4 flex space-x-3">
-                        <button type="button" onclick="window.closeModal()" class="flex-1 bg-gray-100 text-gray-500 py-3 rounded-2xl font-bold text-xs uppercase transition hover:bg-gray-200">Batal</button>
-                        <button type="submit" class="flex-[2] bg-blue-600 text-white py-3 rounded-2xl font-bold text-xs uppercase shadow-lg shadow-blue-200 hover:bg-blue-700 transition">Simpan ke Cloud</button>
+                        <button type="button" onclick="window.closeModal()" class="flex-1 bg-gray-100 py-3 rounded-2xl text-xs font-bold uppercase">Batal</button>
+                        <button type="submit" class="flex-[2] bg-blue-600 text-white py-3 rounded-2xl text-xs font-bold uppercase">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-900/90 backdrop-blur text-white px-6 py-3 rounded-2xl text-xs font-medium hidden z-[110] shadow-xl flex items-center">
-            <i class="fas fa-info-circle mr-2 text-blue-400"></i> <span id="toast-text"></span>
-        </div>
+        <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-2xl text-xs hidden z-[110]"></div>
     </div>
 
-    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : { apiKey: "", authDomain: "", projectId: "", storageBucket: "", messagingSenderId: "", appId: "" };
-
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
@@ -210,196 +158,113 @@
         let allArsip = [];
         let currentCategory = 'all';
         let isAdmin = false;
-        let isListening = false;
 
-        // Fungsi PAKSA mematikan spinner jika loading terlalu lama (3 detik)
-        const forceLoadUI = () => {
-            const spinner = document.getElementById('loading-spinner');
-            const table = document.getElementById('data-table');
-            if (spinner && !spinner.classList.contains('hidden')) {
-                console.log("Forcing UI display due to long wait...");
-                spinner.classList.add('hidden');
-                table.classList.remove('hidden');
-                render();
-            }
+        // Force UI loading if stuck
+        setTimeout(() => {
+            const loader = document.getElementById('loading-spinner');
+            if (loader) loader.classList.add('hidden');
+        }, 2500);
+
+        const render = () => {
+            const tableBody = document.getElementById('arsip-table');
+            const filtered = currentCategory === 'all' ? allArsip : allArsip.filter(a => a.category === currentCategory);
+            
+            document.getElementById('empty-state').classList.toggle('hidden', filtered.length > 0);
+            
+            tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
+                <tr class="hover:bg-blue-50/30">
+                    <td class="px-6 py-4 text-xs text-gray-400">${a.date}</td>
+                    <td class="px-6 py-4 font-medium text-gray-700">${a.title}</td>
+                    <td class="px-6 py-4"><span class="bg-gray-100 text-[9px] px-2 py-1 rounded uppercase">${a.category}</span></td>
+                    <td class="px-6 py-4 text-xs text-gray-400 italic">${a.desc || '-'}</td>
+                    <td class="px-6 py-4 text-center">
+                        <div class="flex justify-center space-x-2">
+                            <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fab fa-google-drive"></i></a>
+                            ${isAdmin ? `
+                                <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-600 hover:text-white transition"><i class="fas fa-pen"></i></button>
+                                <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-600 hover:text-white transition"><i class="fas fa-trash"></i></button>
+                            ` : ''}
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
         };
-        const loadTimeout = setTimeout(forceLoadUI, 3000);
 
-        function stopSpinner() {
-            clearTimeout(loadTimeout);
-            document.getElementById('loading-spinner').classList.add('hidden');
-            document.getElementById('data-table').classList.remove('hidden');
-        }
+        const updateStats = () => {
+            const count = (c) => allArsip.filter(a => a.category === c).length;
+            ['masuk', 'keluar', 'sk', 'pegawai', 'absen'].forEach(id => {
+                const map = { masuk: 'surat-masuk', keluar: 'surat-keluar', sk: 'sk', pegawai: 'kepegawaian', absen: 'absen' };
+                document.getElementById('stat-' + id).innerText = count(map[id]);
+            });
+        };
 
         const startListening = () => {
-            if (isListening) return;
-            isListening = true;
-            
             const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
-            
-            // Listener real-time
             onSnapshot(colRef, (snapshot) => {
                 allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 updateStats();
                 render();
-                stopSpinner(); // Matikan spinner segera setelah data pertama (atau data kosong) diterima
-            }, (error) => {
-                console.error("Firestore Error:", error);
-                stopSpinner();
-                showToast("Koneksi lambat. Menggunakan data cache.");
+                document.getElementById('loading-spinner').classList.add('hidden');
+            }, (err) => {
+                console.error(err);
+                document.getElementById('loading-spinner').classList.add('hidden');
             });
         };
 
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (err) {
-                console.error("Auth Fail:", err);
-                stopSpinner(); // Jika auth gagal, tetap tampilkan UI agar tidak blank
-            }
-        };
-
-        // Jalankan Autentikasi
-        initAuth();
-
-        // Pantau status login untuk mulai mendengarkan data
+        // Inisialisasi Paralel
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                startListening();
+            if (user) startListening();
+            else {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) signInWithCustomToken(auth, __initial_auth_token);
+                else signInAnonymously(auth);
             }
         });
 
         // Global functions
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
-        
         window.verifyAdmin = () => {
-            const p = document.getElementById('admin-password').value;
-            if (p === 'adminfrater') {
+            if (document.getElementById('admin-password').value === 'adminfrater') {
                 isAdmin = true;
                 document.getElementById('add-btn').classList.remove('hidden');
-                document.getElementById('admin-icon').className = "fas fa-unlock-alt text-amber-400";
-                document.getElementById('role-badge').innerText = "Admin TU";
-                document.getElementById('role-badge').classList.add('bg-amber-100', 'text-amber-700');
+                document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
                 window.toggleAdminLogin();
                 render();
-                showToast("Mode Admin Aktif");
-            } else {
-                showToast("Kata sandi salah!");
             }
         };
 
         window.changeCategory = (cat) => {
             currentCategory = cat;
-            document.querySelectorAll('#tabs button').forEach(b => {
-                b.className = "px-3 py-2 text-gray-500 hover:bg-gray-50 rounded-lg transition";
-            });
+            document.querySelectorAll('#tabs button').forEach(b => b.className = "px-3 py-2 text-gray-500");
             document.getElementById('tab-' + cat).className = "px-3 py-2 tab-active";
             render();
         };
 
         window.openModal = (id = null) => {
-            const modal = document.getElementById('form-modal');
             const form = document.getElementById('arsip-form');
             form.reset();
             document.getElementById('edit-id').value = "";
-            document.getElementById('modal-title').innerText = "Tambah Arsip Baru";
-            
             if (id) {
-                const data = allArsip.find(a => a.id === id);
-                if (data) {
-                    document.getElementById('edit-id').value = id;
-                    document.getElementById('form-date').value = data.date;
-                    document.getElementById('form-category').value = data.category;
-                    document.getElementById('form-title').value = data.title;
-                    document.getElementById('form-desc').value = data.desc;
-                    document.getElementById('form-link').value = data.link;
-                    document.getElementById('modal-title').innerText = "Edit Arsip";
-                }
+                const d = allArsip.find(a => a.id === id);
+                document.getElementById('edit-id').value = id;
+                document.getElementById('form-date').value = d.date;
+                document.getElementById('form-category').value = d.category;
+                document.getElementById('form-title').value = d.title;
+                document.getElementById('form-desc').value = d.desc;
+                document.getElementById('form-link').value = d.link;
             }
-            modal.classList.remove('hidden');
+            document.getElementById('form-modal').classList.remove('hidden');
         };
 
         window.closeModal = () => document.getElementById('form-modal').classList.add('hidden');
 
         window.deleteData = async (id) => {
-            if (!auth.currentUser) return;
-            if (!confirm("Hapus arsip ini dari cloud?")) return;
-            try {
+            if (confirm("Hapus data ini?")) {
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
-                showToast("Arsip terhapus.");
-            } catch (err) {
-                showToast("Gagal menghapus.");
             }
         };
 
-        function showToast(m) {
-            const t = document.getElementById('toast');
-            const txt = document.getElementById('toast-text');
-            txt.innerText = m;
-            t.classList.remove('hidden');
-            setTimeout(() => t.classList.add('hidden'), 3000);
-        }
-
-        function updateStats() {
-            const count = (cat) => allArsip.filter(a => a.category === cat).length;
-            document.getElementById('stat-masuk').innerText = count('surat-masuk');
-            document.getElementById('stat-keluar').innerText = count('surat-keluar');
-            document.getElementById('stat-sk').innerText = count('sk');
-            document.getElementById('stat-pegawai').innerText = count('kepegawaian');
-            document.getElementById('stat-absen').innerText = count('absen');
-        }
-
-        function render() {
-            const tableBody = document.getElementById('arsip-table');
-            const emptyState = document.getElementById('empty-state');
-            
-            const filtered = currentCategory === 'all' 
-                ? allArsip 
-                : allArsip.filter(a => a.category === currentCategory);
-            
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-                tableBody.innerHTML = "";
-            } else {
-                emptyState.classList.add('hidden');
-                tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
-                    <tr class="hover:bg-blue-50/30 transition group">
-                        <td class="px-6 py-5 whitespace-nowrap text-[11px] text-gray-400 font-medium">${a.date}</td>
-                        <td class="px-6 py-5">
-                            <div class="font-semibold text-gray-700 text-sm">${a.title}</div>
-                        </td>
-                        <td class="px-6 py-5 hidden md:table-cell">
-                            <span class="bg-gray-100 text-gray-500 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider">${a.category.replace('-', ' ')}</span>
-                        </td>
-                        <td class="px-6 py-5 text-xs text-gray-400 italic">${a.desc || '-'}</td>
-                        <td class="px-6 py-5 text-center">
-                            <div class="flex items-center justify-center space-x-3">
-                                <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm">
-                                    <i class="fab fa-google-drive"></i>
-                                </a>
-                                ${isAdmin ? `
-                                    <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
-                                        <i class="fas fa-pen text-[10px]"></i>
-                                    </button>
-                                    <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
-                                        <i class="fas fa-trash-alt text-[10px]"></i>
-                                    </button>
-                                ` : ''}
-                            </div>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-        }
-
         document.getElementById('arsip-form').onsubmit = async (e) => {
             e.preventDefault();
-            if (!auth.currentUser) { showToast("Sesi habis, muat ulang halaman."); return; }
-            
             const id = document.getElementById('edit-id').value;
             const data = {
                 date: document.getElementById('form-date').value,
@@ -409,26 +274,16 @@
                 link: document.getElementById('form-link').value,
                 updatedAt: serverTimestamp()
             };
-
             try {
-                if (id) {
-                    await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
-                    showToast("Arsip diperbarui.");
-                } else {
-                    await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
-                    showToast("Arsip tersimpan.");
-                }
-                closeModal();
-            } catch (err) {
-                console.error("Save Error:", err);
-                showToast("Gagal menyimpan.");
-            }
+                if (id) await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data);
+                else await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data);
+                window.closeModal();
+            } catch (err) { alert("Gagal menyimpan"); }
         };
 
         window.filterArsip = () => {
             const q = document.getElementById('searchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#arsip-table tr');
-            rows.forEach(r => r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none");
+            document.querySelectorAll('#arsip-table tr').forEach(r => r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none");
         };
     </script>
 </body>

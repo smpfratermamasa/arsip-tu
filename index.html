@@ -210,9 +210,24 @@
         let allArsip = [];
         let currentCategory = 'all';
         let isAdmin = false;
+        let isListening = false;
 
-        // Aturan Wajib Canvas: Pastikan Autentikasi selesai sebelum query
-        const init = async () => {
+        // Fungsi penanganan paksa loading jika stuck lebih dari 5 detik
+        const timeoutLoading = setTimeout(() => {
+            if (document.getElementById('data-table').classList.contains('hidden')) {
+                console.warn("Loading timeout - forcing UI display");
+                stopSpinner();
+                render();
+            }
+        }, 5000);
+
+        function stopSpinner() {
+            document.getElementById('loading-spinner').classList.add('hidden');
+            document.getElementById('data-table').classList.remove('hidden');
+            clearTimeout(timeoutLoading);
+        }
+
+        const initAuth = async () => {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
@@ -221,39 +236,37 @@
                 }
             } catch (err) {
                 console.error("Auth Fail:", err);
+                // Jika auth gagal, tetap tampilkan tabel agar tidak berputar terus
+                stopSpinner();
             }
         };
 
-        // Jalankan init
-        init();
+        // Mulai autentikasi
+        initAuth();
 
-        // Monitor Auth State & Fetch Data
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("Authenticated as:", user.uid);
+            if (user && !isListening) {
+                isListening = true;
                 startListening();
             }
         });
 
         function startListening() {
-            // Path Wajib: /artifacts/{appId}/public/data/{collectionName}
             const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
             
             onSnapshot(colRef, (snapshot) => {
                 allArsip = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                // Matikan loading UI
-                document.getElementById('loading-spinner').classList.add('hidden');
-                document.getElementById('data-table').classList.remove('hidden');
-                
+                stopSpinner();
                 updateStats();
                 render();
             }, (error) => {
                 console.error("Firestore Listen Error:", error);
-                showToast("Koneksi cloud terputus.");
+                stopSpinner();
+                showToast("Mode Offline: Gagal memuat data cloud.");
             });
         }
 
+        // Global functions
         window.toggleAdminLogin = () => document.getElementById('admin-modal').classList.toggle('hidden');
         
         window.verifyAdmin = () => {
@@ -290,13 +303,15 @@
             
             if (id) {
                 const data = allArsip.find(a => a.id === id);
-                document.getElementById('edit-id').value = id;
-                document.getElementById('form-date').value = data.date;
-                document.getElementById('form-category').value = data.category;
-                document.getElementById('form-title').value = data.title;
-                document.getElementById('form-desc').value = data.desc;
-                document.getElementById('form-link').value = data.link;
-                document.getElementById('modal-title').innerText = "Edit Arsip";
+                if (data) {
+                    document.getElementById('edit-id').value = id;
+                    document.getElementById('form-date').value = data.date;
+                    document.getElementById('form-category').value = data.category;
+                    document.getElementById('form-title').value = data.title;
+                    document.getElementById('form-desc').value = data.desc;
+                    document.getElementById('form-link').value = data.link;
+                    document.getElementById('modal-title').innerText = "Edit Arsip";
+                }
             }
             modal.classList.remove('hidden');
         };
@@ -308,9 +323,9 @@
             if (!confirm("Hapus arsip ini dari cloud?")) return;
             try {
                 await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id));
-                showToast("Arsip terhapus dari cloud");
+                showToast("Arsip terhapus.");
             } catch (err) {
-                showToast("Gagal menghapus data.");
+                showToast("Gagal menghapus.");
             }
         };
 
@@ -332,53 +347,51 @@
         }
 
         function render() {
-            const table = document.getElementById('arsip-table');
-            const empty = document.getElementById('empty-state');
+            const tableBody = document.getElementById('arsip-table');
+            const emptyState = document.getElementById('empty-state');
             
             const filtered = currentCategory === 'all' 
                 ? allArsip 
                 : allArsip.filter(a => a.category === currentCategory);
             
-            if (allArsip.length === 0) {
-                empty.classList.remove('hidden');
-                table.innerHTML = "";
-                return;
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                tableBody.innerHTML = "";
             } else {
-                empty.classList.add('hidden');
+                emptyState.classList.add('hidden');
+                tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
+                    <tr class="hover:bg-blue-50/30 transition group">
+                        <td class="px-6 py-5 whitespace-nowrap text-[11px] text-gray-400 font-medium">${a.date}</td>
+                        <td class="px-6 py-5">
+                            <div class="font-semibold text-gray-700 text-sm">${a.title}</div>
+                        </td>
+                        <td class="px-6 py-5 hidden md:table-cell">
+                            <span class="bg-gray-100 text-gray-500 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider">${a.category.replace('-', ' ')}</span>
+                        </td>
+                        <td class="px-6 py-5 text-xs text-gray-400 italic">${a.desc || '-'}</td>
+                        <td class="px-6 py-5 text-center">
+                            <div class="flex items-center justify-center space-x-3">
+                                <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm">
+                                    <i class="fab fa-google-drive"></i>
+                                </a>
+                                ${isAdmin ? `
+                                    <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
+                                        <i class="fas fa-pen text-[10px]"></i>
+                                    </button>
+                                    <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
+                                        <i class="fas fa-trash-alt text-[10px]"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
             }
-
-            table.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
-                <tr class="hover:bg-blue-50/30 transition group">
-                    <td class="px-6 py-5 whitespace-nowrap text-[11px] text-gray-400 font-medium">${a.date}</td>
-                    <td class="px-6 py-5">
-                        <div class="font-semibold text-gray-700 text-sm">${a.title}</div>
-                    </td>
-                    <td class="px-6 py-5 hidden md:table-cell">
-                        <span class="bg-gray-100 text-gray-500 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider">${a.category.replace('-', ' ')}</span>
-                    </td>
-                    <td class="px-6 py-5 text-xs text-gray-400 italic">${a.desc || '-'}</td>
-                    <td class="px-6 py-5 text-center">
-                        <div class="flex items-center justify-center space-x-3">
-                            <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-sm">
-                                <i class="fab fa-google-drive"></i>
-                            </a>
-                            ${isAdmin ? `
-                                <button onclick="window.openModal('${a.id}')" class="w-8 h-8 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center hover:bg-amber-500 hover:text-white transition">
-                                    <i class="fas fa-pen text-[10px]"></i>
-                                </button>
-                                <button onclick="window.deleteData('${a.id}')" class="w-8 h-8 rounded-full bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition">
-                                    <i class="fas fa-trash-alt text-[10px]"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
         }
 
         document.getElementById('arsip-form').onsubmit = async (e) => {
             e.preventDefault();
-            if (!auth.currentUser) { showToast("Gagal terhubung ke Cloud."); return; }
+            if (!auth.currentUser) { showToast("Sesi habis, muat ulang halaman."); return; }
             
             const id = document.getElementById('edit-id').value;
             const data = {
@@ -401,7 +414,7 @@
                 closeModal();
             } catch (err) {
                 console.error("Save Error:", err);
-                showToast("Gagal menyimpan ke cloud.");
+                showToast("Gagal menyimpan.");
             }
         };
 

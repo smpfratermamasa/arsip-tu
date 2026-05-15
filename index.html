@@ -73,9 +73,6 @@
         .rotated {
             transform: rotate(-90deg);
         }
-        .hidden-row {
-            display: none;
-        }
     </style>
 </head>
 <body class="pb-20">
@@ -203,7 +200,7 @@
             </div>
         </div>
 
-        <!-- Floating Button (Hanya Muncul Jika Admin) -->
+        <!-- Floating Button (Admin Only) -->
         <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
             <i class="fas fa-plus fa-lg"></i>
         </button>
@@ -280,7 +277,6 @@
         // Logika Login
         window.prosesLogin = () => {
             const pass = document.getElementById('loginPass').value;
-            // UPDATE: Sandi admin diganti menjadi admintufrms
             if (pass === "admintufrms") {
                 userRole = 'admin';
                 masukAplikasi();
@@ -300,12 +296,17 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
             
+            const floatingAdd = document.getElementById('floatingAdd');
+            const kolomAksi = document.getElementById('kolomAksi');
+
             if (userRole === 'admin') {
-                document.getElementById('floatingAdd').classList.add('flex');
-                document.getElementById('kolomAksi').classList.remove('hidden');
+                floatingAdd.classList.remove('hidden');
+                floatingAdd.classList.add('flex');
+                kolomAksi.classList.remove('hidden');
             } else {
-                document.getElementById('floatingAdd').classList.add('hidden');
-                document.getElementById('kolomAksi').classList.add('hidden');
+                floatingAdd.classList.remove('flex');
+                floatingAdd.classList.add('hidden');
+                kolomAksi.classList.add('hidden');
             }
             
             start();
@@ -365,12 +366,20 @@
             const groups = {};
             filtered.forEach(item => {
                 let groupName = "Lainnya";
+                // LOGIKA GROUPING TERBARU
                 if (kategoriSekarang === 'kepegawaian' || kategoriSekarang === 'absen') {
+                    // Berdasarkan Nama Pegawai
                     groupName = item.employeeName || "Pegawai Umum";
                 } else {
-                    if (item.date && item.date.length > 4) {
+                    // Berdasarkan Bulan & Tahun (Surat Masuk, Keluar, SK)
+                    if (item.date && item.date.trim() !== "") {
                         const parts = item.date.split(' ');
-                        groupName = parts.length > 1 ? parts.slice(-2).join(' ') : item.date;
+                        // Mengambil Bulan dan Tahun (asumsi format: 01 Januari 2024 atau Januari 2024)
+                        if (parts.length >= 2) {
+                            groupName = parts.slice(-2).join(' '); // Ambil 2 kata terakhir
+                        } else {
+                            groupName = item.date;
+                        }
                     } else {
                         groupName = "Arsip Tanpa Tanggal";
                     }
@@ -381,7 +390,12 @@
             });
 
             let htmlContent = '';
-            const sortedGroups = Object.keys(groups).sort().reverse();
+            const sortedGroups = Object.keys(groups).sort((a, b) => {
+                // Sorting sederhana: Arsip Tanpa Tanggal di bawah, lainnya descending
+                if (a === "Arsip Tanpa Tanggal") return 1;
+                if (b === "Arsip Tanpa Tanggal") return -1;
+                return b.localeCompare(a);
+            });
 
             sortedGroups.forEach(group => {
                 const isOpen = openGroups.has(group) || filterKata !== ''; 

@@ -98,7 +98,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, onSnapshot, query, addDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getFirestore, collection, onSnapshot, query, addDoc, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
         const firebaseConfig = {
@@ -127,6 +127,26 @@
             });
         }
 
+        // Fungsi Hapus Dokumen
+        window.hapusDokumen = async (id, title) => {
+            const pass = prompt(`Ketik password admin untuk menghapus "${title}":`);
+            if (pass === null) return; // User cancel
+            
+            if (pass !== "admin123") {
+                alert("Password Salah! Anda tidak memiliki izin untuk menghapus.");
+                return;
+            }
+
+            if (confirm(`Apakah Anda yakin ingin menghapus dokumen "${title}" secara permanen?`)) {
+                try {
+                    await deleteDoc(doc(db, 'arsip', id));
+                    alert("Dokumen berhasil dihapus!");
+                } catch (e) {
+                    alert("Gagal menghapus: " + e.message);
+                }
+            }
+        };
+
         function render() {
             const isPegawai = kategoriSekarang === 'kepegawaian';
             const headTabel = document.getElementById('head-tabel');
@@ -137,8 +157,8 @@
 
             // 1. Render Header
             headTabel.innerHTML = isPegawai ? 
-                `<th class="p-4 border-b">Nama Pegawai / Dokumen</th><th class="p-4 border-b">Tanggal</th><th class="p-4 border-b text-center">Buka</th>` : 
-                `<th class="p-4 border-b">Tanggal</th><th class="p-4 border-b">Judul Dokumen</th><th class="p-4 border-b text-center">Buka</th>`;
+                `<th class="p-4 border-b">Nama Pegawai / Dokumen</th><th class="p-4 border-b">Tanggal</th><th class="p-4 border-b text-center">Aksi</th>` : 
+                `<th class="p-4 border-b">Tanggal</th><th class="p-4 border-b">Judul Dokumen</th><th class="p-4 border-b text-center">Aksi</th>`;
 
             // 2. Filter Data Awal
             let filtered = dataSemua.filter(i => i.category === kategoriSekarang);
@@ -149,7 +169,14 @@
                     <tr class="border-b hover:bg-blue-50 transition-all">
                         <td class="p-4 text-xs text-gray-500">${i.date || '-'}</td>
                         <td class="p-4 text-sm font-semibold">${i.title}</td>
-                        <td class="p-4 text-center"><a href="${i.link}" target="_blank" class="text-blue-600"><i class="fab fa-google-drive"></i></a></td>
+                        <td class="p-4 text-center">
+                            <div class="flex justify-center gap-3">
+                                <a href="${i.link}" target="_blank" class="text-blue-600 hover:scale-110 transition-transform"><i class="fab fa-google-drive fa-lg"></i></a>
+                                <button onclick="hapusDokumen('${i.id}', '${i.title}')" class="text-red-500 hover:scale-110 transition-transform">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>`).join('') : '<tr><td colspan="3" class="p-10 text-center text-gray-400">Belum ada data.</td></tr>';
             } else {
                 // LOGIKA GROUPING UNTUK KEPEGAWAIAN
@@ -189,9 +216,14 @@
                                     </td>
                                     <td class="p-4 text-xs text-gray-500">${doc.date || '-'}</td>
                                     <td class="p-4 text-center">
-                                        <a href="${doc.link}" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                                            <i class="fab fa-google-drive"></i>
-                                        </a>
+                                        <div class="flex justify-center gap-3">
+                                            <a href="${doc.link}" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                                                <i class="fab fa-google-drive"></i>
+                                            </a>
+                                            <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             `;

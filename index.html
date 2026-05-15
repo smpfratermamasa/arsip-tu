@@ -23,7 +23,7 @@
             height: 100%;
             z-index: -1;
             background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), 
-                              url('https://lh3.googleusercontent.com/u/0/d/1yLTwIT6zhF9PcyTau-Sos5K7Sh6b4-NN=w1600');
+                              url('https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=1600&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -82,8 +82,13 @@
     <!-- Layar Login -->
     <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/90 backdrop-blur-xl">
         <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl">
-            <div class="w-20 h-20 bg-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-blue-500/50">
-                <i class="fas fa-university text-white text-3xl"></i>
+            <!-- Container Logo -->
+            <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
+                <!-- Gunakan link alternatif agar gambar terbaca langsung -->
+                <img id="logoLogin" src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
+                     onerror="this.src='https://docs.google.com/uc?export=view&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'"
+                     alt="Logo Sekolah" 
+                     class="w-full h-full object-contain">
             </div>
             <h1 class="text-2xl font-black text-blue-900 mb-1">ARSIP DIGITAL</h1>
             <p class="text-xs text-gray-500 mb-8 font-bold uppercase tracking-widest">SMP Frater Mamasa</p>
@@ -107,11 +112,11 @@
         <nav class="nav-glass text-white p-3 md:p-4 shadow-xl sticky top-0 z-50 border-b border-blue-700/50">
             <div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl flex items-center justify-center overflow-hidden border-2 border-blue-400 shadow-lg">
-                        <img src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB=s100" 
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl flex items-center justify-center overflow-hidden border-2 border-blue-400 shadow-lg p-1">
+                        <img src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
+                             onerror="this.src='https://docs.google.com/uc?export=view&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'"
                              alt="Logo Sekolah" 
-                             class="w-full h-full object-contain"
-                             onerror="this.src='https://docs.google.com/uc?export=download&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'">
+                             class="w-full h-full object-contain">
                     </div>
                     
                     <div class="flex flex-col text-left">
@@ -256,6 +261,7 @@
         import { getFirestore, collection, onSnapshot, query, addDoc, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
+        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
             authDomain: "arsip-digital-baru.firebaseapp.com",
@@ -284,6 +290,7 @@
                 userRole = 'user';
                 masukAplikasi();
             } else {
+                // Gunakan div custom message alih-alih alert untuk estetika jika perlu
                 alert("Kata Sandi Salah!");
             }
         };
@@ -324,10 +331,10 @@
         }
 
         window.hapusDokumen = async (id, title) => {
-            if (userRole !== 'admin') return alert("Hanya Admin yang bisa menghapus!");
+            if (userRole !== 'admin') return;
             if (confirm(`Hapus permanen arsip "${title}"?`)) {
                 try { await deleteDoc(doc(db, 'arsip', id)); } 
-                catch (e) { alert("Error: " + e.message); }
+                catch (e) { console.error("Error hapus:", e); }
             }
         };
 
@@ -366,17 +373,13 @@
             const groups = {};
             filtered.forEach(item => {
                 let groupName = "Lainnya";
-                // LOGIKA GROUPING TERBARU
                 if (kategoriSekarang === 'kepegawaian' || kategoriSekarang === 'absen') {
-                    // Berdasarkan Nama Pegawai
                     groupName = item.employeeName || "Pegawai Umum";
                 } else {
-                    // Berdasarkan Bulan & Tahun (Surat Masuk, Keluar, SK)
                     if (item.date && item.date.trim() !== "") {
                         const parts = item.date.split(' ');
-                        // Mengambil Bulan dan Tahun (asumsi format: 01 Januari 2024 atau Januari 2024)
                         if (parts.length >= 2) {
-                            groupName = parts.slice(-2).join(' '); // Ambil 2 kata terakhir
+                            groupName = parts.slice(-2).join(' '); 
                         } else {
                             groupName = item.date;
                         }
@@ -391,7 +394,6 @@
 
             let htmlContent = '';
             const sortedGroups = Object.keys(groups).sort((a, b) => {
-                // Sorting sederhana: Arsip Tanpa Tanggal di bawah, lainnya descending
                 if (a === "Arsip Tanpa Tanggal") return 1;
                 if (b === "Arsip Tanpa Tanggal") return -1;
                 return b.localeCompare(a);
@@ -441,7 +443,7 @@
         }
 
         document.getElementById('btnSimpan').onclick = async () => {
-            if (userRole !== 'admin') return alert("Hanya Admin yang bisa menambah data!");
+            if (userRole !== 'admin') return;
             const docBaru = {
                 title: document.getElementById('inTitle').value,
                 category: document.getElementById('inCat').value,
@@ -449,12 +451,12 @@
                 link: document.getElementById('inLink').value,
                 employeeName: document.getElementById('inEmployeeName').value || ''
             };
-            if(!docBaru.title || !docBaru.link) return alert("Data belum lengkap!");
+            if(!docBaru.title || !docBaru.link) return;
             try {
                 await addDoc(collection(db, 'arsip'), docBaru);
                 tutupModal();
                 document.querySelectorAll('#modalInput input').forEach(el => el.value = "");
-            } catch (e) { alert("Gagal Simpan: " + e.message); }
+            } catch (e) { console.error("Gagal Simpan:", e); }
         };
 
         document.getElementById('searchTerm').oninput = (e) => {

@@ -5,32 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARSIP DIGITAL - FRATER MAMASA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/all/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: #f3f4f6; 
-        }
-        .tab-aktif { 
-            background: #1e3a8a !important; 
-            color: white !important; 
-        }
-        /* Efek loading saat data sedang diambil */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-            border-radius: 4px;
-        }
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
+        body { font-family: sans-serif; background: #f3f4f6; }
+        .tab-aktif { background: #1e3a8a !important; color: white !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-20">
 
     <nav class="bg-blue-900 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
         <div class="flex items-center gap-2">
@@ -41,11 +23,6 @@
     </nav>
 
     <div class="max-w-4xl mx-auto p-4">
-        <div id="error-display" class="hidden mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 text-xs rounded shadow-sm">
-            <p class="font-bold mb-1">Terjadi Kesalahan:</p>
-            <p id="error-message"></p>
-        </div>
-
         <div class="flex flex-nowrap overflow-x-auto gap-2 mb-6 pb-2 no-scrollbar" id="menu-tab">
             <button data-cat="surat-masuk" class="btn-tab tab-aktif whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-transparent">Surat Masuk</button>
             <button data-cat="surat-keluar" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keluar</button>
@@ -54,117 +31,124 @@
         </div>
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 tracking-wider">
-                        <tr>
-                            <th class="p-4 border-b">Tanggal</th>
-                            <th class="p-4 border-b">Judul Dokumen</th>
-                            <th class="p-4 border-b text-center">Buka</th>
-                        </tr>
-                    </thead>
-                    <tbody id="isi-tabel">
-                        <tr>
-                            <td class="p-4 border-b"><div class="skeleton h-4 w-20"></div></td>
-                            <td class="p-4 border-b"><div class="skeleton h-4 w-full"></div></td>
-                            <td class="p-4 border-b text-center"><div class="skeleton h-8 w-8 mx-auto rounded-full"></div></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 tracking-wider">
+                    <tr>
+                        <th class="p-4 border-b">Tanggal</th>
+                        <th class="p-4 border-b">Judul Dokumen</th>
+                        <th class="p-4 border-b text-center">Buka</th>
+                    </tr>
+                </thead>
+                <tbody id="isi-tabel"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <button onclick="bukaModal()" class="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-700 transition-all">
+        <i class="fas fa-plus fa-lg"></i>
+    </button>
+
+    <div id="modalInput" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <i class="fas fa-file-upload text-blue-600"></i> Tambah Arsip Baru
+            </h2>
+            <div class="space-y-3 text-sm">
+                <input type="password" id="adminPass" placeholder="Password Admin" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <hr>
+                <input type="text" id="inTitle" placeholder="Judul Dokumen" class="w-full p-3 border rounded-lg outline-none focus:border-blue-500">
+                <select id="inCat" class="w-full p-3 border rounded-lg outline-none">
+                    <option value="surat-masuk">Surat Masuk</option>
+                    <option value="surat-keluar">Surat Keluar</option>
+                    <option value="sk">Surat Keputusan</option>
+                    <option value="kepegawaian">Kepegawaian</option>
+                </select>
+                <input type="text" id="inDate" placeholder="Contoh: 15 Mei 2026" class="w-full p-3 border rounded-lg outline-none">
+                <input type="text" id="inLink" placeholder="Link Google Drive" class="w-full p-3 border rounded-lg outline-none">
+            </div>
+            <div class="mt-6 flex gap-3">
+                <button onclick="tutupModal()" class="flex-1 py-3 text-gray-500 font-bold">Batal</button>
+                <button id="btnSimpan" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg">Simpan Ke Cloud</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getFirestore, collection, onSnapshot, query, addDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
             authDomain: "arsip-digital-baru.firebaseapp.com",
             projectId: "arsip-digital-baru",
-            storageBucket: "arsip-digital-baru.appspot.com", // Disederhanakan agar lebih stabil
+            storageBucket: "arsip-digital-baru.appspot.com",
             messagingSenderId: "789604072965",
-            appId: "1:789604072965:web:42a2c6be8ac330010a666c",
-            measurementId: "G-CQ3L8M96DX"
+            appId: "1:789604072965:web:42a2c6be8ac330010a666c"
         };
 
-        const statusEl = document.getElementById('status');
-        const errorDisplay = document.getElementById('error-display');
-        const errorMessage = document.getElementById('error-message');
-        const tabelEl = document.getElementById('isi-tabel');
-        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
         let dataSemua = [];
         let kategoriSekarang = 'surat-masuk';
 
-        function showError(msg) {
-            errorDisplay.classList.remove('hidden');
-            errorMessage.innerText = msg;
-            statusEl.innerText = "ERROR";
-            statusEl.className = "text-[9px] font-bold bg-red-600 px-2 py-1 rounded-full uppercase";
-        }
-
-        function renderData() {
-            const hasilFilter = dataSemua.filter(item => item.category === kategoriSekarang);
-            
-            if (hasilFilter.length === 0) {
-                tabelEl.innerHTML = '<tr><td colspan="3" class="p-10 text-center text-gray-400">Tidak ada data di kategori ini.</td></tr>';
-                return;
-            }
-
-            tabelEl.innerHTML = hasilFilter.map(item => `
-                <tr class="border-b hover:bg-blue-50 transition-colors">
-                    <td class="p-4 text-[12px] text-gray-500">${item.date || '-'}</td>
-                    <td class="p-4 text-sm font-semibold text-gray-700">${item.title}</td>
-                    <td class="p-4 text-center">
-                        <a href="${item.link}" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all">
-                            <i class="fab fa-google-drive"></i>
-                        </a>
-                    </td>
-                </tr>`).join('');
-        }
-
-        async function initApp() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                const db = getFirestore(app);
-                const auth = getAuth(app);
-
-                await signInAnonymously(auth);
-                
-                const q = query(collection(db, 'arsip'));
-                onSnapshot(q, (snapshot) => {
-                    dataSemua = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    statusEl.innerText = "ONLINE";
-                    statusEl.className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase";
-                    renderData();
-                }, (err) => {
-                    showError("Masalah Database: " + err.message);
-                });
-
-            } catch (err) {
-                showError("Gagal Terhubung: " + err.message);
-            }
-        }
-
-        initApp();
-
-        document.getElementById('menu-tab').addEventListener('click', (e) => {
-            const btn = e.target.closest('.btn-tab');
-            if (!btn) return;
-
-            document.querySelectorAll('.btn-tab').forEach(b => {
-                b.classList.remove('tab-aktif');
-                b.classList.add('bg-white');
+        // Login & Ambil Data
+        async function start() {
+            await signInAnonymously(auth);
+            onSnapshot(query(collection(db, 'arsip')), (snap) => {
+                dataSemua = snap.docs.map(doc => doc.data());
+                render();
+                document.getElementById('status').innerText = "ONLINE";
+                document.getElementById('status').className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase";
             });
+        }
 
-            btn.classList.add('tab-aktif');
-            btn.classList.remove('bg-white');
-            
-            kategoriSekarang = btn.dataset.cat;
-            renderData();
-        });
+        function render() {
+            const filtered = dataSemua.filter(i => i.category === kategoriSekarang);
+            document.getElementById('isi-tabel').innerHTML = filtered.length ? filtered.map(i => `
+                <tr class="border-b hover:bg-blue-50">
+                    <td class="p-4 text-xs text-gray-500">${i.date || '-'}</td>
+                    <td class="p-4 text-sm font-semibold">${i.title}</td>
+                    <td class="p-4 text-center"><a href="${i.link}" target="_blank" class="text-blue-600"><i class="fab fa-google-drive"></i></a></td>
+                </tr>`).join('') : '<tr><td colspan="3" class="p-10 text-center text-gray-400">Belum ada data.</td></tr>';
+        }
+
+        // Fungsi Simpan Data Baru
+        document.getElementById('btnSimpan').onclick = async () => {
+            const pass = document.getElementById('adminPass').value;
+            // GANTI PASSWORD DI BAWAH INI SESUAI KEINGINAN ANDA
+            if(pass !== "admin123") return alert("Password Salah!");
+
+            const docBaru = {
+                title: document.getElementById('inTitle').value,
+                category: document.getElementById('inCat').value,
+                date: document.getElementById('inDate').value,
+                link: document.getElementById('inLink').value
+            };
+
+            if(!docBaru.title || !docBaru.link) return alert("Judul dan Link wajib diisi!");
+
+            try {
+                await addDoc(collection(db, 'arsip'), docBaru);
+                alert("Berhasil disimpan!");
+                tutupModal();
+            } catch (e) { alert("Gagal: " + e.message); }
+        };
+
+        window.bukaModal = () => document.getElementById('modalInput').classList.remove('hidden');
+        window.tutupModal = () => document.getElementById('modalInput').classList.add('hidden');
+        
+        document.getElementById('menu-tab').onclick = (e) => {
+            const b = e.target.closest('.btn-tab');
+            if(!b) return;
+            document.querySelectorAll('.btn-tab').forEach(x => x.classList.replace('tab-aktif', 'bg-white'));
+            b.classList.add('tab-aktif');
+            kategoriSekarang = b.dataset.cat;
+            render();
+        };
+
+        start();
     </script>
 </body>
 </html>

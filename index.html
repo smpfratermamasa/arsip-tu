@@ -10,6 +10,7 @@
         body { font-family: sans-serif; background: #f3f4f6; }
         .tab-aktif { background: #1e3a8a !important; color: white !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .group-header { background-color: #f1f5f9; font-weight: bold; color: #1e3a8a; }
     </style>
 </head>
 <body class="min-h-screen pb-20">
@@ -23,20 +24,28 @@
     </nav>
 
     <div class="max-w-4xl mx-auto p-4">
-        <div class="flex flex-nowrap overflow-x-auto gap-2 mb-6 pb-2 no-scrollbar" id="menu-tab">
+        <!-- Filter Kategori -->
+        <div class="flex flex-nowrap overflow-x-auto gap-2 mb-4 pb-2 no-scrollbar" id="menu-tab">
             <button data-cat="surat-masuk" class="btn-tab tab-aktif whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-transparent">Surat Masuk</button>
             <button data-cat="surat-keluar" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keluar</button>
             <button data-cat="sk" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keputusan</button>
             <button data-cat="kepegawaian" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Kepegawaian</button>
         </div>
 
+        <!-- Fitur Pencarian -->
+        <div id="search-container" class="hidden mb-4">
+            <div class="relative">
+                <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
+                <input type="text" id="searchName" placeholder="Cari Nama Pegawai..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
+        </div>
+
+        <!-- Tabel -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <table class="w-full text-left border-collapse">
                 <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 tracking-wider">
-                    <tr>
-                        <th class="p-4 border-b">Tanggal</th>
-                        <th class="p-4 border-b">Judul Dokumen</th>
-                        <th class="p-4 border-b text-center">Buka</th>
+                    <tr id="head-tabel">
+                        <!-- Head dinamis -->
                     </tr>
                 </thead>
                 <tbody id="isi-tabel"></tbody>
@@ -44,27 +53,41 @@
         </div>
     </div>
 
+    <!-- Tombol Tambah -->
     <button onclick="bukaModal()" class="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-700 transition-all">
         <i class="fas fa-plus fa-lg"></i>
     </button>
 
+    <!-- Modal Form Input -->
     <div id="modalInput" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl">
+        <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
                 <i class="fas fa-file-upload text-blue-600"></i> Tambah Arsip Baru
             </h2>
             <div class="space-y-3 text-sm">
                 <input type="password" id="adminPass" placeholder="Password Admin" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                 <hr>
-                <input type="text" id="inTitle" placeholder="Judul Dokumen" class="w-full p-3 border rounded-lg outline-none focus:border-blue-500">
-                <select id="inCat" class="w-full p-3 border rounded-lg outline-none">
+                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Pilih Kategori:</div>
+                <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 border rounded-lg outline-none bg-gray-50 font-bold text-blue-800">
                     <option value="surat-masuk">Surat Masuk</option>
                     <option value="surat-keluar">Surat Keluar</option>
                     <option value="sk">Surat Keputusan</option>
                     <option value="kepegawaian">Kepegawaian</option>
                 </select>
+
+                <div id="fieldNamaPegawai" class="hidden">
+                    <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Nama Pegawai:</div>
+                    <input type="text" id="inEmployeeName" placeholder="Contoh: Bpk. Yohanes, S.Pd" class="w-full p-3 border border-blue-200 rounded-lg outline-none focus:border-blue-500 bg-blue-50">
+                </div>
+
+                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Judul Dokumen:</div>
+                <input type="text" id="inTitle" placeholder="Contoh: SK Pengangkatan Guru" class="w-full p-3 border rounded-lg outline-none focus:border-blue-500">
+                
+                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Tanggal Dokumen:</div>
                 <input type="text" id="inDate" placeholder="Contoh: 15 Mei 2026" class="w-full p-3 border rounded-lg outline-none">
-                <input type="text" id="inLink" placeholder="Link Google Drive" class="w-full p-3 border rounded-lg outline-none">
+                
+                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Link Google Drive:</div>
+                <input type="text" id="inLink" placeholder="Tempel link di sini" class="w-full p-3 border rounded-lg outline-none">
             </div>
             <div class="mt-6 flex gap-3">
                 <button onclick="tutupModal()" class="flex-1 py-3 text-gray-500 font-bold">Batal</button>
@@ -92,12 +115,12 @@
         const auth = getAuth(app);
         let dataSemua = [];
         let kategoriSekarang = 'surat-masuk';
+        let filterNama = '';
 
-        // Login & Ambil Data
         async function start() {
             await signInAnonymously(auth);
             onSnapshot(query(collection(db, 'arsip')), (snap) => {
-                dataSemua = snap.docs.map(doc => doc.data());
+                dataSemua = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 render();
                 document.getElementById('status').innerText = "ONLINE";
                 document.getElementById('status').className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase";
@@ -105,26 +128,90 @@
         }
 
         function render() {
-            const filtered = dataSemua.filter(i => i.category === kategoriSekarang);
-            document.getElementById('isi-tabel').innerHTML = filtered.length ? filtered.map(i => `
-                <tr class="border-b hover:bg-blue-50">
-                    <td class="p-4 text-xs text-gray-500">${i.date || '-'}</td>
-                    <td class="p-4 text-sm font-semibold">${i.title}</td>
-                    <td class="p-4 text-center"><a href="${i.link}" target="_blank" class="text-blue-600"><i class="fab fa-google-drive"></i></a></td>
-                </tr>`).join('') : '<tr><td colspan="3" class="p-10 text-center text-gray-400">Belum ada data.</td></tr>';
+            const isPegawai = kategoriSekarang === 'kepegawaian';
+            const headTabel = document.getElementById('head-tabel');
+            const searchContainer = document.getElementById('search-container');
+            const tabelBody = document.getElementById('isi-tabel');
+            
+            searchContainer.className = isPegawai ? 'block mb-4' : 'hidden';
+
+            // 1. Render Header
+            headTabel.innerHTML = isPegawai ? 
+                `<th class="p-4 border-b">Nama Pegawai / Dokumen</th><th class="p-4 border-b">Tanggal</th><th class="p-4 border-b text-center">Buka</th>` : 
+                `<th class="p-4 border-b">Tanggal</th><th class="p-4 border-b">Judul Dokumen</th><th class="p-4 border-b text-center">Buka</th>`;
+
+            // 2. Filter Data Awal
+            let filtered = dataSemua.filter(i => i.category === kategoriSekarang);
+
+            if (!isPegawai) {
+                // Tampilan Standar
+                tabelBody.innerHTML = filtered.length ? filtered.map(i => `
+                    <tr class="border-b hover:bg-blue-50 transition-all">
+                        <td class="p-4 text-xs text-gray-500">${i.date || '-'}</td>
+                        <td class="p-4 text-sm font-semibold">${i.title}</td>
+                        <td class="p-4 text-center"><a href="${i.link}" target="_blank" class="text-blue-600"><i class="fab fa-google-drive"></i></a></td>
+                    </tr>`).join('') : '<tr><td colspan="3" class="p-10 text-center text-gray-400">Belum ada data.</td></tr>';
+            } else {
+                // LOGIKA GROUPING UNTUK KEPEGAWAIAN
+                if (filterNama) {
+                    filtered = filtered.filter(i => (i.employeeName || '').toLowerCase().includes(filterNama.toLowerCase()));
+                }
+
+                // Kelompokkan data berdasarkan nama
+                const groups = {};
+                filtered.forEach(item => {
+                    const name = item.employeeName || "Tanpa Nama";
+                    if (!groups[name]) groups[name] = [];
+                    groups[name].push(item);
+                });
+
+                let htmlContent = '';
+                const sortedNames = Object.keys(groups).sort();
+
+                if (sortedNames.length === 0) {
+                    htmlContent = '<tr><td colspan="3" class="p-10 text-center text-gray-400">Data tidak ditemukan.</td></tr>';
+                } else {
+                    sortedNames.forEach(name => {
+                        // Header Baris Nama Pegawai
+                        htmlContent += `
+                            <tr class="group-header">
+                                <td colspan="3" class="p-3 pl-4 border-b text-sm uppercase tracking-wider bg-blue-50 text-blue-900 font-bold">
+                                    <i class="fas fa-user-tie mr-2"></i> ${name} (${groups[name].length} Dokumen)
+                                </td>
+                            </tr>
+                        `;
+                        // Sub-baris Dokumen
+                        groups[name].forEach(doc => {
+                            htmlContent += `
+                                <tr class="border-b hover:bg-white bg-white">
+                                    <td class="p-4 pl-10 text-sm font-medium text-gray-700">
+                                        <i class="far fa-file-alt mr-2 text-gray-400"></i> ${doc.title}
+                                    </td>
+                                    <td class="p-4 text-xs text-gray-500">${doc.date || '-'}</td>
+                                    <td class="p-4 text-center">
+                                        <a href="${doc.link}" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                                            <i class="fab fa-google-drive"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    });
+                }
+                tabelBody.innerHTML = htmlContent;
+            }
         }
 
-        // Fungsi Simpan Data Baru
         document.getElementById('btnSimpan').onclick = async () => {
             const pass = document.getElementById('adminPass').value;
-            // GANTI PASSWORD DI BAWAH INI SESUAI KEINGINAN ANDA
             if(pass !== "admin123") return alert("Password Salah!");
 
             const docBaru = {
                 title: document.getElementById('inTitle').value,
                 category: document.getElementById('inCat').value,
                 date: document.getElementById('inDate').value,
-                link: document.getElementById('inLink').value
+                link: document.getElementById('inLink').value,
+                employeeName: document.getElementById('inEmployeeName').value || ''
             };
 
             if(!docBaru.title || !docBaru.link) return alert("Judul dan Link wajib diisi!");
@@ -133,10 +220,28 @@
                 await addDoc(collection(db, 'arsip'), docBaru);
                 alert("Berhasil disimpan!");
                 tutupModal();
+                document.getElementById('inTitle').value = "";
+                document.getElementById('inEmployeeName').value = "";
+                document.getElementById('inDate').value = "";
+                document.getElementById('inLink').value = "";
             } catch (e) { alert("Gagal: " + e.message); }
         };
 
-        window.bukaModal = () => document.getElementById('modalInput').classList.remove('hidden');
+        document.getElementById('searchName').oninput = (e) => {
+            filterNama = e.target.value;
+            render();
+        };
+
+        window.toggleNamaField = () => {
+            const cat = document.getElementById('inCat').value;
+            document.getElementById('fieldNamaPegawai').className = (cat === 'kepegawaian') ? 'block' : 'hidden';
+        };
+
+        window.bukaModal = () => {
+            document.getElementById('modalInput').classList.remove('hidden');
+            toggleNamaField();
+        };
+        
         window.tutupModal = () => document.getElementById('modalInput').classList.add('hidden');
         
         document.getElementById('menu-tab').onclick = (e) => {
@@ -145,6 +250,8 @@
             document.querySelectorAll('.btn-tab').forEach(x => x.classList.replace('tab-aktif', 'bg-white'));
             b.classList.add('tab-aktif');
             kategoriSekarang = b.dataset.cat;
+            filterNama = '';
+            document.getElementById('searchName').value = '';
             render();
         };
 

@@ -3,95 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARSIP DIGITAL - FRATER MAMASA</title>
+    <title>ARSIP DIGITAL - TATA USAHA SMP FRATER MAMASA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; background: #f3f4f6; }
-        .tab-aktif { background: #1e3a8a !important; color: white !important; }
+        body { 
+            font-family: sans-serif; 
+            margin: 0;
+            min-height: 100vh;
+            background-color: #0f172a;
+        }
+
+        /* Latar Belakang Gambar Sekolah - Diperjelas */
+        .bg-sekolah {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Overlay dikurangi dari 0.82 menjadi 0.5 untuk memperjelas gambar */
+            background-image: linear-gradient(rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.5)), 
+                              url('https://lh3.googleusercontent.com/u/0/d/1yLTwIT6zhF9PcyTau-Sos5K7Sh6b4-NN=w1600');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .tab-aktif { background: #1e3a8a !important; color: white !important; border-color: #3b82f6 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .group-header { background-color: #f1f5f9; font-weight: bold; color: #1e3a8a; }
+        .group-header { background-color: rgba(241, 245, 249, 0.98); font-weight: bold; color: #1e3a8a; }
+        
+        /* Efek kartu glassmorphism diperkuat kontrasnya */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .nav-glass {
+            background: rgba(30, 58, 138, 0.92);
+            backdrop-filter: blur(10px);
+        }
+
+        .text-shadow {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
     </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="pb-20">
 
-    <nav class="bg-blue-900 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <i class="fas fa-archive text-blue-300"></i>
-            <h1 class="font-bold tracking-tight text-sm uppercase">Arsip Digital SMP Frater</h1>
+    <!-- Elemen Background Sekolah -->
+    <div class="bg-sekolah"></div>
+
+    <nav class="nav-glass text-white p-4 shadow-xl flex justify-between items-center sticky top-0 z-50 border-b border-blue-700/50">
+        <div class="flex items-center gap-3">
+            <!-- Logo Sekolah BARU -->
+            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden border-2 border-blue-400 shadow-md">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB=s100" 
+                     alt="Logo Sekolah" 
+                     class="w-full h-full object-contain"
+                     onerror="this.src='https://docs.google.com/uc?export=download&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'">
+            </div>
+            
+            <div class="flex flex-col leading-tight">
+                <h1 class="font-bold tracking-tight text-xs uppercase text-blue-50 text-shadow">Arsip Digital Tata Usaha</h1>
+                <h2 class="font-extrabold tracking-widest text-[10px] text-blue-300 uppercase text-shadow">SMP Frater Mamasa</h2>
+            </div>
         </div>
-        <div id="status" class="text-[9px] font-bold bg-orange-500 px-2 py-1 rounded-full uppercase">MENGHUBUNGKAN...</div>
+        <div id="status" class="text-[9px] font-bold bg-orange-500 px-2 py-1 rounded-full uppercase shadow-sm">MENGHUBUNGKAN...</div>
     </nav>
 
     <div class="max-w-4xl mx-auto p-4">
         <!-- Filter Kategori -->
-        <div class="flex flex-nowrap overflow-x-auto gap-2 mb-4 pb-2 no-scrollbar" id="menu-tab">
-            <button data-cat="surat-masuk" class="btn-tab tab-aktif whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-transparent">Surat Masuk</button>
-            <button data-cat="surat-keluar" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keluar</button>
-            <button data-cat="sk" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keputusan</button>
-            <button data-cat="kepegawaian" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Kepegawaian</button>
+        <div class="flex flex-nowrap overflow-x-auto gap-2 mb-6 pb-2 no-scrollbar" id="menu-tab">
+            <button data-cat="surat-masuk" class="btn-tab tab-aktif whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-lg border-2 border-transparent transition-all">Surat Masuk</button>
+            <button data-cat="surat-keluar" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Keluar</button>
+            <button data-cat="sk" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Keputusan</button>
+            <button data-cat="kepegawaian" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Kepegawaian</button>
         </div>
 
         <!-- Fitur Pencarian -->
-        <div id="search-container" class="hidden mb-4">
+        <div id="search-container" class="hidden mb-6">
             <div class="relative">
-                <i class="fas fa-search absolute left-3 top-3.5 text-gray-400"></i>
-                <input type="text" id="searchName" placeholder="Cari Nama Pegawai..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                <input type="text" id="searchName" placeholder="Cari Nama Pegawai..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-2xl focus:ring-4 focus:ring-blue-500/50 outline-none glass-card font-medium text-gray-800">
             </div>
         </div>
 
-        <!-- Tabel -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 tracking-wider">
-                    <tr id="head-tabel">
-                        <!-- Head dinamis -->
-                    </tr>
-                </thead>
-                <tbody id="isi-tabel"></tbody>
-            </table>
+        <!-- Tabel Container -->
+        <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-600 tracking-widest border-b border-gray-200">
+                        <tr id="head-tabel"></tr>
+                    </thead>
+                    <tbody id="isi-tabel"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <!-- Tombol Tambah -->
-    <button onclick="bukaModal()" class="fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-700 transition-all">
+    <button onclick="bukaModal()" class="fixed bottom-8 right-8 bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
         <i class="fas fa-plus fa-lg"></i>
     </button>
 
     <!-- Modal Form Input -->
-    <div id="modalInput" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-                <i class="fas fa-file-upload text-blue-600"></i> Tambah Arsip Baru
-            </h2>
-            <div class="space-y-3 text-sm">
-                <input type="password" id="adminPass" placeholder="Password Admin" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                <hr>
-                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Pilih Kategori:</div>
-                <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 border rounded-lg outline-none bg-gray-50 font-bold text-blue-800">
-                    <option value="surat-masuk">Surat Masuk</option>
-                    <option value="surat-keluar">Surat Keluar</option>
-                    <option value="sk">Surat Keputusan</option>
-                    <option value="kepegawaian">Kepegawaian</option>
-                </select>
-
-                <div id="fieldNamaPegawai" class="hidden">
-                    <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Nama Pegawai:</div>
-                    <input type="text" id="inEmployeeName" placeholder="Contoh: Bpk. Yohanes, S.Pd" class="w-full p-3 border border-blue-200 rounded-lg outline-none focus:border-blue-500 bg-blue-50">
-                </div>
-
-                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Judul Dokumen:</div>
-                <input type="text" id="inTitle" placeholder="Contoh: SK Pengangkatan Guru" class="w-full p-3 border rounded-lg outline-none focus:border-blue-500">
-                
-                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Tanggal Dokumen:</div>
-                <input type="text" id="inDate" placeholder="Contoh: 15 Mei 2026" class="w-full p-3 border rounded-lg outline-none">
-                
-                <div class="font-bold text-gray-600 mb-1 text-xs uppercase">Link Google Drive:</div>
-                <input type="text" id="inLink" placeholder="Tempel link di sini" class="w-full p-3 border rounded-lg outline-none">
+    <div id="modalInput" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-black text-blue-900 flex items-center gap-3">
+                    <i class="fas fa-folder-plus text-blue-600"></i> Tambah Arsip
+                </h2>
+                <button onclick="tutupModal()" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-times fa-lg"></i></button>
             </div>
-            <div class="mt-6 flex gap-3">
-                <button onclick="tutupModal()" class="flex-1 py-3 text-gray-500 font-bold">Batal</button>
-                <button id="btnSimpan" class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg">Simpan Ke Cloud</button>
+            <div class="space-y-4 text-sm">
+                <div>
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Password Keamanan</label>
+                    <input type="password" id="adminPass" placeholder="Admin Only" class="w-full p-4 mt-1 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none transition-all">
+                </div>
+                <hr>
+                <div>
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
+                    <select id="inCat" onchange="toggleNamaField()" class="w-full p-4 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-blue-50 font-bold text-blue-800">
+                        <option value="surat-masuk">Surat Masuk</option>
+                        <option value="surat-keluar">Surat Keluar</option>
+                        <option value="sk">Surat Keputusan</option>
+                        <option value="kepegawaian">Kepegawaian</option>
+                    </select>
+                </div>
+                <div id="fieldNamaPegawai" class="hidden">
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1 text-blue-600">Nama Pegawai</label>
+                    <input type="text" id="inEmployeeName" placeholder="Nama Lengkap & Gelar" class="w-full p-4 mt-1 border-2 border-blue-200 rounded-xl outline-none focus:border-blue-500 bg-blue-50 font-bold">
+                </div>
+                <div>
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Judul Dokumen</label>
+                    <input type="text" id="inTitle" placeholder="Misal: SK Pembagian Tugas Ganjil" class="w-full p-4 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Tanggal</label>
+                    <input type="text" id="inDate" placeholder="Misal: 15 Agustus 2024" class="w-full p-4 mt-1 border-2 border-gray-100 rounded-xl outline-none">
+                </div>
+                <div>
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Link File Drive</label>
+                    <input type="text" id="inLink" placeholder="Tempel Link Shareable" class="w-full p-4 mt-1 border-2 border-gray-100 rounded-xl outline-none">
+                </div>
+            </div>
+            <div class="mt-8">
+                <button id="btnSimpan" class="w-full py-4 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-200 hover:bg-blue-700 active:scale-95 transition-all">
+                    SIMPAN DATA KE CLOUD
+                </button>
             </div>
         </div>
     </div>
@@ -122,28 +185,18 @@
             onSnapshot(query(collection(db, 'arsip')), (snap) => {
                 dataSemua = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 render();
-                document.getElementById('status').innerText = "ONLINE";
-                document.getElementById('status').className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase";
+                const statusEl = document.getElementById('status');
+                statusEl.innerText = "ONLINE";
+                statusEl.className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase shadow-sm";
             });
         }
 
-        // Fungsi Hapus Dokumen
         window.hapusDokumen = async (id, title) => {
             const pass = prompt(`Ketik password admin untuk menghapus "${title}":`);
-            if (pass === null) return; // User cancel
-            
-            if (pass !== "admin123") {
-                alert("Password Salah! Anda tidak memiliki izin untuk menghapus.");
-                return;
-            }
-
-            if (confirm(`Apakah Anda yakin ingin menghapus dokumen "${title}" secara permanen?`)) {
-                try {
-                    await deleteDoc(doc(db, 'arsip', id));
-                    alert("Dokumen berhasil dihapus!");
-                } catch (e) {
-                    alert("Gagal menghapus: " + e.message);
-                }
+            if (pass !== "admin123") return pass === null ? null : alert("Akses Ditolak!");
+            if (confirm(`Hapus permanen arsip ini?`)) {
+                try { await deleteDoc(doc(db, 'arsip', id)); } 
+                catch (e) { alert("Error: " + e.message); }
             }
         };
 
@@ -153,91 +206,72 @@
             const searchContainer = document.getElementById('search-container');
             const tabelBody = document.getElementById('isi-tabel');
             
-            searchContainer.className = isPegawai ? 'block mb-4' : 'hidden';
+            searchContainer.className = isPegawai ? 'block mb-6' : 'hidden';
 
-            // 1. Render Header
             headTabel.innerHTML = isPegawai ? 
-                `<th class="p-4 border-b">Nama Pegawai / Dokumen</th><th class="p-4 border-b">Tanggal</th><th class="p-4 border-b text-center">Aksi</th>` : 
-                `<th class="p-4 border-b">Tanggal</th><th class="p-4 border-b">Judul Dokumen</th><th class="p-4 border-b text-center">Aksi</th>`;
+                `<th class="p-5 border-b">Detail Berkas</th><th class="p-5 border-b">Tgl</th><th class="p-5 border-b text-center">Aksi</th>` : 
+                `<th class="p-5 border-b">Tgl</th><th class="p-5 border-b">Nama Dokumen</th><th class="p-5 border-b text-center">Aksi</th>`;
 
-            // 2. Filter Data Awal
             let filtered = dataSemua.filter(i => i.category === kategoriSekarang);
 
             if (!isPegawai) {
-                // Tampilan Standar
                 tabelBody.innerHTML = filtered.length ? filtered.map(i => `
-                    <tr class="border-b hover:bg-blue-50 transition-all">
-                        <td class="p-4 text-xs text-gray-500">${i.date || '-'}</td>
-                        <td class="p-4 text-sm font-semibold">${i.title}</td>
-                        <td class="p-4 text-center">
-                            <div class="flex justify-center gap-3">
-                                <a href="${i.link}" target="_blank" class="text-blue-600 hover:scale-110 transition-transform"><i class="fab fa-google-drive fa-lg"></i></a>
-                                <button onclick="hapusDokumen('${i.id}', '${i.title}')" class="text-red-500 hover:scale-110 transition-transform">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
+                    <tr class="border-b border-gray-100 hover:bg-blue-50/70 transition-all">
+                        <td class="p-5 text-xs text-gray-500 font-bold uppercase tracking-tighter">${i.date || '-'}</td>
+                        <td class="p-5 text-sm font-bold text-gray-800">${i.title}</td>
+                        <td class="p-5 text-center">
+                            <div class="flex justify-center gap-5">
+                                <a href="${i.link}" target="_blank" class="text-blue-600 hover:scale-125 transition-transform"><i class="fab fa-google-drive fa-lg"></i></a>
+                                <button onclick="hapusDokumen('${i.id}', '${i.title}')" class="text-red-300 hover:text-red-600 transition-colors"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </td>
-                    </tr>`).join('') : '<tr><td colspan="3" class="p-10 text-center text-gray-400">Belum ada data.</td></tr>';
+                    </tr>`).join('') : '<tr><td colspan="3" class="p-20 text-center text-gray-400 italic font-medium">Belum ada arsip di kategori ini.</td></tr>';
             } else {
-                // LOGIKA GROUPING UNTUK KEPEGAWAIAN
-                if (filterNama) {
-                    filtered = filtered.filter(i => (i.employeeName || '').toLowerCase().includes(filterNama.toLowerCase()));
-                }
-
-                // Kelompokkan data berdasarkan nama
+                if (filterNama) filtered = filtered.filter(i => (i.employeeName || '').toLowerCase().includes(filterNama.toLowerCase()));
                 const groups = {};
                 filtered.forEach(item => {
-                    const name = item.employeeName || "Tanpa Nama";
+                    const name = item.employeeName || "Pegawai Umum";
                     if (!groups[name]) groups[name] = [];
                     groups[name].push(item);
                 });
 
                 let htmlContent = '';
-                const sortedNames = Object.keys(groups).sort();
-
-                if (sortedNames.length === 0) {
-                    htmlContent = '<tr><td colspan="3" class="p-10 text-center text-gray-400">Data tidak ditemukan.</td></tr>';
-                } else {
-                    sortedNames.forEach(name => {
-                        // Header Baris Nama Pegawai
+                Object.keys(groups).sort().forEach(name => {
+                    htmlContent += `
+                        <tr class="group-header">
+                            <td colspan="3" class="p-4 pl-6 border-b text-[11px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm">
+                                <i class="fas fa-id-card mr-2 text-blue-600"></i> ${name}
+                            </td>
+                        </tr>
+                    `;
+                    groups[name].forEach(doc => {
                         htmlContent += `
-                            <tr class="group-header">
-                                <td colspan="3" class="p-3 pl-4 border-b text-sm uppercase tracking-wider bg-blue-50 text-blue-900 font-bold">
-                                    <i class="fas fa-user-tie mr-2"></i> ${name} (${groups[name].length} Dokumen)
+                            <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white/95">
+                                <td class="p-5 pl-10 text-sm font-bold text-gray-700">
+                                    <i class="far fa-file-pdf mr-3 text-red-500"></i> ${doc.title}
+                                </td>
+                                <td class="p-5 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">${doc.date || '-'}</td>
+                                <td class="p-5 text-center">
+                                    <div class="flex justify-center gap-4">
+                                        <a href="${doc.link}" target="_blank" class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm">
+                                            <i class="fab fa-google-drive"></i>
+                                        </a>
+                                        <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         `;
-                        // Sub-baris Dokumen
-                        groups[name].forEach(doc => {
-                            htmlContent += `
-                                <tr class="border-b hover:bg-white bg-white">
-                                    <td class="p-4 pl-10 text-sm font-medium text-gray-700">
-                                        <i class="far fa-file-alt mr-2 text-gray-400"></i> ${doc.title}
-                                    </td>
-                                    <td class="p-4 text-xs text-gray-500">${doc.date || '-'}</td>
-                                    <td class="p-4 text-center">
-                                        <div class="flex justify-center gap-3">
-                                            <a href="${doc.link}" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                                                <i class="fab fa-google-drive"></i>
-                                            </a>
-                                            <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
-                        });
                     });
-                }
-                tabelBody.innerHTML = htmlContent;
+                });
+                tabelBody.innerHTML = htmlContent || '<tr><td colspan="3" class="p-20 text-center text-gray-400 font-medium">Data tidak ditemukan.</td></tr>';
             }
         }
 
         document.getElementById('btnSimpan').onclick = async () => {
             const pass = document.getElementById('adminPass').value;
             if(pass !== "admin123") return alert("Password Salah!");
-
             const docBaru = {
                 title: document.getElementById('inTitle').value,
                 category: document.getElementById('inCat').value,
@@ -245,18 +279,12 @@
                 link: document.getElementById('inLink').value,
                 employeeName: document.getElementById('inEmployeeName').value || ''
             };
-
-            if(!docBaru.title || !docBaru.link) return alert("Judul dan Link wajib diisi!");
-
+            if(!docBaru.title || !docBaru.link) return alert("Data belum lengkap!");
             try {
                 await addDoc(collection(db, 'arsip'), docBaru);
-                alert("Berhasil disimpan!");
                 tutupModal();
-                document.getElementById('inTitle').value = "";
-                document.getElementById('inEmployeeName').value = "";
-                document.getElementById('inDate').value = "";
-                document.getElementById('inLink').value = "";
-            } catch (e) { alert("Gagal: " + e.message); }
+                document.querySelectorAll('#modalInput input:not([type=password])').forEach(el => el.value = "");
+            } catch (e) { alert("Gagal Simpan: " + e.message); }
         };
 
         document.getElementById('searchName').oninput = (e) => {
@@ -269,18 +297,18 @@
             document.getElementById('fieldNamaPegawai').className = (cat === 'kepegawaian') ? 'block' : 'hidden';
         };
 
-        window.bukaModal = () => {
-            document.getElementById('modalInput').classList.remove('hidden');
-            toggleNamaField();
-        };
-        
+        window.bukaModal = () => document.getElementById('modalInput').classList.remove('hidden');
         window.tutupModal = () => document.getElementById('modalInput').classList.add('hidden');
         
         document.getElementById('menu-tab').onclick = (e) => {
             const b = e.target.closest('.btn-tab');
             if(!b) return;
-            document.querySelectorAll('.btn-tab').forEach(x => x.classList.replace('tab-aktif', 'bg-white'));
+            document.querySelectorAll('.btn-tab').forEach(x => { 
+                x.classList.remove('tab-aktif'); 
+                x.classList.add('bg-white'); 
+            });
             b.classList.add('tab-aktif');
+            b.classList.remove('bg-white');
             kategoriSekarang = b.dataset.cat;
             filterNama = '';
             document.getElementById('searchName').value = '';

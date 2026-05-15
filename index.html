@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARSIP DIGITAL - FRATER MAMASA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/all/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body { 
@@ -80,19 +80,15 @@
         import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        // ------------------------------------------------------------
-        // GANTI BAGIAN INI DENGAN DATA DARI FIREBASE CONSOLE ANDA
-        // ------------------------------------------------------------
         const firebaseConfig = {
-  apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
-  authDomain: "arsip-digital-baru.firebaseapp.com",
-  projectId: "arsip-digital-baru",
-  storageBucket: "arsip-digital-baru.firebasestorage.app",
-  messagingSenderId: "789604072965",
-  appId: "1:789604072965:web:42a2c6be8ac330010a666c",
-  measurementId: "G-CQ3L8M96DX"
-};
-        // ------------------------------------------------------------
+            apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
+            authDomain: "arsip-digital-baru.firebaseapp.com",
+            projectId: "arsip-digital-baru",
+            storageBucket: "arsip-digital-baru.appspot.com", // Disederhanakan agar lebih stabil
+            messagingSenderId: "789604072965",
+            appId: "1:789604072965:web:42a2c6be8ac330010a666c",
+            measurementId: "G-CQ3L8M96DX"
+        };
 
         const statusEl = document.getElementById('status');
         const errorDisplay = document.getElementById('error-display');
@@ -130,21 +126,13 @@
         }
 
         async function initApp() {
-            // Cek apakah config sudah diisi
-            if (firebaseConfig.apiKey.includes("MASUKKAN_")) {
-                showError("Firebase Config belum diisi. Silakan lengkapi di dalam file HTML ini.");
-                return;
-            }
-
             try {
                 const app = initializeApp(firebaseConfig);
                 const db = getFirestore(app);
                 const auth = getAuth(app);
 
-                // Login sebagai pengunjung tanpa akun
                 await signInAnonymously(auth);
                 
-                // Ambil data secara realtime dari koleksi 'arsip'
                 const q = query(collection(db, 'arsip'));
                 onSnapshot(q, (snapshot) => {
                     dataSemua = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -160,10 +148,8 @@
             }
         }
 
-        // Jalankan aplikasi
         initApp();
 
-        // Navigasi Filter Klik
         document.getElementById('menu-tab').addEventListener('click', (e) => {
             const btn = e.target.closest('.btn-tab');
             if (!btn) return;

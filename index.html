@@ -31,7 +31,14 @@
 
         .tab-aktif { background: #1e3a8a !important; color: white !important; border-color: #3b82f6 !important; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .group-header { background-color: rgba(241, 245, 249, 0.98); font-weight: bold; color: #1e3a8a; }
+        
+        /* Grup Header Styling */
+        .group-header { 
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+        .group-header:hover { background-color: rgba(219, 234, 254, 0.95); }
         
         .glass-card {
             background: rgba(255, 255, 255, 0.98);
@@ -46,7 +53,7 @@
         }
 
         .text-shadow {
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
         }
 
         /* Gaya judul yang dapat diklik */
@@ -58,57 +65,115 @@
             color: #2563eb;
             text-decoration: underline;
         }
+
+        /* Animasi Rotasi Panah */
+        .chevron-icon {
+            transition: transform 0.3s ease;
+        }
+        .rotated {
+            transform: rotate(-90deg);
+        }
+        .hidden-row {
+            display: none;
+        }
     </style>
 </head>
 <body class="pb-20">
 
     <div class="bg-sekolah"></div>
 
-    <nav class="nav-glass text-white p-4 shadow-xl flex justify-between items-center sticky top-0 z-50 border-b border-blue-700/50">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden border-2 border-blue-400 shadow-md">
+    <nav class="nav-glass text-white p-6 shadow-xl sticky top-0 z-50 border-b border-blue-700/50">
+        <div class="max-w-4xl mx-auto flex flex-col items-center justify-center gap-4 text-center">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center overflow-hidden border-4 border-blue-400 shadow-2xl">
                 <img src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB=s100" 
                      alt="Logo Sekolah" 
                      class="w-full h-full object-contain"
                      onerror="this.src='https://docs.google.com/uc?export=download&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'">
             </div>
             
-            <div class="flex flex-col leading-tight">
-                <h1 class="font-bold tracking-tight text-xs uppercase text-blue-50 text-shadow">Arsip Digital Tata Usaha</h1>
-                <h2 class="font-extrabold tracking-widest text-[10px] text-blue-300 uppercase text-shadow">SMP Frater Mamasa</h2>
+            <div class="flex flex-col gap-1">
+                <h1 class="font-black tracking-tight text-lg md:text-2xl uppercase text-white text-shadow">Arsip Digital Tata Usaha</h1>
+                <h2 class="font-extrabold tracking-widest text-sm md:text-base text-blue-300 uppercase text-shadow">SMP Frater Mamasa</h2>
             </div>
+            
+            <div id="status" class="absolute top-4 right-4 text-[9px] font-bold bg-orange-500 px-3 py-1 rounded-full uppercase shadow-lg">MENGHUBUNGKAN...</div>
         </div>
-        <div id="status" class="text-[9px] font-bold bg-orange-500 px-2 py-1 rounded-full uppercase shadow-sm">MENGHUBUNGKAN...</div>
     </nav>
 
     <div class="max-w-4xl mx-auto p-4">
         <div class="flex flex-nowrap overflow-x-auto gap-2 mb-6 pb-2 no-scrollbar" id="menu-tab">
-            <button data-cat="surat-masuk" class="btn-tab tab-aktif whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-lg border-2 border-transparent transition-all">Surat Masuk</button>
+            <button data-cat="beranda" class="btn-tab tab-aktif whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-lg border-2 border-transparent transition-all">Beranda</button>
+            <button data-cat="surat-masuk" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Masuk</button>
             <button data-cat="surat-keluar" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Keluar</button>
             <button data-cat="sk" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Keputusan</button>
             <button data-cat="kepegawaian" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Kepegawaian</button>
             <button data-cat="absen" class="btn-tab bg-white whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Rekap Absen Pegawai</button>
         </div>
 
-        <div id="search-container" class="mb-6">
-            <div class="relative">
-                <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
-                <input type="text" id="searchTerm" placeholder="Cari arsip atau nama..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-2xl focus:ring-4 focus:ring-blue-500/50 outline-none glass-card font-medium text-gray-800">
+        <!-- Section Beranda -->
+        <div id="section-beranda" class="glass-card rounded-3xl p-8 mb-6 animate-fade-in">
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-black text-blue-900 mb-2 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
+                <div class="h-1 w-20 bg-blue-600 mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 text-gray-700 leading-relaxed">
+                <div class="space-y-4">
+                    <p class="font-medium italic text-blue-600">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
+                    <p>Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan **SMP Frater Mamasa**.</p>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-check-circle mt-1 text-green-500"></i>
+                            <span>Penyimpanan aman berbasis Cloud.</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-check-circle mt-1 text-green-500"></i>
+                            <span>Pencarian dokumen instan dan cepat.</span>
+                        </li>
+                        <li class="flex items-start gap-2 text-sm">
+                            <i class="fas fa-check-circle mt-1 text-green-500"></i>
+                            <span>Akses dokumen kapan saja dan di mana saja.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 flex flex-col justify-center text-center shadow-inner">
+                    <h4 class="font-black text-blue-900 mb-3 text-sm md:text-base leading-snug uppercase">
+                        TATA USAHA SMP FRATER MAMASA
+                    </h4>
+                    <p class="text-sm mb-4">
+                        Kami hadir untuk melayani Anda dengan 
+                        <span class="text-blue-700 font-bold">PRIMA</span> 
+                        <span class="text-xs block text-gray-500 mt-1 italic">(Profesional, Responsif, Inovatif, Mutu, Akuntabel)</span>.
+                    </p>
+                    <p class="text-xs font-semibold text-gray-600 bg-white/50 p-3 rounded-xl">
+                        Sampaikan kebutuhan administrasi Anda, kami siap membantu dengan ketulusan hati.
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-600 tracking-widest border-b border-gray-200">
-                        <tr id="head-tabel">
-                            <th class="p-5 border-b">Detail Berkas (Klik Judul untuk Buka)</th>
-                            <th class="p-5 border-b">Tgl</th>
-                            <th class="p-5 border-b text-center">Hapus</th>
-                        </tr>
-                    </thead>
-                    <tbody id="isi-tabel"></tbody>
-                </table>
+        <!-- Section Tabel (Hidden by default when home) -->
+        <div id="section-data" class="hidden">
+            <div id="search-container" class="mb-6">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                    <input type="text" id="searchTerm" placeholder="Cari arsip atau nama..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-2xl focus:ring-4 focus:ring-blue-500/50 outline-none glass-card font-medium text-gray-800">
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-600 tracking-widest border-b border-gray-200">
+                            <tr id="head-tabel">
+                                <th class="p-5 border-b">Detail Berkas (Klik Judul untuk Buka)</th>
+                                <th class="p-5 border-b">Tgl</th>
+                                <th class="p-5 border-b text-center">Hapus</th>
+                            </tr>
+                        </thead>
+                        <tbody id="isi-tabel"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -117,6 +182,7 @@
         <i class="fas fa-plus fa-lg"></i>
     </button>
 
+    <!-- Modal Input -->
     <div id="modalInput" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl w-full max-w-md p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6">
@@ -184,8 +250,9 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         let dataSemua = [];
-        let kategoriSekarang = 'surat-masuk';
+        let kategoriSekarang = 'beranda';
         let filterKata = '';
+        let openGroups = new Set(); 
 
         async function start() {
             await signInAnonymously(auth);
@@ -194,7 +261,7 @@
                 render();
                 const statusEl = document.getElementById('status');
                 statusEl.innerText = "ONLINE";
-                statusEl.className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase shadow-sm";
+                statusEl.className = "text-[9px] font-bold bg-green-500 px-3 py-1 rounded-full uppercase shadow-lg";
             });
         }
 
@@ -207,8 +274,29 @@
             }
         };
 
+        window.toggleGroup = (groupName) => {
+            if (openGroups.has(groupName)) {
+                openGroups.delete(groupName);
+            } else {
+                openGroups.add(groupName);
+            }
+            render();
+        };
+
         function render() {
             const tabelBody = document.getElementById('isi-tabel');
+            const secBeranda = document.getElementById('section-beranda');
+            const secData = document.getElementById('section-data');
+
+            if (kategoriSekarang === 'beranda') {
+                secBeranda.classList.remove('hidden');
+                secData.classList.add('hidden');
+                return;
+            } else {
+                secBeranda.classList.add('hidden');
+                secData.classList.remove('hidden');
+            }
+
             let filtered = dataSemua.filter(i => i.category === kategoriSekarang);
 
             if (filterKata) {
@@ -240,33 +328,42 @@
             const sortedGroups = Object.keys(groups).sort().reverse();
 
             sortedGroups.forEach(group => {
+                const isOpen = openGroups.has(group) || filterKata !== ''; 
+
                 htmlContent += `
-                    <tr class="group-header">
-                        <td colspan="3" class="p-4 pl-6 border-b text-[11px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm">
-                            <i class="${(kategoriSekarang === 'kepegawaian' || kategoriSekarang === 'absen') ? 'fas fa-id-card' : 'fas fa-calendar-alt'} mr-2 text-blue-600"></i> ${group}
+                    <tr class="group-header" onclick="toggleGroup('${group}')">
+                        <td colspan="3" class="p-4 pl-6 border-b text-[11px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm flex items-center justify-between">
+                            <span class="flex items-center">
+                                <i class="${(kategoriSekarang === 'kepegawaian' || kategoriSekarang === 'absen') ? 'fas fa-id-card' : 'fas fa-calendar-alt'} mr-3 text-blue-600"></i> ${group}
+                                <span class="ml-3 bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full text-[9px]">${groups[group].length} Berkas</span>
+                            </span>
+                            <i class="fas fa-chevron-down chevron-icon ${!isOpen ? 'rotated' : ''} text-blue-400"></i>
                         </td>
                     </tr>
                 `;
-                groups[group].forEach(doc => {
-                    htmlContent += `
-                        <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white/95 transition-all">
-                            <td class="p-5 pl-10">
-                                <a href="${doc.link}" target="_blank" class="judul-link block">
-                                    <div class="text-sm font-bold text-gray-700 underline-offset-4 decoration-blue-400">
-                                        <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
-                                    </div>
-                                    ${doc.employeeName ? `<div class="text-[10px] text-blue-500 font-semibold mt-0.5 ml-6">${doc.employeeName}</div>` : ''}
-                                </a>
-                            </td>
-                            <td class="p-5 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">${doc.date || '-'}</td>
-                            <td class="p-5 text-center">
-                                <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                
+                if (isOpen) {
+                    groups[group].forEach(doc => {
+                        htmlContent += `
+                            <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white/95 transition-all">
+                                <td class="p-5 pl-12">
+                                    <a href="${doc.link}" target="_blank" class="judul-link block">
+                                        <div class="text-sm font-bold text-gray-700 underline-offset-4 decoration-blue-400">
+                                            <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
+                                        </div>
+                                        ${doc.employeeName ? `<div class="text-[10px] text-blue-500 font-semibold mt-0.5 ml-6">${doc.employeeName}</div>` : ''}
+                                    </a>
+                                </td>
+                                <td class="p-5 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">${doc.date || '-'}</td>
+                                <td class="p-5 text-center">
+                                    <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
             });
 
             tabelBody.innerHTML = htmlContent || '<tr><td colspan="3" class="p-20 text-center text-gray-400 font-medium">Data tidak ditemukan.</td></tr>';
@@ -317,6 +414,7 @@
             b.classList.remove('bg-white');
             kategoriSekarang = b.dataset.cat;
             filterKata = '';
+            openGroups.clear(); 
             document.getElementById('searchTerm').value = '';
             render();
         };

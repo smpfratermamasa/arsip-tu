@@ -3,352 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Arsip Digital - SMP Frater Mamasa</title>
-    <!-- Preconnect ke Google Fonts dan GStatic untuk mempercepat koneksi -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
-    
+    <title>ARSIP DIGITAL - FRATER MAMASA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .tab-active { border-bottom: 3px solid #1e40af; color: #1e40af; font-weight: 600; }
-        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
-        @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background: #f3f4f6; 
+        }
+        .tab-aktif { 
+            background: #1e3a8a !important; 
+            color: white !important; 
+        }
+        /* Efek loading saat data sedang diambil */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="min-h-screen">
-    <div id="app" class="flex flex-col min-h-screen">
-        <!-- Navigasi -->
-        <nav class="bg-blue-900 text-white shadow-lg sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16 items-center">
-                    <div class="flex items-center space-x-3">
-                        <div class="bg-white p-1 rounded-full"><i class="fas fa-school text-blue-900 text-xl"></i></div>
-                        <div>
-                            <h1 class="font-bold text-lg leading-tight uppercase">SMP Frater Mamasa</h1>
-                            <p class="text-[10px] text-blue-200 tracking-widest uppercase">Arsip Digital Online</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span id="auth-status" class="text-[9px] text-blue-300 uppercase italic font-bold">Menghubungkan...</span>
-                        <button id="nav-login-btn" class="hover:bg-blue-800 p-2 rounded-lg transition" title="Login Admin"><i id="admin-icon" class="fas fa-lock"></i></button>
-                    </div>
-                </div>
-            </div>
-        </nav>
 
-        <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-            <!-- Statistik -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
-                    <div class="p-2 bg-blue-100 text-blue-600 rounded-lg"><i class="fas fa-file-import"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Masuk</p><h3 id="stat-masuk" class="text-lg font-bold">0</h3></div>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
-                    <div class="p-2 bg-green-100 text-green-600 rounded-lg"><i class="fas fa-file-export"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Keluar</p><h3 id="stat-keluar" class="text-lg font-bold">0</h3></div>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
-                    <div class="p-2 bg-purple-100 text-purple-600 rounded-lg"><i class="fas fa-gavel"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Keputusan</p><h3 id="stat-sk" class="text-lg font-bold">0</h3></div>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
-                    <div class="p-2 bg-orange-100 text-orange-600 rounded-lg"><i class="fas fa-users"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Pegawai</p><h3 id="stat-pegawai" class="text-lg font-bold">0</h3></div>
-                </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-3">
-                    <div class="p-2 bg-red-100 text-red-600 rounded-lg"><i class="fas fa-calendar-check"></i></div>
-                    <div><p class="text-[10px] text-gray-400 uppercase font-bold">Rekap</p><h3 id="stat-absen" class="text-lg font-bold">0</h3></div>
-                </div>
-            </div>
+    <nav class="bg-blue-900 text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-archive text-blue-300"></i>
+            <h1 class="font-bold tracking-tight text-sm uppercase">Arsip Digital SMP Frater</h1>
+        </div>
+        <div id="status" class="text-[9px] font-bold bg-orange-500 px-2 py-1 rounded-full uppercase">MENGHUBUNGKAN...</div>
+    </nav>
 
-            <!-- Konten Utama -->
-            <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b flex flex-col md:flex-row justify-between gap-4 items-center">
-                    <div class="flex flex-wrap gap-2 text-xs" id="tabs-container">
-                        <button data-cat="surat-masuk" class="tab-btn px-3 py-2 tab-active">Surat Masuk</button>
-                        <button data-cat="surat-keluar" class="tab-btn px-3 py-2 text-gray-500">Surat Keluar</button>
-                        <button data-cat="sk" class="tab-btn px-3 py-2 text-gray-500">Surat Keputusan</button>
-                        <button data-cat="kepegawaian" class="tab-btn px-3 py-2 text-gray-500">Kepegawaian</button>
-                        <button data-cat="absen" class="tab-btn px-3 py-2 text-gray-500">Rekap Absen</button>
-                    </div>
-                    <div class="flex items-center space-x-2 w-full md:w-auto">
-                        <div class="relative flex-grow">
-                            <i class="fas fa-search absolute left-3 top-3 text-gray-400 text-xs"></i>
-                            <input type="text" id="searchInput" placeholder="Cari arsip..." class="w-full border pl-9 pr-4 py-2 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 border-gray-200">
-                        </div>
-                        <button id="add-btn" class="hidden bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">Tambah</button>
-                    </div>
-                </div>
-
-                <div class="overflow-x-auto min-h-[300px]">
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase font-bold tracking-wider">
-                            <tr>
-                                <th class="px-6 py-4">Tanggal</th>
-                                <th class="px-6 py-4">Judul Dokumen</th>
-                                <th class="px-6 py-4">Kategori</th>
-                                <th class="px-6 py-4">Keterangan</th>
-                                <th class="px-6 py-4 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="arsip-table" class="text-sm divide-y divide-gray-50">
-                            <!-- Skeleton Loading -->
-                            <tr class="skeleton-row">
-                                <td class="px-6 py-4"><div class="h-4 w-20 skeleton rounded"></div></td>
-                                <td class="px-6 py-4"><div class="h-4 w-40 skeleton rounded"></div></td>
-                                <td class="px-6 py-4"><div class="h-4 w-16 skeleton rounded"></div></td>
-                                <td class="px-6 py-4"><div class="h-4 w-32 skeleton rounded"></div></td>
-                                <td class="px-6 py-4 text-center"><div class="h-8 w-8 mx-auto skeleton rounded-full"></div></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div id="empty-state" class="hidden p-20 flex flex-col items-center justify-center text-center">
-                        <i class="fas fa-folder-open text-gray-200 text-5xl mb-4"></i>
-                        <p id="empty-text" class="text-sm text-gray-500 font-medium">Memuat data dari server...</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Modal Admin -->
-        <div id="admin-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center">
-                <h2 class="text-xl font-bold mb-4">Akses Admin</h2>
-                <input type="password" id="admin-password" placeholder="Kata Sandi..." class="w-full border-2 border-gray-100 p-3 rounded-2xl mb-6 text-center text-lg outline-none focus:border-blue-500">
-                <button id="verify-admin-btn" class="w-full bg-blue-600 text-white py-3 rounded-2xl font-bold uppercase text-xs">Verifikasi</button>
-                <button id="close-admin-modal" class="mt-4 text-xs text-gray-400">Tutup</button>
-            </div>
+    <div class="max-w-4xl mx-auto p-4">
+        <div id="error-display" class="hidden mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 text-xs rounded shadow-sm">
+            <p class="font-bold mb-1">Terjadi Kesalahan:</p>
+            <p id="error-message"></p>
         </div>
 
-        <!-- Modal Form -->
-        <div id="form-modal" class="fixed inset-0 bg-blue-900/40 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl max-h-[90vh] flex flex-col">
-                <div class="p-6 border-b flex justify-between items-center">
-                    <h2 class="font-bold">Form Arsip</h2>
-                    <button id="close-form-btn" class="text-gray-400"><i class="fas fa-times"></i></button>
-                </div>
-                <form id="arsip-form" class="p-8 space-y-4 overflow-y-auto">
-                    <input type="hidden" id="edit-id">
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="date" id="form-date" required class="w-full border p-3 rounded-xl text-sm">
-                        <select id="form-category" class="w-full border p-3 rounded-xl text-sm">
-                            <option value="surat-masuk">Surat Masuk</option>
-                            <option value="surat-keluar">Surat Keluar</option>
-                            <option value="sk">Surat Keputusan</option>
-                            <option value="kepegawaian">Kepegawaian</option>
-                            <option value="absen">Rekap Absen</option>
-                        </select>
-                    </div>
-                    <input type="text" id="form-title" placeholder="Judul Dokumen" required class="w-full border p-3 rounded-xl text-sm">
-                    <textarea id="form-desc" placeholder="Keterangan" class="w-full border p-3 rounded-xl text-sm"></textarea>
-                    <input type="url" id="form-link" placeholder="Link Google Drive" required class="w-full border p-3 rounded-xl text-sm bg-blue-50">
-                    <div class="pt-4 flex space-x-3">
-                        <button type="button" id="cancel-form-btn" class="flex-1 bg-gray-100 py-3 rounded-2xl text-xs font-bold uppercase">Batal</button>
-                        <button type="submit" class="flex-[2] bg-blue-600 text-white py-3 rounded-2xl text-xs font-bold uppercase">Simpan</button>
-                    </div>
-                </form>
+        <div class="flex flex-nowrap overflow-x-auto gap-2 mb-6 pb-2 no-scrollbar" id="menu-tab">
+            <button data-cat="surat-masuk" class="btn-tab tab-aktif whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-transparent">Surat Masuk</button>
+            <button data-cat="surat-keluar" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keluar</button>
+            <button data-cat="sk" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Surat Keputusan</button>
+            <button data-cat="kepegawaian" class="btn-tab bg-white whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium shadow-sm border border-gray-200">Kepegawaian</button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 text-[11px] uppercase font-bold text-gray-500 tracking-wider">
+                        <tr>
+                            <th class="p-4 border-b">Tanggal</th>
+                            <th class="p-4 border-b">Judul Dokumen</th>
+                            <th class="p-4 border-b text-center">Buka</th>
+                        </tr>
+                    </thead>
+                    <tbody id="isi-tabel">
+                        <tr>
+                            <td class="p-4 border-b"><div class="skeleton h-4 w-20"></div></td>
+                            <td class="p-4 border-b"><div class="skeleton h-4 w-full"></div></td>
+                            <td class="p-4 border-b text-center"><div class="skeleton h-8 w-8 mx-auto rounded-full"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+        import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        // 1. Firebase & State
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const initialToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        // ------------------------------------------------------------
+        // GANTI BAGIAN INI DENGAN DATA DARI FIREBASE CONSOLE ANDA
+        // ------------------------------------------------------------
+        const firebaseConfig = {
+  apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
+  authDomain: "arsip-digital-baru.firebaseapp.com",
+  projectId: "arsip-digital-baru",
+  storageBucket: "arsip-digital-baru.firebasestorage.app",
+  messagingSenderId: "789604072965",
+  appId: "1:789604072965:web:42a2c6be8ac330010a666c",
+  measurementId: "G-CQ3L8M96DX"
+};
+        // ------------------------------------------------------------
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        const statusEl = document.getElementById('status');
+        const errorDisplay = document.getElementById('error-display');
+        const errorMessage = document.getElementById('error-message');
+        const tabelEl = document.getElementById('isi-tabel');
+        
+        let dataSemua = [];
+        let kategoriSekarang = 'surat-masuk';
 
-        let allArsip = [];
-        let currentCategory = 'surat-masuk';
-        let isAdmin = false;
-        let hasLoadedOnce = false;
+        function showError(msg) {
+            errorDisplay.classList.remove('hidden');
+            errorMessage.innerText = msg;
+            statusEl.innerText = "ERROR";
+            statusEl.className = "text-[9px] font-bold bg-red-600 px-2 py-1 rounded-full uppercase";
+        }
 
-        // 2. DOM Elements & Functions
-        const updateStatus = (text, isSuccess = true) => {
-            const el = document.getElementById('auth-status');
-            if (el) {
-                el.innerText = text;
-                el.className = `text-[9px] uppercase font-bold ${isSuccess ? 'text-green-400' : 'text-red-400'}`;
-            }
-        };
-
-        const toggleAdminModal = () => document.getElementById('admin-modal').classList.toggle('hidden');
-        const toggleFormModal = () => document.getElementById('form-modal').classList.toggle('hidden');
-
-        window.openEdit = (id) => {
-            const d = allArsip.find(a => a.id === id);
-            if (d) {
-                document.getElementById('edit-id').value = id;
-                document.getElementById('form-date').value = d.date || "";
-                document.getElementById('form-category').value = d.category || "surat-masuk";
-                document.getElementById('form-title').value = d.title || "";
-                document.getElementById('form-desc').value = d.desc || "";
-                document.getElementById('form-link').value = d.link || "";
-                document.getElementById('form-modal').classList.remove('hidden');
-            }
-        };
-
-        window.handleDelete = async (id) => {
-            if (!isAdmin || !auth.currentUser) return;
-            if (confirm("Hapus arsip ini secara permanen?")) {
-                try { 
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id)); 
-                } catch (e) { console.error(e); }
-            }
-        };
-
-        const render = () => {
-            const tableBody = document.getElementById('arsip-table');
-            const emptyState = document.getElementById('empty-state');
-            if (!tableBody) return;
-
-            const filtered = allArsip.filter(a => a.category === currentCategory);
-            tableBody.innerHTML = '';
+        function renderData() {
+            const hasilFilter = dataSemua.filter(item => item.category === kategoriSekarang);
             
-            if (filtered.length === 0 && hasLoadedOnce) {
-                emptyState.classList.remove('hidden');
-                document.getElementById('empty-text').innerText = "Belum ada data di kategori ini";
+            if (hasilFilter.length === 0) {
+                tabelEl.innerHTML = '<tr><td colspan="3" class="p-10 text-center text-gray-400">Tidak ada data di kategori ini.</td></tr>';
                 return;
             }
 
-            emptyState.classList.add('hidden');
-            tableBody.innerHTML = filtered.sort((a,b) => new Date(b.date) - new Date(a.date)).map(a => `
-                <tr class="hover:bg-blue-50/30 transition-colors border-b border-gray-50">
-                    <td class="px-6 py-4 text-xs text-gray-400 font-mono">${a.date}</td>
-                    <td class="px-6 py-4 font-semibold text-gray-700">${a.title}</td>
-                    <td class="px-6 py-4">
-                        <span class="bg-blue-50 text-blue-700 text-[9px] px-2 py-1 rounded-md uppercase font-bold tracking-wider">
-                            ${a.category === 'sk' ? 'Surat Keputusan' : a.category === 'absen' ? 'Rekap Absen' : a.category.replace('-', ' ')}
-                        </span>
+            tabelEl.innerHTML = hasilFilter.map(item => `
+                <tr class="border-b hover:bg-blue-50 transition-colors">
+                    <td class="p-4 text-[12px] text-gray-500">${item.date || '-'}</td>
+                    <td class="p-4 text-sm font-semibold text-gray-700">${item.title}</td>
+                    <td class="p-4 text-center">
+                        <a href="${item.link}" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all">
+                            <i class="fab fa-google-drive"></i>
+                        </a>
                     </td>
-                    <td class="px-6 py-4 text-xs text-gray-500 italic truncate max-w-xs">${a.desc || '-'}</td>
-                    <td class="px-6 py-4 text-center">
-                        <div class="flex justify-center space-x-2">
-                            <a href="${a.link}" target="_blank" class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fab fa-google-drive"></i></a>
-                            ${isAdmin ? `
-                                <button onclick="window.openEdit('${a.id}')" class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center hover:bg-amber-600 hover:text-white transition-all shadow-sm"><i class="fas fa-pen"></i></button>
-                                <button onclick="window.handleDelete('${a.id}')" class="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fas fa-trash"></i></button>
-                            ` : ''}
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        };
-
-        const updateStats = () => {
-            const count = (c) => allArsip.filter(a => a.category === c).length;
-            document.getElementById('stat-masuk').innerText = count('surat-masuk');
-            document.getElementById('stat-keluar').innerText = count('surat-keluar');
-            document.getElementById('stat-sk').innerText = count('sk');
-            document.getElementById('stat-pegawai').innerText = count('kepegawaian');
-            document.getElementById('stat-absen').innerText = count('absen');
-        };
-
-        // 3. Event Listeners
-        document.getElementById('nav-login-btn').addEventListener('click', toggleAdminModal);
-        document.getElementById('close-admin-modal').addEventListener('click', toggleAdminModal);
-        document.getElementById('add-btn').addEventListener('click', () => {
-            document.getElementById('arsip-form').reset();
-            document.getElementById('edit-id').value = "";
-            toggleFormModal();
-        });
-        document.getElementById('close-form-btn').addEventListener('click', toggleFormModal);
-        document.getElementById('cancel-form-btn').addEventListener('click', toggleFormModal);
-
-        document.getElementById('verify-admin-btn').addEventListener('click', () => {
-            const pass = document.getElementById('admin-password').value;
-            if (pass === 'adminfrater') {
-                isAdmin = true;
-                document.getElementById('add-btn').classList.remove('hidden');
-                document.getElementById('admin-icon').className = "fas fa-unlock text-amber-500";
-                toggleAdminModal();
-                render();
-            } else { alert("Sandi salah!"); }
-        });
-
-        document.getElementById('tabs-container').addEventListener('click', (e) => {
-            const btn = e.target.closest('.tab-btn');
-            if (!btn) return;
-            
-            document.querySelectorAll('.tab-btn').forEach(b => {
-                b.classList.remove('tab-active');
-                b.classList.add('text-gray-500');
-            });
-            btn.classList.add('tab-active');
-            btn.classList.remove('text-gray-500');
-            
-            currentCategory = btn.dataset.cat;
-            render();
-        });
-
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const q = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#arsip-table tr');
-            rows.forEach(r => {
-                if (r.classList.contains('skeleton-row')) return;
-                r.style.display = r.innerText.toLowerCase().includes(q) ? "" : "none";
-            });
-        });
-
-        document.getElementById('arsip-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!isAdmin || !auth.currentUser) return;
-            const id = document.getElementById('edit-id').value;
-            const data = {
-                date: document.getElementById('form-date').value,
-                category: document.getElementById('form-category').value,
-                title: document.getElementById('form-title').value,
-                desc: document.getElementById('form-desc').value,
-                link: document.getElementById('form-link').value,
-                updatedAt: serverTimestamp()
-            };
-            try {
-                if (id) { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id), data); }
-                else { await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), data); }
-                toggleFormModal();
-            } catch (err) { alert("Gagal menyimpan."); }
-        });
-
-        // 4. Lifecycle
-        const init = async () => {
-            try {
-                if (initialToken) await signInWithCustomToken(auth, initialToken);
-                else await signInAnonymously(auth);
-
-                // Gunakan onSnapshot untuk pembaruan real-time
-                onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'arsip'), (snap) => {
-                    allArsip = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                    hasLoadedOnce = true;
-                    updateStats();
-                    render();
-                    updateStatus("Online");
-                }, (error) => {
-                    console.error("Firestore error:", error);
-                    updateStatus("Error Data", false);
-                });
-            } catch (e) { 
-                console.error("Auth error:", e);
-                updateStatus("Error Koneksi", false); 
-            }
-        };
-
-        // Tunggu DOM siap agar elemen tersedia
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
+                </tr>`).join('');
         }
+
+        async function initApp() {
+            // Cek apakah config sudah diisi
+            if (firebaseConfig.apiKey.includes("MASUKKAN_")) {
+                showError("Firebase Config belum diisi. Silakan lengkapi di dalam file HTML ini.");
+                return;
+            }
+
+            try {
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                const auth = getAuth(app);
+
+                // Login sebagai pengunjung tanpa akun
+                await signInAnonymously(auth);
+                
+                // Ambil data secara realtime dari koleksi 'arsip'
+                const q = query(collection(db, 'arsip'));
+                onSnapshot(q, (snapshot) => {
+                    dataSemua = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    statusEl.innerText = "ONLINE";
+                    statusEl.className = "text-[9px] font-bold bg-green-500 px-2 py-1 rounded-full uppercase";
+                    renderData();
+                }, (err) => {
+                    showError("Masalah Database: " + err.message);
+                });
+
+            } catch (err) {
+                showError("Gagal Terhubung: " + err.message);
+            }
+        }
+
+        // Jalankan aplikasi
+        initApp();
+
+        // Navigasi Filter Klik
+        document.getElementById('menu-tab').addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-tab');
+            if (!btn) return;
+
+            document.querySelectorAll('.btn-tab').forEach(b => {
+                b.classList.remove('tab-aktif');
+                b.classList.add('bg-white');
+            });
+
+            btn.classList.add('tab-aktif');
+            btn.classList.remove('bg-white');
+            
+            kategoriSekarang = btn.dataset.cat;
+            renderData();
+        });
     </script>
 </body>
 </html>

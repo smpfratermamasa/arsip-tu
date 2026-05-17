@@ -6,6 +6,18 @@
     <title>ARSIP DIGITAL - TATA USAHA SMP FRATER MAMASA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Fungsi Cadangan Logo diletakkan di HEAD agar langsung siap saat onerror dipicu -->
+    <script>
+        function loadFallbackLogo(targetId) {
+            const target = document.getElementById(targetId);
+            if (target) {
+                // Menggunakan placeholder SVG murni yang kebal blokir sebagai logo sekolah jika Drive gagal dimuat
+                target.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e3a8a' rx='15'/><path d='M30 20 L70 20 L80 40 L50 85 L20 40 Z' fill='%23facc15'/><circle cx='50' cy='45' r='12' fill='%23ffffff'/><text x='50' y='49' font-size='10' font-weight='bold' fill='%231e3a8a' text-anchor='middle'>SMP</text></svg>";
+            }
+        }
+    </script>
+
     <style>
         body { 
             font-family: sans-serif; 
@@ -14,7 +26,7 @@
             background-color: #f1f5f9;
         }
 
-        /* Latar Belakang yang Lebih Terang */
+        /* Latar Belakang Gambar Sekolah - Dibuat Sangat Terang Tanpa Kegelapan */
         .bg-sekolah {
             position: fixed;
             top: 0;
@@ -22,18 +34,26 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* Mengurangi opacity dari 0.7/0.8 menjadi 0.3/0.4 agar lebih terang */
-            background: linear-gradient(rgba(15, 23, 42, 0.3), rgba(15, 23, 42, 0.4)), 
-                        url('https://lh3.googleusercontent.com/u/0/d/1yLTwIT6zhF9PcyTau-Sos5K7Sh6b4-NN'),
-                        #0f172a;
+            background-color: #f1f5f9; 
+            /* Menggunakan filter transparan putih yang sangat terang agar gambar sekolah bersinar cerah */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)), 
+                              url('https://images.weserv.nl/?url=drive.google.com/uc?id=1yLTwIT6zhF9PcyTau-Sos5K7Sh6b4-NN');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        .tab-aktif { background: #1e3a8a !important; color: white !important; border-color: #3b82f6 !important; }
+        /* Menu Tab Aktif di Sidebar (Warna Biru Navy Terang Mewah) */
+        .tab-aktif { 
+            background-color: #1e3a8a !important; 
+            color: white !important; 
+            border-left: 4px solid #3b82f6 !important;
+            font-weight: 800 !important;
+        }
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
+        /* Grup Header Table */
         .group-header { 
             cursor: pointer;
             user-select: none;
@@ -45,11 +65,12 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
         }
         
-        .nav-glass {
-            background: rgba(30, 58, 138, 0.85);
+        /* WARNA BIRU NAVY KHAS SMP FRATER MAMASA (Warna Biru Navy Terang Mewah) */
+        .nav-blue {
+            background-color: #1e3a8a !important; /* Biru Navy Terang Mewah */
             backdrop-filter: blur(10px);
         }
 
@@ -82,18 +103,22 @@
         }
     </style>
 </head>
-<body class="pb-20">
+<body class="min-h-screen overflow-hidden">
 
     <div class="bg-sekolah"></div>
 
-    <!-- Layar Login -->
+    <!-- Layar Login (Tetap Ditengah Layar) -->
     <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
         <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl">
+            <!-- Container Logo dengan Sistem Cadangan Tampilan -->
             <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
-                <img id="logoLogin" src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-                     onerror="this.src='https://docs.google.com/uc?export=view&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'"
-                     alt="Logo Sekolah" 
-                     class="w-full h-full object-contain">
+                <div class="relative w-full h-full flex items-center justify-center">
+                    <!-- Proxy gambar menggunakan weserv.nl untuk meloloskan pemblokiran Google Drive -->
+                    <img id="imgLogin" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
+                         onerror="loadFallbackLogo('imgLogin')"
+                         alt="Logo Sekolah" 
+                         class="w-full h-full object-contain">
+                </div>
             </div>
             <h1 class="text-2xl font-black text-blue-900 mb-1">ARSIP DIGITAL</h1>
             <p class="text-xs text-gray-500 mb-8 font-bold uppercase tracking-widest">SMP Frater Mamasa</p>
@@ -111,92 +136,152 @@
         </div>
     </div>
 
-    <!-- Konten Utama -->
-    <div id="mainContent" class="hidden">
-        <nav class="nav-glass text-white p-3 md:p-4 shadow-xl sticky top-0 z-50 border-b border-blue-700/50">
-            <div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
+    <!-- Konten Utama (Setelah Login Sukses) -->
+    <div id="mainContent" class="hidden h-screen w-screen flex flex-col md:flex-row overflow-hidden">
+        
+        <!-- HEADER MOBILE (Gunakan Warna Biru Navy Terang Mewah) -->
+        <header class="md:hidden w-full nav-blue text-white flex items-center justify-between p-4 border-b border-blue-800 z-50">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileSidebar()" class="text-white hover:text-blue-300 p-2 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <!-- LOGO SEKOLAH DI MOBILE HEADER (Menggunakan Weserv proxy) -->
+                <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-blue-400 p-0.5 flex-shrink-0">
+                    <img id="imgMobile" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
+                         onerror="loadFallbackLogo('imgMobile')"
+                         alt="Logo Sekolah" 
+                         class="w-full h-full object-contain">
+                </div>
+                <div class="flex flex-col text-left">
+                    <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
+                    <span class="text-[9px] text-gray-200 font-bold uppercase">SMP Frater Mamasa</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span id="mobileStatus" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">...</span>
+            </div>
+        </header>
+
+        <!-- OVERLAY LATAR BELAKANG MOBILE SIDEBAR (Klik untuk Menutup) -->
+        <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"></div>
+
+        <!-- SIDEBAR MENU (Samping Kiri) -->
+        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 nav-blue text-white flex flex-col flex-shrink-0 border-r border-blue-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full z-40">
+            <!-- Header Sekolah di Atas Sidebar -->
+            <div class="p-6 border-b border-blue-800 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl flex items-center justify-center overflow-hidden border-2 border-blue-400 shadow-lg p-1">
-                        <img src="https://lh3.googleusercontent.com/u/0/d/1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-                             onerror="this.src='https://docs.google.com/uc?export=view&id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB'"
-                             alt="Logo Sekolah" 
-                             class="w-full h-full object-contain">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-blue-400 p-1 flex-shrink-0">
+                        <div class="relative w-full h-full flex items-center justify-center">
+                            <!-- Menggunakan Weserv proxy untuk logo sidebar -->
+                            <img id="imgSidebar" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
+                                 onerror="loadFallbackLogo('imgSidebar')"
+                                 alt="Logo Sekolah" 
+                                 class="w-full h-full object-contain">
+                        </div>
                     </div>
-                    
                     <div class="flex flex-col text-left">
-                        <h1 class="font-black tracking-tight text-sm md:text-lg uppercase text-white text-shadow leading-none">Arsip Digital Tata Usaha</h1>
-                        <h2 class="font-bold tracking-widest text-[10px] md:text-xs text-blue-300 uppercase text-shadow">SMP Frater Mamasa</h2>
+                        <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
+                        <span class="text-[10px] text-gray-200 font-bold uppercase tracking-wider">SMP Frater Mamasa</span>
                     </div>
                 </div>
-                
-                <div class="flex items-center gap-3">
-                    <div id="status" class="text-[8px] md:text-[9px] font-bold bg-orange-500 px-2 py-0.5 rounded-full uppercase shadow-lg">...</div>
-                    <button onclick="logout()" class="text-[9px] bg-red-600 px-2 py-0.5 rounded-full font-bold hover:bg-red-700 uppercase">Keluar</button>
-                </div>
-            </div>
-        </nav>
-
-        <div class="max-w-4xl mx-auto p-4">
-            <div class="flex flex-nowrap overflow-x-auto gap-2 mb-6 pb-2 no-scrollbar" id="menu-tab">
-                <button data-cat="beranda" class="btn-tab tab-aktif whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold shadow-lg border-2 border-transparent transition-all">Beranda</button>
-                <button data-cat="surat-masuk" class="btn-tab bg-white/90 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Masuk</button>
-                <button data-cat="surat-keluar" class="btn-tab bg-white/90 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Keluar</button>
-                <button data-cat="sk" class="btn-tab bg-white/90 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Surat Keputusan</button>
-                <button data-cat="kepegawaian" class="btn-tab bg-white/90 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Kepegawaian</button>
-                <button data-cat="absen" class="btn-tab bg-white/90 whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold shadow-md border-2 border-gray-100 transition-all hover:bg-gray-50">Rekap Absen</button>
+                <!-- Tombol Close Sidebar (Hanya Mobile) -->
+                <button onclick="toggleMobileSidebar()" class="md:hidden text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
             </div>
 
-            <div id="section-beranda" class="glass-card rounded-3xl p-6 md:p-8 mb-6 animate-fade-in">
-                <div class="text-center mb-6">
-                    <h3 class="text-xl font-black text-blue-900 mb-2 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
-                    <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
+            <!-- Daftar Menu Kategori di Samping -->
+            <div class="flex-grow p-4 space-y-2 overflow-y-auto no-scrollbar" id="menu-tab">
+                <button data-cat="beranda" class="btn-tab tab-aktif w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold transition-all hover:bg-white/10">
+                    <i class="fas fa-home w-5 text-center text-sm text-blue-200"></i> Beranda
+                </button>
+                <button data-cat="surat-masuk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-envelope-open-text w-5 text-center text-sm text-blue-200"></i> Surat Masuk
+                </button>
+                <button data-cat="surat-keluar" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-paper-plane w-5 text-center text-sm text-blue-200"></i> Surat Keluar
+                </button>
+                <button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> Surat Keputusan
+                </button>
+                <button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Kepegawaian
+                </button>
+                <button data-cat="absen" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-clipboard-list w-5 text-center text-sm text-blue-200"></i> Rekap Absen
+                </button>
+            </div>
+
+            <!-- Footer / Status & Logout di Bagian Bawah Sidebar -->
+            <div class="p-4 border-t border-blue-800 bg-slate-950/40 flex flex-col gap-3">
+                <div class="flex items-center justify-between text-[10px] text-gray-300 font-bold px-2">
+                    <span>STATUS:</span>
+                    <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
+                </div>
+                <button onclick="logout()" class="w-full bg-red-600/90 hover:bg-red-700 text-white py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> Keluar Aplikasi
+                </button>
+            </div>
+        </aside>
+
+        <!-- KONTEN UTAMA (Bagian Kanan yang Bersebelahan secara Sempurna) -->
+        <main class="flex-grow p-4 md:p-8 overflow-y-auto h-full">
+            
+            <!-- Section Beranda -->
+            <div id="section-beranda" class="glass-card rounded-3xl p-6 md:p-10 mb-6 animate-fade-in max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-black text-blue-900 mb-2 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
+                    <div class="h-1.5 w-20 bg-blue-600 mx-auto rounded-full"></div>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-6 text-gray-700 leading-relaxed">
+                <div class="grid md:grid-cols-2 gap-8 text-gray-700 leading-relaxed">
                     <div class="space-y-4 text-sm">
-                        <p class="font-medium italic text-blue-600">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
+                        <p class="font-medium italic text-blue-600 text-base">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
                         <p>Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan **SMP Frater Mamasa**.</p>
-                        <ul class="space-y-2">
-                            <li class="flex items-start gap-2">
-                                <i class="fas fa-check-circle mt-1 text-green-500"></i>
+                        <ul class="space-y-2.5">
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle mt-1 text-green-500 text-base"></i>
                                 <span>Penyimpanan aman berbasis Cloud.</span>
                             </li>
-                            <li class="flex items-start gap-2">
-                                <i class="fas fa-check-circle mt-1 text-green-500"></i>
+                            <li class="flex items-start gap-3">
+                                <i class="fas fa-check-circle mt-1 text-green-500 text-base"></i>
                                 <span>Pencarian dokumen instan dan cepat.</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex flex-col justify-center text-center shadow-inner">
-                        <h4 class="font-black text-blue-900 mb-3 text-sm leading-snug uppercase text-shadow">
+                    <div class="bg-blue-50/80 p-6 rounded-3xl border border-blue-100 flex flex-col justify-center text-center shadow-inner">
+                        <h4 class="font-black text-blue-900 mb-3 text-base leading-snug uppercase tracking-wide">
                             TATA USAHA SMP FRATER MAMASA
                         </h4>
-                        <p class="text-xs mb-4">
-                            Kami hadir untuk melayani Anda dengan <span class="text-blue-700 font-bold">PRIMA</span>.
+                        <p class="text-sm mb-4">
+                            Kami hadir untuk melayani Anda dengan <span class="text-blue-700 font-extrabold">PRIMA</span>.
                         </p>
-                        <p class="text-[10px] font-semibold text-gray-500 bg-white/50 p-2 rounded-xl italic">
+                        <p class="text-xs font-bold text-gray-600 bg-white/70 py-3 px-4 rounded-2xl italic tracking-wide">
                             Profesional, Responsif, Inovatif, Mutu, Akuntabel.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div id="section-data" class="hidden">
+            <!-- Section Tabel Data -->
+            <div id="section-data" class="hidden max-w-4xl mx-auto">
+                <!-- Search Box -->
                 <div id="search-container" class="mb-6">
                     <div class="relative">
-                        <i class="fas fa-search absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="text" id="searchTerm" placeholder="Cari arsip atau nama..." class="w-full pl-12 pr-4 py-3 rounded-2xl border-none shadow-xl focus:ring-4 focus:ring-blue-500/50 outline-none glass-card font-medium text-gray-800 text-sm">
+                        <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+                        <input type="text" id="searchTerm" placeholder="Cari dokumen, nama, atau periode..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-xl focus:ring-4 focus:ring-blue-500/30 outline-none glass-card font-medium text-gray-800 text-sm">
                     </div>
                 </div>
 
-                <div class="glass-card rounded-2xl shadow-2xl overflow-hidden border border-white/50">
+                <!-- Card Tabel -->
+                <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
-                            <thead class="bg-gray-50 text-[10px] uppercase font-bold text-gray-600 tracking-widest border-b border-gray-200">
+                            <thead class="bg-gray-100/50 text-[10px] uppercase font-bold text-gray-500 tracking-widest border-b border-gray-200">
                                 <tr id="head-tabel">
-                                    <th class="p-4 border-b">Detail Berkas</th>
-                                    <th class="p-4 border-b">Tgl</th>
-                                    <th id="kolomAksi" class="p-4 border-b text-center hidden">Aksi</th>
+                                    <th class="p-5 border-b">Detail Berkas (Klik Judul untuk Membuka)</th>
+                                    <th class="p-5 border-b w-32">Tanggal</th>
+                                    <th id="kolomAksi" class="p-5 border-b text-center w-24 hidden">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="isi-tabel"></tbody>
@@ -204,14 +289,15 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
 
-        <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-6 right-6 bg-blue-600 text-white w-14 h-14 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
+        <!-- Floating Button Tambah (Hanya Admin) -->
+        <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
             <i class="fas fa-plus fa-lg"></i>
         </button>
     </div>
 
-    <!-- Modal Input -->
+    <!-- Modal Input Dokumen -->
     <div id="modalInput" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6">
@@ -279,6 +365,20 @@
         let openGroups = new Set(); 
         let userRole = 'none'; 
 
+        // Logika Toggle Mobile Sidebar
+        window.toggleMobileSidebar = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        };
+
+        // Logika Login
         window.prosesLogin = () => {
             const pass = document.getElementById('loginPass').value;
             if (pass === "admintufrms") {
@@ -306,11 +406,11 @@
             if (userRole === 'admin') {
                 floatingAdd.classList.remove('hidden');
                 floatingAdd.classList.add('flex');
-                kolomAksi.classList.remove('hidden');
+                if (kolomAksi) kolomAksi.classList.remove('hidden');
             } else {
                 floatingAdd.classList.remove('flex');
                 floatingAdd.classList.add('hidden');
-                kolomAksi.classList.add('hidden');
+                if (kolomAksi) kolomAksi.classList.add('hidden');
             }
             
             start();
@@ -321,9 +421,18 @@
             onSnapshot(query(collection(db, 'arsip')), (snap) => {
                 dataSemua = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 render();
+                
                 const statusEl = document.getElementById('status');
-                statusEl.innerText = userRole === 'admin' ? "ONLINE (ADMIN)" : "ONLINE (USER)";
+                const mobileStatusEl = document.getElementById('mobileStatus');
+                const textStatus = userRole === 'admin' ? "ADMIN" : "USER";
+                
+                statusEl.innerText = textStatus;
                 statusEl.className = `text-[8px] md:text-[9px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
+                
+                if (mobileStatusEl) {
+                    mobileStatusEl.innerText = textStatus;
+                    mobileStatusEl.className = `text-[8px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
+                }
             });
         }
 
@@ -358,7 +467,14 @@
                 secData.classList.remove('hidden');
             }
 
-            let filtered = dataSemua.filter(i => i.category === kategoriSekarang);
+            // Normalisasi filter kategori
+            let filtered = dataSemua.filter(i => {
+                const itemCat = i.category;
+                if (kategoriSekarang === 'absen') {
+                    return itemCat === 'absen' || itemCat === 'rekap-absen';
+                }
+                return itemCat === kategoriSekarang;
+            });
 
             if (filterKata) {
                 filtered = filtered.filter(i => 
@@ -401,7 +517,7 @@
 
                 htmlContent += `
                     <tr class="group-header" onclick="toggleGroup('${group}')">
-                        <td colspan="${userRole === 'admin' ? 3 : 2}" class="p-3 pl-4 border-b text-[10px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm flex items-center justify-between">
+                        <td colspan="${userRole === 'admin' ? 3 : 2}" class="p-3 pl-4 border-b text-[10px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm flex items-center justify-between animate-fade-in">
                             <span class="flex items-center">
                                 <i class="${(kategoriSekarang === 'kepegawaian' || kategoriSekarang === 'absen') ? 'fas fa-id-card' : 'fas fa-calendar-alt'} mr-3 text-blue-600"></i> ${group}
                                 <span class="ml-2 bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full text-[8px] font-bold">${groups[group].length} Berkas</span>
@@ -480,16 +596,30 @@
         document.getElementById('menu-tab').onclick = (e) => {
             const b = e.target.closest('.btn-tab');
             if(!b) return;
+            
+            // Atur status aktif tab
             document.querySelectorAll('.btn-tab').forEach(x => { 
                 x.classList.remove('tab-aktif'); 
-                x.classList.add('bg-white/90'); 
+                x.classList.add('text-gray-300');
+                x.classList.add('hover:text-white');
             });
             b.classList.add('tab-aktif');
-            b.classList.remove('bg-white/90');
+            b.classList.remove('text-gray-300');
+            b.classList.remove('hover:text-white');
+            
             kategoriSekarang = b.dataset.cat;
             filterKata = '';
             openGroups.clear(); 
             document.getElementById('searchTerm').value = '';
+            
+            // Jika diakses dari perangkat mobile, sembunyikan sidebar secara otomatis saat menu diklik
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+            
             render();
         };
 

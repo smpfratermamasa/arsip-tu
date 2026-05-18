@@ -101,6 +101,35 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ANIMASI TEKS BERJALAN MODERN (MENGGANTIKAN MARQUEE YANG USANG) */
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            user-select: none;
+            width: 100%;
+        }
+
+        .marquee-content {
+            display: flex;
+            gap: 4rem;
+            white-space: nowrap;
+            animation: marquee-animation 25s linear infinite;
+        }
+
+        /* Jeda saat kursor mouse diarahkan ke teks */
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee-animation {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen overflow-hidden">
@@ -218,6 +247,10 @@
                     <span>STATUS:</span>
                     <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
                 </div>
+                <!-- Menambahkan alamat email di bagian bawah sidebar -->
+                <div class="text-[9px] text-blue-200 font-semibold px-2 flex items-center gap-1.5 break-all">
+                    <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
+                </div>
                 <button onclick="logout()" class="w-full bg-red-600/90 hover:bg-red-700 text-white py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
                     <i class="fas fa-sign-out-alt"></i> Keluar Aplikasi
                 </button>
@@ -227,8 +260,21 @@
         <!-- KONTEN UTAMA (Bagian Kanan yang Bersebelahan secara Sempurna) -->
         <main class="flex-grow p-4 md:p-8 overflow-y-auto h-full">
             
+            <!-- TULISAN BERJALAN (MENGGUNAKAN ANIMASI CSS KEYFRAMES MODERN) -->
+            <div class="nav-blue text-white py-2.5 px-4 rounded-2xl mb-6 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
+                <span class="bg-blue-600 text-[9px] px-2 py-0.5 rounded-md flex-shrink-0 uppercase font-black tracking-widest">MOTTO</span>
+                <div class="marquee-container">
+                    <div class="marquee-content font-semibold text-blue-100 uppercase">
+                        <span>Fraternitas, Humilitas, Perseverantia</span>
+                        <span>Fraternitas, Humilitas, Perseverantia</span>
+                        <span>Fraternitas, Humilitas, Perseverantia</span>
+                        <span>Fraternitas, Humilitas, Perseverantia</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Section Beranda -->
-            <div id="section-beranda" class="glass-card rounded-3xl p-6 md:p-10 mb-6 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-[85vh]">
+            <div id="section-beranda" class="glass-card rounded-3xl p-6 md:p-10 mb-6 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-[75vh]">
                 <div>
                     <div class="text-center mb-8">
                         <h3 class="text-2xl font-black text-blue-900 mb-2 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
@@ -269,7 +315,7 @@
                     <h4 class="text-sm font-black text-blue-900 uppercase tracking-wider mb-4 text-center md:text-left">
                         <i class="fas fa-users text-blue-600 mr-2"></i> Tim Tata Usaha & Pelayanan
                     </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                         <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 flex items-center gap-3.5 shadow-sm hover:shadow-md transition-all">
                             <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
                                 <i class="fas fa-user-tie text-lg"></i>
@@ -289,6 +335,14 @@
                                 <div class="text-xs font-semibold text-blue-600">Staf Kesiswaan</div>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- MENAMPILKAN EMAIL DAN COPYRIGHT DI BAGIAN FOOTER BERANDA -->
+                    <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500 font-semibold">
+                        <span>SMP Frater Mamasa &copy; 2026</span>
+                        <a href="mailto:smpsfratermamsa@gmail.com" class="flex items-center gap-1.5 text-blue-600 hover:underline">
+                            <i class="fas fa-envelope text-sm"></i> smpsfratermamsa@gmail.com
+                        </a>
                     </div>
                 </div>
             </div>

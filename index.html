@@ -562,29 +562,54 @@
                     userProfileEl.innerText = `${loggedInName} (${userRole.toUpperCase()})`;
                 }
 
-                // Jalur Koleksi Arsip yang Terstruktur
-                const arsipCol = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
-                onSnapshot(query(arsipCol), (snap) => {
-                    dataSemua = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    render();
-                    
-                    const statusEl = document.getElementById('status');
-                    const mobileStatusEl = document.getElementById('mobileStatus');
-                    const textStatus = userRole === 'admin' ? "ADMIN" : "USER";
-                    
-                    statusEl.innerText = textStatus;
-                    statusEl.className = `text-[8px] md:text-[9px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
-                    
-                    if (mobileStatusEl) {
-                        mobileStatusEl.innerText = textStatus;
-                        mobileStatusEl.className = `text-[8px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
+                // JALUR MEMBACA GANDA (FALLBACK DUAL-PATH):
+                // 1. Coba membaca di jalur koleksi utama yang terstruktur (sesuai aturan)
+                const pathUtama = `artifacts/${appId}/public/data/arsip`;
+                const colUtamaRef = collection(db, pathUtama);
+                
+                onSnapshot(query(colUtamaRef), (snapUtama) => {
+                    if (!snapUtama.empty) {
+                        // Jika ada data di jalur utama, tampilkan data tersebut
+                        dataSemua = snapUtama.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        render();
+                    } else {
+                        // Jika jalur utama kosong, baca cadangan dari koleksi root "arsip" (arsip lama)
+                        const colCadanganRef = collection(db, 'arsip');
+                        onSnapshot(query(colCadanganRef), (snapCadangan) => {
+                            dataSemua = snapCadangan.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            render();
+                        });
                     }
+                    
+                    updateStatusUI();
                 }, (err) => {
-                    console.error("Firestore Error:", err);
+                    console.warn("Membaca jalur utama gagal, beralih ke koleksi cadangan root...");
+                    // Fallback jika terjadi error izin pada jalur utama
+                    const colCadanganRef = collection(db, 'arsip');
+                    onSnapshot(query(colCadanganRef), (snapCadangan) => {
+                        dataSemua = snapCadangan.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        render();
+                    });
+                    updateStatusUI();
                 });
 
             } catch (err) {
                 console.error("Autentikasi Anonim Gagal:", err);
+            }
+        }
+
+        function updateStatusUI() {
+            const statusEl = document.getElementById('status');
+            const mobileStatusEl = document.getElementById('mobileStatus');
+            const textStatus = userRole === 'admin' ? "ADMIN" : "USER";
+            
+            if (statusEl) {
+                statusEl.innerText = textStatus;
+                statusEl.className = `text-[8px] md:text-[9px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
+            }
+            if (mobileStatusEl) {
+                mobileStatusEl.innerText = textStatus;
+                mobileStatusEl.className = `text-[8px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
             }
         }
 
@@ -595,11 +620,27 @@
             const setujuHapus = await showCustomConfirm(`Apakah Anda yakin ingin menghapus permanen dokumen "${title}"?`);
             if (setujuHapus) {
                 try { 
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'arsip', id);
+                    // Deteksi jalur mana yang aktif saat menghapus berkas
+                    // Cari apakah ID dokumen ada di koleksi utama, jika tidak hapus dari root cadangan
+                    const snapCheck = await getDocs(query(collection(db, `artifacts/${appId}/public/data/arsip`)));
+                    const isExistInUtama = snapCheck.docs.some(doc => doc.id === id);
+                    
+                    const pathHapus = isExistInUtama 
+                        ? `artifacts/${appId}/public/data/arsip` 
+                        : `arsip`;
+
+                    const docRef = doc(db, pathHapus, id);
                     await deleteDoc(docRef); 
                     showCustomAlert("Berkas berhasil dihapus secara permanen!");
                 } catch (e) { 
                     console.error("Error hapus:", e); 
+                    // Fallback hapus langsung dari root jika terjadi kesalahan deteksi jalur
+                    try {
+                        await deleteDoc(doc(db, 'arsip', id));
+                        showCustomAlert("Berkas berhasil dihapus secara permanen!");
+                    } catch (err2) {
+                        console.error("Hapus cadangan gagal:", err2);
+                    }
                 }
             }
             document.getElementById('customConfirm').classList.add('hidden');
@@ -728,13 +769,24 @@
             };
             if(!docBaru.title || !docBaru.link) return;
             try {
+                // Untuk dokumen BARU, kita simpan di jalur utama terstruktur agar aman
                 const arsipCol = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
                 await addDoc(arsipCol, docBaru);
                 tutupModal();
                 document.querySelectorAll('#modalInput input').forEach(el => el.value = "");
                 showCustomAlert("Arsip baru berhasil disimpan!");
             } catch (e) { 
-                console.error("Gagal Simpan:", e); 
+                console.error("Gagal Simpan ke jalur utama, mencoba menyimpan ke root cadangan:", e);
+                // Jika gagal karena masalah rule, simpan ke root sebagai cadangan
+                try {
+                    await addDoc(collection(db, 'arsip'), docBaru);
+                    tutupModal();
+                    document.querySelectorAll('#modalInput input').forEach(el => el.value = "");
+                    showCustomAlert("Arsip baru berhasil disimpan!");
+                } catch (err2) {
+                    console.error("Gagal menyimpan ke kedua jalur:", err2);
+                    showCustomAlert("Gagal menyimpan dokumen. Silakan periksa koneksi atau izin database!");
+                }
             }
         };
 

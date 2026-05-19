@@ -163,7 +163,7 @@
         </div>
     </div>
 
-    <!-- LAYAR AUTENTIKASI (MASUK / DAFTAR AKUN) -->
+    <!-- LAYAR AUTENTIKASI KATA SANDI (LOGIN AWAL) -->
     <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
         <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50">
             <!-- Container Logo dengan Sistem Cadangan Tampilan -->
@@ -176,56 +176,21 @@
                 </div>
             </div>
             
-            <!-- FORM LOGIN (MASUK) -->
+            <!-- FORM LOGIN SANDI -->
             <div id="formLogin">
                 <h1 class="text-2xl font-black text-blue-900 mb-1 leading-tight">ARSIP DIGITAL</h1>
                 <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-widest leading-none">SMP Frater Mamasa</p>
                 
-                <div class="space-y-3">
-                    <div class="relative">
-                        <i class="fas fa-user absolute left-4 top-4 text-gray-400"></i>
-                        <input type="text" id="loginUser" placeholder="Username (Nama Akun)" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-semibold text-sm">
-                    </div>
+                <div class="space-y-4">
                     <div class="relative">
                         <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
-                        <input type="password" id="loginPass" placeholder="Kata Sandi" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-semibold text-sm">
+                        <input type="password" id="loginPass" placeholder="Masukkan Kata Sandi" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-bold text-sm">
                     </div>
                     <button onclick="prosesLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-xl active:scale-95 transition-all uppercase tracking-wider text-xs">
                         Masuk Ke Sistem
                     </button>
                 </div>
-                <p class="mt-6 text-xs text-gray-500">
-                    Belum memiliki akun? 
-                    <button onclick="switchForm('daftar')" class="text-blue-600 font-bold hover:underline">Daftar di sini</button>
-                </p>
-            </div>
-
-            <!-- FORM REGISTRASI (DAFTAR AKUN) -->
-            <div id="formDaftar" class="hidden">
-                <h1 class="text-2xl font-black text-blue-900 mb-1 leading-tight">DAFTAR AKUN</h1>
-                <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-widest leading-none">Guru & Staf SMP Frater Mamasa</p>
-                
-                <div class="space-y-3">
-                    <div class="relative">
-                        <i class="fas fa-address-card absolute left-4 top-4 text-gray-400"></i>
-                        <input type="text" id="regName" placeholder="Nama Lengkap Anda" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-semibold text-sm">
-                    </div>
-                    <div class="relative">
-                        <i class="fas fa-user absolute left-4 top-4 text-gray-400"></i>
-                        <input type="text" id="regUser" placeholder="Username Baru" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-semibold text-sm">
-                    </div>
-                    <div class="relative">
-                        <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
-                        <input type="password" id="regPass" placeholder="Kata Sandi Baru" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-semibold text-sm">
-                    </div>
-                    <button onclick="prosesDaftar()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-4 rounded-xl shadow-xl active:scale-95 transition-all uppercase tracking-wider text-xs">
-                        Buat Akun Sekarang
-                    </button>
-                </div>
-                <p class="mt-6 text-xs text-gray-500">
-                    Sudah memiliki akun? 
-                    <button onclick="switchForm('login')" class="text-blue-600 font-bold hover:underline">Masuk di sini</button>
-                </p>
+                <p class="mt-6 text-[10px] text-gray-400 uppercase font-black tracking-wide italic">Gunakan Sandi Admin atau User</p>
             </div>
         </div>
     </div>
@@ -295,8 +260,9 @@
                 <button data-cat="surat-keluar" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
                     <i class="fas fa-paper-plane w-5 text-center text-sm text-blue-200"></i> Surat Keluar
                 </button>
+                <!-- DIUBAH MENJADI SK KEPANITIAAN -->
                 <button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> Surat Keputusan
+                    <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> SK Kepanitiaan
                 </button>
                 <button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
                     <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Kepegawaian
@@ -312,7 +278,7 @@
                     <span>STATUS:</span>
                     <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
                 </div>
-                <!-- Menampilkan Identitas Pengguna yang sedang Login Aktif (User Discoverability) -->
+                <!-- Menampilkan Identitas Pengguna yang sedang Login Aktif -->
                 <div id="userProfile" class="text-[9px] text-emerald-300 font-black px-2 uppercase tracking-wide flex items-center gap-1.5 leading-none break-all">
                     <i class="fas fa-user-circle text-xs"></i> <span>MENGHUBUNGKAN...</span>
                 </div>
@@ -440,7 +406,7 @@
                     <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-blue-50 font-bold text-blue-800">
                         <option value="surat-masuk">Surat Masuk</option>
                         <option value="surat-keluar">Surat Keluar</option>
-                        <option value="sk">Surat Keputusan</option>
+                        <option value="sk">SK Kepanitiaan</option>
                         <option value="kepegawaian">Kepegawaian</option>
                         <option value="absen">Rekap Absen Pegawai</option>
                     </select>
@@ -497,14 +463,6 @@
         let loggedInName = '';
         let loggedInUsername = '';
 
-        // DAFTAR AKUN BAWAAN (FALLBACK SEED)
-        const userDatabaseSeed = [
-            { username: "admintu.frms", pass: "admintufrms", role: "admin", name: "Administrator TU" },
-            { username: "markusd.frms", pass: "pegawaifrms1", role: "user", name: "Markus D." },
-            { username: "stepheneko.frms", pass: "pegawaifrms2", role: "user", name: "Stephen Eko" },
-            { username: "guru.frms", pass: "gurufrms123", role: "user", name: "Guru Umum" }
-        ];
-
         // Sistem Kustom Alert
         window.showCustomAlert = (msg) => {
             document.getElementById('customAlertMsg').innerText = msg;
@@ -543,97 +501,28 @@
             }
         };
 
-        // Berpindah Form di Login Screen (Masuk / Daftar)
-        window.switchForm = (target) => {
-            if (target === 'daftar') {
-                document.getElementById('formLogin').classList.add('hidden');
-                document.getElementById('formDaftar').classList.remove('hidden');
-            } else {
-                document.getElementById('formLogin').classList.remove('hidden');
-                document.getElementById('formDaftar').classList.add('hidden');
-            }
-        };
-
-        // PROSES PENDAFTARAN AKUN BARU (Menyimpan Dinamis ke Firestore)
-        window.prosesDaftar = async () => {
-            const nameInput = document.getElementById('regName').value.trim();
-            const userInput = document.getElementById('regUser').value.trim().toLowerCase();
-            const passInput = document.getElementById('regPass').value;
-
-            if (!nameInput || !userInput || !regPass) {
-                showCustomAlert("Harap lengkapi seluruh kolom pendaftaran!");
-                return;
-            }
-
-            try {
-                // Sesuai RULE 1 & 2: Dapatkan seluruh akun terdaftar dari jalur strict path untuk pengecekan username
-                const usersCol = collection(db, 'artifacts', appId, 'public', 'data', 'users');
-                const snap = await getDocs(usersCol);
-                const registeredUsers = snap.docs.map(doc => doc.data());
-
-                // Periksa apakah username sudah terdaftar di seed bawaan atau database Firestore
-                const isUsernameExist = userDatabaseSeed.some(u => u.username === userInput) || 
-                                        registeredUsers.some(u => u.username === userInput);
-
-                if (isUsernameExist) {
-                    showCustomAlert("Username tersebut sudah digunakan! Silakan gunakan nama akun yang lain.");
-                    return;
-                }
-
-                // Tambahkan dokumen baru ke Firestore (Peran bawaan pendaftaran mandiri adalah 'user')
-                await addDoc(usersCol, {
-                    name: nameInput,
-                    username: userInput,
-                    pass: passInput,
-                    role: "user"
-                });
-
-                showCustomAlert("Akun Anda berhasil didaftarkan! Silakan masuk menggunakan form login.");
-                
-                // Bersihkan input dan alihkan ke form login
-                document.getElementById('regName').value = "";
-                document.getElementById('regUser').value = "";
-                document.getElementById('regPass').value = "";
-                switchForm('login');
-
-            } catch (err) {
-                console.error("Gagal mendaftarkan akun:", err);
-                showCustomAlert("Gagal terhubung ke database. Harap periksa jaringan Anda!");
-            }
-        };
-
-        // PROSES MASUK (Pencocokan akun di Firestore secara dinamis)
-        window.prosesLogin = async () => {
-            const userInput = document.getElementById('loginUser').value.trim().toLowerCase();
+        // PROSES MASUK KATA SANDI (LOGIN AWAL YANG DIKEMBALIKAN)
+        window.prosesLogin = () => {
             const passInput = document.getElementById('loginPass').value;
 
-            if (!userInput || !passInput) {
-                showCustomAlert("Harap isi Username dan Kata Sandi!");
+            if (!passInput) {
+                showCustomAlert("Harap isi Kata Sandi!");
                 return;
             }
 
-            // 1. Cek pertama kali di Akun bawaan (Seed)
-            let findAccount = userDatabaseSeed.find(acc => acc.username === userInput && acc.pass === passInput);
-
-            // 2. Jika tidak ditemukan di Akun bawaan, periksa Firestore secara dinamis
-            if (!findAccount) {
-                try {
-                    const usersCol = collection(db, 'artifacts', appId, 'public', 'data', 'users');
-                    const snap = await getDocs(usersCol);
-                    const registeredUsers = snap.docs.map(doc => doc.data());
-                    findAccount = registeredUsers.find(acc => acc.username === userInput && acc.pass === passInput);
-                } catch (err) {
-                    console.error("Gagal membaca database pengguna:", err);
-                }
-            }
-
-            if (findAccount) {
-                userRole = findAccount.role;
-                loggedInName = findAccount.name;
-                loggedInUsername = findAccount.username;
+            // Memeriksa sandi Admin atau User
+            if (passInput === "admintufrms") {
+                userRole = 'admin';
+                loggedInName = 'Administrator TU';
+                loggedInUsername = 'admin';
+                masukAplikasi();
+            } else if (passInput === "user123") {
+                userRole = 'user';
+                loggedInName = 'Guru & Staf';
+                loggedInUsername = 'user';
                 masukAplikasi();
             } else {
-                showCustomAlert("Username atau Kata Sandi salah! Pastikan akun Anda sudah terdaftar.");
+                showCustomAlert("Kata Sandi salah! Hubungi TU untuk mendapatkan akses masuk.");
             }
         };
 
@@ -661,19 +550,19 @@
             start();
         }
 
-        // Mulai Sinkronisasi Layanan dengan database Firestore (Aturan Strict Path & Authentication)
+        // Mulai Sinkronisasi Layanan dengan database Firestore
         async function start() {
             try {
-                // Sesuai RULE 3: Lakukan Authentication terlebih dahulu
+                // Autentikasi anonim terlebih dahulu
                 await signInAnonymously(auth);
 
-                // Tampilkan profil pengguna yang teridentifikasi lengkap (User Discoverability)
+                // Tampilkan profil pengguna aktif di sidebar bawah
                 const userProfileEl = document.querySelector('#userProfile span');
                 if (userProfileEl) {
-                    userProfileEl.innerText = `${loggedInName} (${loggedInUsername})`;
+                    userProfileEl.innerText = `${loggedInName} (${userRole.toUpperCase()})`;
                 }
 
-                // Sesuai RULE 1: Jalur Koleksi Arsip yang Terstruktur
+                // Jalur Koleksi Arsip yang Terstruktur
                 const arsipCol = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
                 onSnapshot(query(arsipCol), (snap) => {
                     dataSemua = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -900,12 +789,9 @@
             render();
         };
 
-        // Menghubungkan tombol Enter dengan aksi konfirmasi
+        // Menghubungkan tombol Enter dengan aksi masuk
         document.getElementById('loginPass').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') prosesLogin();
-        });
-        document.getElementById('regPass').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') prosesDaftar();
         });
 
         // Event listener kustom modal konfirmasi yes

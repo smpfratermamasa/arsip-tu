@@ -718,7 +718,7 @@
                 // LOGIKA PENGELOMPOKKAN (Khusus Kepegawaian)
                 const groups = {};
                 filtered.forEach(item => {
-                    let groupName = item.employeeName || "Pegawai Umum";
+                   let groupName = (item.employeeName && item.employeeName.trim() !== "") ? item.employeeName.trim() : "Pegawai Umum";
                     if (!groups[groupName]) groups[groupName] = [];
                     groups[groupName].push(item);
                 });

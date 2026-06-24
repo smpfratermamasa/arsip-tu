@@ -250,15 +250,9 @@
             </div>
 
             <!-- Daftar Menu Kategori di Samping -->
-            <div class="flex-grow p-4 space-y-0.5 overflow-y-auto no-scrollbar" id="menu-tab">
+            <div class="flex-grow p-4 space-y-2 overflow-y-auto no-scrollbar" id="menu-tab">
                 <button data-cat="beranda" class="btn-tab tab-aktif w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold transition-all hover:bg-white/10">
                     <i class="fas fa-home w-5 text-center text-sm text-blue-200"></i> Beranda
-                </button>
-				<button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Data Kepegawaian
-                </button>
-				<button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> SK Kepanitiaan
                 </button>
                 <button data-cat="surat-masuk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
                     <i class="fas fa-envelope-open-text w-5 text-center text-sm text-blue-200"></i> Surat Masuk
@@ -266,11 +260,15 @@
                 <button data-cat="surat-keluar" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
                     <i class="fas fa-paper-plane w-5 text-center text-sm text-blue-200"></i> Surat Keluar
                 </button>
+                <!-- DIUBAH MENJADI SK KEPANITIAAN -->
+                <button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> SK Kepanitiaan
+                </button>
+                <button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                    <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Kepegawaian
+                </button>
                 <button data-cat="absen" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
                     <i class="fas fa-clipboard-list w-5 text-center text-sm text-blue-200"></i> Rekap Absen
-                </button>
-				<button data-cat="sk-lainnya" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-folder-open w-5 text-center text-sm text-blue-200"></i> Arsip Lainnya
                 </button>
             </div>
 
@@ -295,87 +293,87 @@
         </aside>
 
         <!-- KONTEN UTAMA (Bagian Kanan yang Bersebelahan secara Sempurna) -->
-        <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
+        <main class="flex-grow p-4 md:p-8 overflow-y-auto h-full">
             
-            <!-- TULISAN BERJALAN DENGAN INFORMASI PRIMA & MOTTO - Label 'INFORMASI' Dihapus -->
-            <div class="nav-blue text-white py-2 px-4 rounded-xl mb-3 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
+            <!-- TULISAN BERJALAN DENGAN INFORMASI PRIMA & MOTTO -->
+            <div class="nav-blue text-white py-2.5 px-4 rounded-2xl mb-6 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
+                <span class="bg-blue-600 text-[9px] px-2 py-0.5 rounded-md flex-shrink-0 uppercase font-black tracking-widest">INFORMASI</span>
                 <div class="marquee-container">
                     <div class="marquee-content font-semibold text-blue-100 uppercase">
-                        <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"</span>
-                        <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"
+                        <span>Fraternitas, Humilitas, Perseverantia &nbsp;&bull;&nbsp; TATA USAHA SMP FRATER MAMASA hadir melayani Anda dengan PRIMA (Profesional, Responsif, Inovatif, Mutu, Akuntabel)</span>
+                        <span>Fraternitas, Humilitas, Perseverantia &nbsp;&bull;&nbsp; TATA USAHA SMP FRATER MAMASA hadir melayani Anda dengan PRIMA (Profesional, Responsif, Inovatif, Mutu, Akuntabel)</span>
                     </div>
                 </div>
             </div>
 
             <!-- Section Beranda -->
-            <div id="section-beranda" class="glass-card rounded-2xl p-4 md:p-6 mb-4 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-0">
+            <div id="section-beranda" class="glass-card rounded-3xl p-6 md:p-10 mb-6 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-[75vh]">
                 <div>
-                    <div class="text-center mb-4">
-                        <h3 class="text-xl font-black text-blue-900 mb-1 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
-                        <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-black text-blue-900 mb-2 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
+                        <div class="h-1.5 w-20 bg-blue-600 mx-auto rounded-full"></div>
                     </div>
                     
-                    <!-- Tata Letak Beranda disesuaikan menjadi lebih rapat -->
-                    <div class="space-y-3 text-gray-700 leading-relaxed text-xs max-w-2xl mx-auto">
-                        <p class="font-medium italic text-blue-600 text-sm text-center">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
-                        <p class="text-center">Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan <strong>SMP Frater Mamasa</strong> secara aman, cepat, dan berbasis Cloud.</p>
+                    <!-- Tata Letak Beranda disesuaikan menjadi Full Width Tengah yang Elegan -->
+                    <div class="space-y-6 text-gray-700 leading-relaxed text-sm max-w-2xl mx-auto">
+                        <p class="font-medium italic text-blue-600 text-lg text-center">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
+                        <p class="text-center text-base">Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan <strong>SMP Frater Mamasa</strong> secara aman, cepat, dan berbasis Cloud.</p>
                     </div>
                 </div>
 
                 <!-- SEKTOR STAF / STRUKTUR BARU -->
-                <div class="mt-6 pt-4 border-t border-gray-200">
-                    <h4 class="text-xs font-black text-blue-900 uppercase tracking-wider mb-2 text-center md:text-left">
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h4 class="text-sm font-black text-blue-900 uppercase tracking-wider mb-4 text-center md:text-left">
                         <i class="fas fa-users text-blue-600 mr-2"></i> Tim Tata Usaha & Pelayanan
                     </h4>
-                    <!-- Grid gap dikecilkan ke gap-2.5 -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
-                        <!-- 1. Markus D -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-user-tie text-sm"></i>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <!-- Fr. Simeon Lopi Koban, HHK (Dua-duanya Staf Penerima Uang Sekolah) -->
+                        <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 flex items-center gap-3.5 shadow-sm hover:shadow-md transition-all">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-wallet text-lg"></i>
                             </div>
                             <div>
-                                <div class="font-black text-gray-800 text-xs">MARKUS D.</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Kepegawaian dan Keuangan</div>
+                                <div class="font-black text-gray-800 text-sm">Fr. SIMEON LOPI KOBAN, HHK</div>
+                                <div class="text-xs font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
                             </div>
                         </div>
-                        <!-- 2. Stephen Eko Setiawan -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-user-graduate text-sm"></i>
+                        <!-- Markus D -->
+                        <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 flex items-center gap-3.5 shadow-sm hover:shadow-md transition-all">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-user-tie text-lg"></i>
                             </div>
                             <div>
-                                <div class="font-black text-gray-800 text-xs">STEPHEN EKO SETIAWAN</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Kesiswaan</div>
+                                <div class="font-black text-gray-800 text-sm">MARKUS D.</div>
+                                <div class="text-xs font-semibold text-blue-600">Staf Kepegawaian dan Keuangan</div>
                             </div>
                         </div>
-                        <!-- 3. Fr. Simeon Lopi Koban, HHK -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-wallet text-sm"></i>
+                        <!-- Stephen Eko Setiawan -->
+                        <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 flex items-center gap-3.5 shadow-sm hover:shadow-md transition-all">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-user-graduate text-lg"></i>
                             </div>
                             <div>
-                                <div class="font-black text-gray-800 text-xs">Fr. SIMEON LOPI KOBAN, HHK</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
+                                <div class="font-black text-gray-800 text-sm">STEPHEN EKO SETIAWAN</div>
+                                <div class="text-xs font-semibold text-blue-600">Staf Kesiswaan</div>
                             </div>
                         </div>
-                        <!-- 4. Fr. Metodius Lambe, HHK -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-wallet text-sm"></i>
+                        <!-- Fr. Metodius Lambe, HHK (Dua-duanya Staf Penerima Uang Sekolah) -->
+                        <div class="bg-white/60 p-4 rounded-2xl border border-gray-100 flex items-center gap-3.5 shadow-sm hover:shadow-md transition-all">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                <i class="fas fa-wallet text-lg"></i>
                             </div>
                             <div>
-                                <div class="font-black text-gray-800 text-xs">Fr. METODIUS LAMBE, HHK</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
+                                <div class="font-black text-gray-800 text-sm">Fr. METODIUS LAMBE, HHK</div>
+                                <div class="text-xs font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- MENAMPILKAN EMAIL DAN COPYRIGHT DI BAGIAN FOOTER BERANDA -->
-                    <div class="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-gray-500 font-semibold">
-                        <span>TU_SMP Frater Mamasa &copy; 2026</span>
-                        <a href="mailto:smpsfratermamsa@gmail.com" class="flex items-center gap-1 text-blue-600 hover:underline">
-                            <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
+                    <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500 font-semibold">
+                        <span>SMP Frater Mamasa &copy; 2026</span>
+                        <a href="mailto:smpsfratermamsa@gmail.com" class="flex items-center gap-1.5 text-blue-600 hover:underline">
+                            <i class="fas fa-envelope text-sm"></i> smpsfratermamsa@gmail.com
                         </a>
                     </div>
                 </div>
@@ -423,10 +421,6 @@
                 </h2>
                 <button onclick="tutupModal()" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-times fa-lg"></i></button>
             </div>
-			<div id="fieldPassword" class="mt-4">
-    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Password Anda</label>
-    <input type="password" id="inPassCheck" placeholder="Masukkan password" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
-</div>
             <div class="space-y-4 text-xs md:text-sm">
                 <div>
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
@@ -434,53 +428,14 @@
                         <option value="surat-masuk">Surat Masuk</option>
                         <option value="surat-keluar">Surat Keluar</option>
                         <option value="sk">SK Kepanitiaan</option>
-                        <option value="sk-lainnya">SK & Data Lainnya</option>
                         <option value="kepegawaian">Kepegawaian</option>
                         <option value="absen">Rekap Absen Pegawai</option>
                     </select>
                 </div>
                 <div id="fieldNamaPegawai" class="hidden">
-                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1 text-blue-600">Pilih Nama Pegawai</label>
-                    <select id="inEmployeeName" class="w-full p-3 mt-1 border-2 border-blue-200 rounded-xl outline-none focus:border-blue-500 bg-blue-50 font-bold">
-                        <option value="">-- Pilih Pegawai --</option>
-                        <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
-			            <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
-                        <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
-                        <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
-                        <option value="Fr. METODIUS LAMBE, HHK">Fr. METODIUS LAMBE, HHK</option>
-                        <option value="RATTONO SAMBOKARUA, S.Pd., Gr.">RATTONO SAMBOKARUA, S.Pd., Gr.</option>
-                        <option value="SERLIANTY SULI', S.Pd., Gr.">SERLIANTY SULI', S.Pd., Gr.</option>
-                        <option value="NOPIANTI,S.Pd.">NOPIANTI,S.Pd.</option>
-                        <option value="LEONADRDUS BONGGABULAWAN,S.Pd., Gr.">LEONADRDUS BONGGABULAWAN,S.Pd., Gr.</option>
-                        <option value="AGUSTINA BULAWAN, S.Pd.">AGUSTINA BULAWAN, S.Pd.</option>
-                        <option value="DEMMALIO, S.Pd., Gr.">DEMMALIO, S.Pd., Gr.</option>
-                        <option value="JUANDA HIRAWAN, S.Pd., Gr.">JUANDA HIRAWAN, S.Pd., Gr.</option>
-                        <option value="MARIA FRANSISKA SEPE, S.Si, Gr.">MARIA FRANSISKA SEPE, S.Si, Gr.</option>
-                        <option value="HESRON PALILLINAN, S.Pd., Gr.">HESRON PALILLINAN, S.Pd., Gr.</option>
-                        <option value="FRIEDMI EKA FERONICA, S.Pd., Gr.">FRIEDMI EKA FERONICA, S.Pd., Gr.</option>
-                        <option value="OCTOVIANUS DEMMARRAPA, S.Pd., Gr.">OCTOVIANUS DEMMARRAPA, S.Pd., Gr.</option>
-                        <option value="SUDIRMAN FIRMIN, SS, M.Pd.">SUDIRMAN FIRMIN, SS, M.Pd.</option>
-                        <option value="ASTUTI KRISDAYANTI, S.Pd., Gr.">ASTUTI KRISDAYANTI, S.Pd., Gr.</option>
-                        <option value="ELDI SINTYA, S.Pd., Gr.">ELDI SINTYA, S.Pd., Gr.</option>
-                        <option value="YUDYARWIN, S.Pd., Gr.">YUDYARWIN, S.Pd., Gr.</option>
-                        <option value="CRISTIN OKTAVIA, S.Pd., Gr.">CRISTIN OKTAVIA, S.Pd., Gr.</option>
-                        <option value="AGUSTINA POLIK, S.Pd.">AGUSTINA POLIK, S.Pd.</option>
-                        <option value="LUSIMASNORITU, S.Pd.">LUSIMASNORITU, S.Pd.</option>
-                        <option value="PETRINA, S.Pd., Gr.">PETRINA, S.Pd., Gr.</option>
-                        <option value="WINDI LEONIKA, S.Pd.">WINDI LEONIKA, S.Pd.</option>
-                        <option value="KELVIN B, S.Pd.">KELVIN B, S.Pd.</option>
-                        <option value="MERY, S.Tr.Kom.">MERY, S.Tr.Kom.</option>
-                        <option value="MARIA EIBEL FRANKELISTYA, S.Psi.">MARIA EIBEL FRANKELISTYA, S.Psi.</option>
-						<option value="MELDA PARE, S.Pd.">MELDA PARE, S.Pd.</option>
-                        <option value="STEPHEN EKO SETIAWAN">STEPHEN EKO SETIAWAN</option>
-                        <option value="MARKUS D.">MARKUS D.</option>
-                        <option value="MUHIDIN">MUHIDIN</option>
-                        <option value="ASTIN SRININGSI, S.Kep.">ASTIN SRININGSI, S.Kep.</option>
-                        <option value="WENNI RAVILLA, S.IP.">WENNI RAVILLA, S.IP.</option>
-                        <option value="LOBIANUS ARDI">LOBIANUS ARDI</option>               
-                        <!-- Tambahkan nama pegawai yang lain di sini -->
-                    </select>
-                </div>            
+                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1 text-blue-600">Nama Pegawai / Instansi</label>
+                    <input type="text" id="inEmployeeName" placeholder="Nama Lengkap / Nama Instansi" class="w-full p-3 mt-1 border-2 border-blue-200 rounded-xl outline-none focus:border-blue-500 bg-blue-50 font-bold">
+                </div>
                 <div>
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Judul Dokumen</label>
                     <input type="text" id="inTitle" placeholder="Misal: SK Panitia Ujian Semester" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
@@ -580,7 +535,7 @@
                 masukAplikasi();
             } else if (passInput === "user123") {
                 userRole = 'user';
-                loggedInName = 'created by m@rkus_tu';
+                loggedInName = 'Guru & Staf';
                 loggedInUsername = 'user';
                 masukAplikasi();
             } else {
@@ -621,7 +576,7 @@
                 // Tampilkan profil pengguna aktif di sidebar bawah
                 const userProfileEl = document.querySelector('#userProfile span');
                 if (userProfileEl) {
-                    userProfileEl.innerText = loggedInName.toLowerCase();
+                    userProfileEl.innerText = `${loggedInName} (${userRole.toUpperCase()})`;
                 }
 
                 // JALUR MEMBACA GANDA (FALLBACK DUAL-PATH):
@@ -753,7 +708,7 @@
                 // LOGIKA PENGELOMPOKKAN (Khusus Kepegawaian)
                 const groups = {};
                 filtered.forEach(item => {
-                   let groupName = (item.employeeName && item.employeeName.trim() !== "") ? item.employeeName.trim() : "Pegawai Umum";
+                    let groupName = item.employeeName || "Pegawai Umum";
                     if (!groups[groupName]) groups[groupName] = [];
                     groups[groupName].push(item);
                 });
@@ -779,11 +734,12 @@
                         groups[group].forEach(doc => {
                             htmlContent += `
                                 <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white transition-all">
-                                    <td class="p-2 pl-6">
+                                    <td class="p-4 pl-8">
                                         <a href="${doc.link}" target="_blank" class="judul-link block">
                                             <div class="text-xs font-bold text-gray-700">
                                                 <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
                                             </div>
+                                            <div class="text-[9px] text-blue-500 font-semibold mt-0.5 ml-6">${group}</div>
                                         </a>
                                     </td>
                                     ${userRole === 'admin' ? `
@@ -825,10 +781,7 @@
         }
 
         // Menyimpan Dokumen Baru ke Firestore secara Dinamis dengan Tanggal Otomatis
-      
-			<button id="btnSimpan" onclick="prosesSimpan()" class="w-full py-3 bg-blue-600 text-white ...">
-    SIMPAN DATA
-</button>
+        document.getElementById('btnSimpan').onclick = async () => {
             if (userRole !== 'admin') return;
 
             // Membuat Tanggal Otomatis dengan Format Indonesia (Contoh: 19 Mei 2026)
@@ -917,40 +870,16 @@
             
             render();
         };
-   // Memanggil fungsi dari Code.gs (Server)
-<script>
-    // Fungsi untuk proses Login (Satu pintu untuk semua pengecekan)
-    function prosesLogin() {
-        const nama = document.getElementById('inEmployeeName').value;
-        const sandi = document.getElementById('inPassCheck').value;
-        const btn = document.querySelector('button[onclick="prosesLogin()"]');
 
-        if (!nama || !sandi) {
-            alert("Harap isi nama dan password!");
-            return;
-        }
+        // Menghubungkan tombol Enter dengan aksi masuk
+        document.getElementById('loginPass').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') prosesLogin();
+        });
 
-        btn.innerText = "Memverifikasi...";
-
-        // Memanggil fungsi dari Code.gs (Server)
-        google.script.run
-            .withSuccessHandler(function(response) {
-                btn.innerText = "Masuk Ke Sistem";
-                if (response.status === "berhasil") {
-                    alert("Login Berhasil!");
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('mainContent').classList.remove('hidden');
-                } else {
-                    alert(response.pesan);
-                }
-            })
-            .withFailureHandler(function(err) {
-                btn.innerText = "Masuk Ke Sistem";
-                alert("Terjadi kesalahan koneksi: " + err);
-            })
-            .cekSandiPegawai(nama, sandi);
-    }
-</script>
+        // Event listener kustom modal konfirmasi yes
+        document.getElementById('customConfirmYesBtn').onclick = () => {
+            closeCustomConfirm(true);
+        };
+    </script>
 </body>
 </html>
- 

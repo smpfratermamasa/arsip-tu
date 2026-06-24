@@ -3017,16 +3017,13 @@ Apakah Anda ingin saya tunjukkan di mana letak Firebase Console agar Anda bisa m
                 overlay.classList.add('hidden');
             }
         };
-
         // PROSES MASUK KATA SANDI (LOGIN AWAL YANG DIKEMBALIKAN)
         window.prosesLogin = () => {
             const passInput = document.getElementById('loginPass').value;
-
             if (!passInput) {
                 showCustomAlert("Harap isi Kata Sandi!");
                 return;
             }
-
             // Memeriksa sandi Admin atau User
             if (passInput === "admintufrms") {
                 userRole = 'admin';

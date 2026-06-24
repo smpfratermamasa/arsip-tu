@@ -1334,7 +1334,7 @@
 
         window.toggleNamaField = () => {
             const cat = document.getElementById('inCat').value;
-            if (cat === 'kepegawaian') {
+            if (cat === 'kepegawaian'|| cat === 'absen') {
                 document.getElementById('fieldNamaPegawai').classList.remove('hidden');
             } else {
                 document.getElementById('fieldNamaPegawai').classList.add('hidden');
@@ -1387,6 +1387,47 @@
         document.getElementById('customConfirmYesBtn').onclick = () => {
             closeCustomConfirm(true);
         };
+    </script>
+      <script>
+        // Fungsi ini dipanggil saat user mengklik nama pegawai dalam daftar
+        function mintaAksesData(idPegawai) {
+            Swal.fire({
+                title: 'Verifikasi Keamanan',
+                text: 'Masukkan sandi pribadi untuk melihat data ini:',
+                input: 'password',
+                inputPlaceholder: 'Masukkan sandi...',
+                showCancelButton: true,
+                confirmButtonText: 'Buka Data',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#1e3a8a'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const sandiInput = result.value;
+                    
+                    // Menampilkan loader
+                    Swal.fire({ title: 'Memverifikasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
+
+                    // Mengirim sandi ke server untuk dicocokkan dengan data pegawai tersebut
+                    google.script.run
+                        .withSuccessHandler(function(response) {
+                            if (response.status === "berhasil") {
+                                Swal.fire('Berhasil!', 'Data terbuka.', 'success');
+                                // Tampilkan data pegawai (sesuaikan dengan fungsi render data Anda)
+                                tampilkanDetailData(response.data);
+                            } else {
+                                Swal.fire('Gagal!', 'Sandi salah atau akses ditolak.', 'error');
+                            }
+                        })
+                        .verifikasiSandiPrivat(idPegawai, sandiInput);
+                }
+            });
+        }
+
+        function tampilkanDetailData(data) {
+            // Logika untuk menampilkan detail data di modal atau area utama
+            console.log("Data diterima:", data);
+            // ... render ke modal ...
+        }
     </script>
 </body>
 </html>

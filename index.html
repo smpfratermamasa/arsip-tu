@@ -935,7 +935,29 @@
         alert("Pilih nama dan masukkan password!");
         return;
     }
-
+<script>
+    function prosesLogin() {
+        const sandi = document.getElementById('loginPass').value;
+        const btn = document.querySelector('button[onclick="prosesLogin()"]');
+        
+        btn.innerText = "Memproses...";
+        
+        // Memanggil fungsi validasiLogin di server
+        google.script.run
+            .withSuccessHandler(function(res) {
+                btn.innerText = "Masuk Ke Sistem";
+                if (res.status === "sukses") {
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('mainContent').classList.remove('hidden');
+                } else {
+                    alert("Kata sandi salah!");
+                }
+            })
+            .validasiLogin(sandi);
+    }
+</script>
+</body>
+</html>
     // Memanggil fungsi dari Code.gs (Server)
 <script>
     google.script.run

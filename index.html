@@ -919,101 +919,37 @@
         };
    // Memanggil fungsi dari Code.gs (Server)
 <script>
-    google.script.run
-        .withSuccessHandler(function(response) {
-            if (response.status === "berhasil") {
-                alert("Password benar! Data sedang disimpan...");
-                // PANGGIL FUNGSI SIMPAN DATA ANDA DI SINI
-                // Contoh: kirimDataKeSheet(); 
-            } else {
-                alert(response.pesan);
-            }
-        })
-        .cekSandiPegawai(nama, sandi);
-}
-    </script>
-
-        // Menghubungkan tombol Enter dengan aksi masuk
-        document.getElementById('loginPass').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') prosesLogin();
-        });
-
-        // Event listener kustom modal konfirmasi yes
-        document.getElementById('customConfirmYesBtn').onclick = () => {
-            closeCustomConfirm(true);
-        };
-		function prosesSimpan() {
-    const nama = document.getElementById('inEmployeeName').value;
-    const sandi = document.getElementById('inPassCheck').value;
-
-    if (!nama || !sandi) {
-        alert("Pilih nama dan masukkan password!");
-        return;
-    }
-<script>
+    // Fungsi untuk proses Login (Satu pintu untuk semua pengecekan)
     function prosesLogin() {
-        const sandi = document.getElementById('loginPass').value;
-        const btn = document.querySelector('button[onclick="prosesLogin()"]');
-        
-        btn.innerText = "Memproses...";
-        
-        // Memanggil fungsi validasiLogin di server
-        google.script.run
-            .withSuccessHandler(function(res) {
-                btn.innerText = "Masuk Ke Sistem";
-                if (res.status === "sukses") {
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('mainContent').classList.remove('hidden');
-                } else {
-                    alert("Kata sandi salah!");
-                }
-            })
-            .validasiLogin(sandi);
-    }
-</script>
-	<script>
-    // 1. Fungsi Login
-    function prosesLogin() {
-        const sandi = document.getElementById('loginPass').value;
-        const btn = document.querySelector('button[onclick="prosesLogin()"]');
-        
-        btn.innerText = "Memverifikasi...";
-        
-        google.script.run
-            .withSuccessHandler(function(res) {
-                btn.innerText = "Masuk Ke Sistem";
-                // Asumsi: res adalah boolean atau string 'sukses'
-                if (res === "sukses" || res.status === "sukses") {
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('mainContent').classList.remove('hidden');
-                } else {
-                    alert("Kata sandi salah!");
-                }
-            })
-            .validasiLogin(sandi);
-    }
-
-    // 2. Fungsi Simpan (Pastikan Code.gs Anda memiliki fungsi cekSandiPegawai)
-    function prosesSimpan() {
         const nama = document.getElementById('inEmployeeName').value;
         const sandi = document.getElementById('inPassCheck').value;
-        
+        const btn = document.querySelector('button[onclick="prosesLogin()"]');
+
+        if (!nama || !sandi) {
+            alert("Harap isi nama dan password!");
+            return;
+        }
+
+        btn.innerText = "Memverifikasi...";
+
+        // Memanggil fungsi dari Code.gs (Server)
         google.script.run
             .withSuccessHandler(function(response) {
+                btn.innerText = "Masuk Ke Sistem";
                 if (response.status === "berhasil") {
-                    alert("Password benar! Data sedang disimpan...");
-                    // Panggil fungsi kirim data Anda di sini
+                    alert("Login Berhasil!");
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('mainContent').classList.remove('hidden');
                 } else {
                     alert(response.pesan);
                 }
             })
+            .withFailureHandler(function(err) {
+                btn.innerText = "Masuk Ke Sistem";
+                alert("Terjadi kesalahan koneksi: " + err);
+            })
             .cekSandiPegawai(nama, sandi);
     }
-
-    // 3. Fungsi Tambahan lainnya
-    function logout() { location.reload(); }
-    function bukaModal() { document.getElementById('modalInput').classList.remove('hidden'); }
-    function tutupModal() { document.getElementById('modalInput').classList.add('hidden'); }
 </script>
 </body>
 </html>

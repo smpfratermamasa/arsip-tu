@@ -423,6 +423,10 @@
                 </h2>
                 <button onclick="tutupModal()" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-times fa-lg"></i></button>
             </div>
+			<div id="fieldPassword" class="mt-4">
+    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Password Anda</label>
+    <input type="password" id="inPassCheck" placeholder="Masukkan password" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
+</div>
             <div class="space-y-4 text-xs md:text-sm">
                 <div>
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
@@ -821,7 +825,10 @@
         }
 
         // Menyimpan Dokumen Baru ke Firestore secara Dinamis dengan Tanggal Otomatis
-        document.getElementById('btnSimpan').onclick = async () => {
+      
+			<button id="btnSimpan" onclick="prosesSimpan()" class="w-full py-3 bg-blue-600 text-white ...">
+    SIMPAN DATA
+</button>
             if (userRole !== 'admin') return;
 
             // Membuat Tanggal Otomatis dengan Format Indonesia (Contoh: 19 Mei 2026)
@@ -920,6 +927,28 @@
         document.getElementById('customConfirmYesBtn').onclick = () => {
             closeCustomConfirm(true);
         };
+		function prosesSimpan() {
+    const nama = document.getElementById('inEmployeeName').value;
+    const sandi = document.getElementById('inPassCheck').value;
+
+    if (!nama || !sandi) {
+        alert("Pilih nama dan masukkan password!");
+        return;
+    }
+
+    // Memanggil fungsi dari Code.gs (Server)
+    google.script.run
+        .withSuccessHandler(function(response) {
+            if (response.status === "berhasil") {
+                alert("Password benar! Data sedang disimpan...");
+                // PANGGIL FUNGSI SIMPAN DATA ANDA DI SINI
+                // Contoh: kirimDataKeSheet(); 
+            } else {
+                alert(response.pesan);
+            }
+        })
+        .cekSandiPegawai(nama, sandi);
+}
     </script>
 </body>
 </html>

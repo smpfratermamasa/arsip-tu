@@ -271,9 +271,6 @@
 
 
     <div class="bg-sekolah"></div>
-
-
-
     <!-- MODAL CUSTOM PEMBERITAHUAN (MENGGANTIKAN ALERT) -->
 
     <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
@@ -497,11 +494,7 @@
                 </button>
 
             </div>
-
-
-
             <!-- Daftar Menu Kategori di Samping -->
-
             <div class="flex-grow p-4 space-y-0.5 overflow-y-auto no-scrollbar" id="menu-tab">
 
                 <button data-cat="beranda" class="btn-tab tab-aktif w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold transition-all hover:bg-white/10">
@@ -510,13 +503,13 @@
 
                 </button>
 
-<button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                <button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
 
-                    <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Data Kepegawaian
+                    <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Arsip Kepegawaian
 
                 </button>
 
-<button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                <button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
 
                     <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> SK Kepanitiaan
 
@@ -536,11 +529,11 @@
 
                 <button data-cat="absen" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
 
-                    <i class="fas fa-clipboard-list w-5 text-center text-sm text-blue-200"></i> Rekap Absen
+                    <i class="fas fa-clipboard-list w-5 text-center text-sm text-blue-200"></i> Rekap Absen Pegawai
 
                 </button>
 
-<button data-cat="sk-lainnya" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+                <button data-cat="sk-lainnya" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
 
                     <i class="fas fa-folder-open w-5 text-center text-sm text-blue-200"></i> Arsip Lainnya
 
@@ -643,9 +636,6 @@
                     </div>
 
                 </div>
-
-
-
                 <!-- SEKTOR STAF / STRUKTUR BARU -->
 
                 <div class="mt-6 pt-4 border-t border-gray-200">
@@ -855,25 +845,15 @@
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
 
                     <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-blue-50 font-bold text-blue-800">
-
-                        <option value="surat-masuk">Surat Masuk</option>
-
-                        <option value="surat-keluar">Surat Keluar</option>
-
+                        <option value="kepegawaian">Arsip Kepegawaian</option>
                         <option value="sk">SK Kepanitiaan</option>
-
-                        <option value="sk-lainnya">SK & Data Lainnya</option>
-
-                        <option value="kepegawaian">Kepegawaian</option>
-
+                        <option value="surat-masuk">Surat Masuk</option>
+                        <option value="surat-keluar">Surat Keluar</option>
                         <option value="absen">Rekap Absen Pegawai</option>
-
+                        <option value="sk-lainnya">Arsip Lainnya</option>
                     </select>
-
                 </div>
-
                 <div id="fieldNamaPegawai" class="hidden">
-
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1 text-blue-600">Pilih Nama Pegawai</label>
 
                     <select id="inEmployeeName" class="w-full p-3 mt-1 border-2 border-blue-200 rounded-xl outline-none focus:border-blue-500 bg-blue-50 font-bold">
@@ -881,9 +861,7 @@
                         <option value="">-- Pilih Pegawai --</option>
 
                         <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
-
-            <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
-
+                        <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
                         <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
 
                         <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
@@ -936,7 +914,7 @@
 
                         <option value="MARIA EIBEL FRANKELISTYA, S.Psi.">MARIA EIBEL FRANKELISTYA, S.Psi.</option>
 
-<option value="MELDA PARE, S.Pd.">MELDA PARE, S.Pd.</option>
+                        <option value="MELDA PARE, S.Pd.">MELDA PARE, S.Pd.</option>
 
                         <option value="STEPHEN EKO SETIAWAN">STEPHEN EKO SETIAWAN</option>
 

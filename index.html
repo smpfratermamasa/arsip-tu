@@ -917,6 +917,21 @@
             
             render();
         };
+   // Memanggil fungsi dari Code.gs (Server)
+<script>
+    google.script.run
+        .withSuccessHandler(function(response) {
+            if (response.status === "berhasil") {
+                alert("Password benar! Data sedang disimpan...");
+                // PANGGIL FUNGSI SIMPAN DATA ANDA DI SINI
+                // Contoh: kirimDataKeSheet(); 
+            } else {
+                alert(response.pesan);
+            }
+        })
+        .cekSandiPegawai(nama, sandi);
+}
+    </script>
 
         // Menghubungkan tombol Enter dengan aksi masuk
         document.getElementById('loginPass').addEventListener('keypress', (e) => {
@@ -958,31 +973,4 @@
 </script>
 </body>
 </html>
-    // Memanggil fungsi dari Code.gs (Server)
-<script>
-    google.script.run
-        .withSuccessHandler(function(response) {
-            if (response.status === "berhasil") {
-                alert("Password benar! Data sedang disimpan...");
-                // PANGGIL FUNGSI SIMPAN DATA ANDA DI SINI
-                // Contoh: kirimDataKeSheet(); 
-            } else {
-                alert(response.pesan);
-            }
-        })
-        .cekSandiPegawai(nama, sandi);
-}
-    </script>
-	<script>
-        function prosesLogin() {
-            const sandi = document.getElementById('loginPass').value;
-            // ... (kode fungsi prosesLogin Anda)
-            console.log("Tombol diklik, sandi yang dimasukkan: " + sandi);
-        }
-
-        // Tambahkan fungsi lainnya di sini
-        function logout() {
-             location.reload();
-        }
-    </script>
-</body>
+ 

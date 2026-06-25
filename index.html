@@ -452,7 +452,7 @@
             }
         });
 
-        // Fungsi Validasi Akses Link yang diperbarui
+        // Fungsi Validasi Akses Link
         window.cekAkses = async (link, grup) => {
             const { value: password } = await Swal.fire({
                 title: 'Masukkan Sandi Akses',
@@ -464,12 +464,14 @@
                 allowOutsideClick: false
             });
 
-            // Periksa jika password tidak kosong dan sesuai
+            console.log("Input password:", password); // Debugging
+            
             if (password !== undefined && password !== null) {
                 if (password.trim() === SANDI_SISTEM) {
                     Swal.fire('Berhasil', 'Membuka dokumen...', 'success');
                     window.open(link, '_blank');
                 } else {
+                    console.log("Sandi salah, input adalah:", password);
                     Swal.fire('Gagal', 'Sandi salah!', 'error');
                 }
             }
@@ -478,7 +480,9 @@
         // Fungsi Login Utama
         window.prosesLogin = () => {
             const pass = document.getElementById('loginPass').value;
-            if(pass === SANDI_SISTEM) {
+            console.log("Login password:", pass); // Debugging
+            
+            if(pass.trim() === SANDI_SISTEM) {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
             } else {

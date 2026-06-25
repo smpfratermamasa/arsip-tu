@@ -1046,20 +1046,7 @@
         <h1 class="text-2xl font-bold mb-4">Arsip Kepegawaian</h1>
         <div id="arsip-container"></div>
     </div>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
-            authDomain: "arsip-digital-baru.firebaseapp.com",
-            projectId: "arsip-digital-baru",
-            storageBucket: "arsip-digital-baru.appspot.com",
-            messagingSenderId: "789604072965",
-            appId: "1:789604072965:web:42a2c6be8ac330010a666c"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
+    
         let dataSemua = [];
         let kategoriSekarang = 'beranda';
         let filterKata = '';

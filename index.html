@@ -439,47 +439,31 @@
                         <option value="WENNI RAVILLA, S.IP.">WENNI RAVILLA, S.IP.</option>
                         <option value="LOBIANUS ARDI">LOBIANUS ARDI</option>               
                         <!-- Tambahkan nama pegawai yang lain di sini -->
-
                     </select>
-
                 </div>            
-
                 <div>
-
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Judul Dokumen</label>
-
                     <input type="text" id="inTitle" placeholder="Misal: SK Panitia Ujian Semester" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
-
                 </div>
-
                 <div>
-
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Link File Drive</label>
-
                     <input type="text" id="inLink" placeholder="Tempel Link Shareable" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none">
-
                 </div>
-
             </div>
-
             <div class="mt-6">
-
                 <button id="btnSimpan" class="w-full py-3 bg-blue-600 text-white rounded-xl font-black text-base shadow-xl shadow-blue-200 hover:bg-blue-700 active:scale-95 transition-all">
-
                     SIMPAN DATA
-
                 </button>
             </div>
         </div>
     </div>
+
     
-    
-    <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+     <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
         import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
             authDomain: "arsip-digital-baru.firebaseapp.com",
@@ -489,12 +473,10 @@
             appId: "1:789604072965:web:42a2c6be8ac330010a666c"
         };
 
-        // Inisialisasi Firebase secara berurutan
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // Inisialisasi Auth anonim
         signInAnonymously(auth).then(() => {
             console.log("Terhubung ke Firebase");
             const statusEl = document.getElementById('status');
@@ -502,24 +484,32 @@
                 statusEl.innerText = "ONLINE";
                 statusEl.className = "bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide";
             }
-        }).catch(err => {
-            console.error("Gagal koneksi:", err);
-            const statusEl = document.getElementById('status');
-            if (statusEl) statusEl.innerText = "GAGAL KONEKSI";
         });
 
-        // Fungsi Login
+        // Fungsi Validasi Akses Link
+        window.cekAkses = async (link, grup) => {
+            const { value: password } = await Swal.fire({
+                title: 'Masukkan Sandi Akses',
+                input: 'password',
+                inputPlaceholder: 'Masukkan sandi untuk ' + grup,
+                showCancelButton: true
+            });
+
+            if (password === "admintufrms") {
+                Swal.fire('Berhasil', 'Membuka dokumen...', 'success');
+                window.open(link, '_blank');
+            } else if (password) {
+                Swal.fire('Gagal', 'Sandi salah!', 'error');
+            }
+        };
+
         window.prosesLogin = () => {
             const pass = document.getElementById('loginPass').value;
             if(pass === "admintufrms") {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Akses Ditolak',
-                    text: 'Sandi salah!'
-                });
+                Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Sandi salah!' });
             }
         };
 
@@ -530,7 +520,6 @@
     </script>
 </head>
 <body class="bg-slate-100">
-    <!-- Layar Login -->
     <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-blue-900">
         <div class="bg-white p-8 rounded-3xl w-80 text-center shadow-xl">
             <h1 class="text-xl font-black text-blue-900 mb-4">ARSIP DIGITAL</h1>
@@ -539,7 +528,6 @@
         </div>
     </div>
 
-    <!-- Konten Utama -->
     <div id="mainContent" class="hidden h-screen flex">
         <aside id="sidebar" class="w-64 bg-blue-900 text-white p-6 transition-transform transform md:translate-x-0 -translate-x-full absolute md:static z-40 h-full">
             <h2 class="font-bold mb-6">MENU</h2>
@@ -550,10 +538,12 @@
         <main class="flex-1 p-6">
             <button onclick="toggleMobileSidebar()" class="md:hidden p-2 bg-white rounded shadow">Menu</button>
             <h1 class="text-2xl font-black text-blue-900 mt-4">Selamat Datang di Sistem Arsip</h1>
+            <p class="mt-4">Gunakan fungsi <code>cekAkses('URL_LINK', 'Nama Grup')</code> pada tombol menu Anda.</p>
         </main>
     </div>
 
 
+    
     
     <div id="mainContent" class="hidden h-screen flex">
         <aside id="sidebar" class="w-64 bg-blue-900 text-white p-6 transition-transform transform md:translate-x-0 -translate-x-full absolute md:static z-40 h-full">
@@ -561,7 +551,6 @@
             <div id="status" class="bg-gray-500 text-[10px] w-fit px-2 rounded">MENGHUBUNGKAN...</div>
             <button onclick="location.reload()" class="mt-6 w-full text-left p-2 hover:bg-blue-800 rounded">Beranda</button>
         </aside>
-        
         <main class="flex-1 p-6">
             <button onclick="toggleMobileSidebar()" class="md:hidden p-2 bg-white rounded shadow">Menu</button>
             <h1 class="text-2xl font-black text-blue-900 mt-4">Selamat Datang di Sistem Arsip</h1>
@@ -574,22 +563,18 @@
         <input type="password" id="initial-password" placeholder="Masukkan Sandi Akses..." class="w-full p-2 border rounded mb-4">
         <button onclick="cekLogin()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-800">Masuk</button>
     </div>
-
     <div id="main-app" class="hidden">
         <h1 class="text-2xl font-bold mb-4">Arsip Kepegawaian</h1>
         <div id="arsip-container"></div>
     </div>
-    
-        // Sistem Kustom Alert
+  // Sistem Kustom Alert
         window.showCustomAlert = (msg) => {
             document.getElementById('customAlertMsg').innerText = msg;
             document.getElementById('customAlert').classList.remove('hidden');
         };
-
         window.closeCustomAlert = () => {
             document.getElementById('customAlert').classList.add('hidden');
         };
-
         // Sistem Kustom Konfirmasi (Hapus Berkas)
         let confirmResolve = null;
         window.showCustomConfirm = (msg) => {
@@ -599,12 +584,10 @@
                 confirmResolve = resolve;
             });
         };
-
         window.closeCustomConfirm = (bool) => {
             document.getElementById('customConfirm').classList.add('hidden');
             if (confirmResolve) confirmResolve(bool);
         };
-
         // Logika Toggle Mobile Sidebar
         window.toggleMobileSidebar = () => {
             const sidebar = document.getElementById('sidebar');
@@ -892,9 +875,7 @@
                 link: document.getElementById('inLink').value,
                 employeeName: document.getElementById('inEmployeeName').value || ''
             };
-
             if(!docBaru.title || !docBaru.link) return;
-
             try {
                 // Untuk dokumen BARU, kita simpan di jalur utama terstruktur agar aman
                 const arsipCol = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
@@ -920,7 +901,6 @@
             filterKata = e.target.value;
             render();
         };
-
         window.toggleNamaField = () => {
             const cat = document.getElementById('inCat').value;
             if (cat === 'kepegawaian') {
@@ -929,7 +909,6 @@
                 document.getElementById('fieldNamaPegawai').classList.add('hidden');
             }
         };
-
         window.bukaModal = () => {
             toggleNamaField();
             document.getElementById('modalInput').classList.remove('hidden');

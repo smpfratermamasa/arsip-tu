@@ -1401,6 +1401,7 @@
             // Tambahkan nama pegawai lainnya di sini
         };
 
+       // Perbarui fungsi cekAkses di dalam script Anda
         window.cekAkses = async (link, namaPegawai) => {
             const { value: password } = await Swal.fire({
                 title: 'Verifikasi Keamanan',
@@ -1414,8 +1415,13 @@
             });
 
             if (password) {
-                // Cek apakah password sesuai dengan yang ada di daftar
-                if (passwordPegawai[namaPegawai] && passwordPegawai[namaPegawai] === password) {
+                // Logika Admin: Jika password yang dimasukkan adalah sandi Admin
+                const isUserAdmin = (password === "admintufrms");
+                
+                // Logika Pegawai: Jika password cocok dengan pegawai tersebut
+                const isPegawaiValid = (passwordPegawai[namaPegawai] === password);
+
+                if (isUserAdmin || isPegawaiValid) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Akses Diberikan',
@@ -1427,7 +1433,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Akses Ditolak',
-                        text: 'Sandi salah!'
+                        text: 'Sandi salah atau Anda tidak memiliki akses ke arsip ini!'
                     });
                 }
             }

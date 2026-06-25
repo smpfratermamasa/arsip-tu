@@ -1388,90 +1388,73 @@
             closeCustomConfirm(true);
         };
     </script>
-      <script>
-        // Fungsi ini dipanggil saat user mengklik nama pegawai dalam daftar
-        function mintaAksesData(idPegawai) {
-            Swal.fire({
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getFirestore, collection, onSnapshot, query, addDoc, doc, deleteDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+
+        // Daftar password untuk setiap pegawai
+        const passwordPegawai = {
+            "MARKUS D.": "pass123",
+            "STEPHEN EKO SETIAWAN": "pass456",
+            "Fr. SIMEON LOPI KOBAN, HHK": "pass789"
+            // Tambahkan nama pegawai lainnya di sini
+        };
+
+        window.cekAkses = async (link, namaPegawai) => {
+            const { value: password } = await Swal.fire({
                 title: 'Verifikasi Keamanan',
-                text: 'Masukkan sandi pribadi untuk melihat data ini:',
+                text: `Masukkan sandi untuk membuka arsip ${namaPegawai}:`,
                 input: 'password',
-                inputPlaceholder: 'Masukkan sandi...',
+                inputPlaceholder: 'Sandi...',
                 showCancelButton: true,
-                confirmButtonText: 'Buka Data',
+                confirmButtonText: 'Buka Arsip',
                 cancelButtonText: 'Batal',
                 confirmButtonColor: '#1e3a8a'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const sandiInput = result.value;
-                    
-                    // Menampilkan loader
-                    Swal.fire({ title: 'Memverifikasi...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); } });
-
-                    // Mengirim sandi ke server untuk dicocokkan dengan data pegawai tersebut
-                    google.script.run
-                        .withSuccessHandler(function(response) {
-                            if (response.status === "berhasil") {
-                                Swal.fire('Berhasil!', 'Data terbuka.', 'success');
-                                // Tampilkan data pegawai (sesuaikan dengan fungsi render data Anda)
-                                tampilkanDetailData(response.data);
-                            } else {
-                                Swal.fire('Gagal!', 'Sandi salah atau akses ditolak.', 'error');
-                            }
-                        })
-                        .verifikasiSandiPrivat(idPegawai, sandiInput);
-                }
             });
-        }
 
-        function tampilkanDetailData(data) {
-            // Logika untuk menampilkan detail data di modal atau area utama
-            console.log("Data diterima:", data);
-            // ... render ke modal ...
-        }
-    </script>
-    <script>
-    /**
-     * Data password pegawai (Contoh)
-     * Format: { 'ID_PEGAWAI': 'PASSWORD_PEGAWAI' }
-     */
-    const dataPassword = {
-        "P001": "rahasia123",
-        "P002": "sandi456",
-        "P003": "admin789"
-    };
-
-    /**
-     * Fungsi untuk membuka file arsip secara lokal
-     * @param {string} idPegawai - ID Pegawai yang ditargetkan
-     */
-    async function bukaArsip(idPegawai) {
-        const { value: password } = await Swal.fire({
-            title: 'Verifikasi Keamanan',
-            text: 'Masukkan password pribadi Anda:',
-            input: 'password',
-            inputPlaceholder: 'Masukkan password',
-            showCancelButton: true,
-            confirmButtonText: 'Buka Arsip',
-            cancelButtonText: 'Batal',
-            confirmButtonColor: '#1e3a8a'
-        });
-
-        if (password) {
-            // Cek apakah ID ada dan apakah password cocok
-            if (dataPassword[idPegawai] && dataPassword[idPegawai] === password) {
-                Swal.fire('Berhasil!', 'Password benar. Membuka arsip...', 'success');
-                // Panggil fungsi untuk menampilkan arsip Anda di sini
-                tampilkanDetailData(idPegawai);
-            } else {
-                Swal.fire('Akses Ditolak', 'Password salah atau Anda tidak memiliki akses ke arsip ini.', 'error');
+            if (password) {
+                // Cek apakah password sesuai dengan yang ada di daftar
+                if (passwordPegawai[namaPegawai] && passwordPegawai[namaPegawai] === password) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Akses Diberikan',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    window.open(link, '_blank');
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Akses Ditolak',
+                        text: 'Sandi salah!'
+                    });
+                }
             }
-        }
-    }
+        };
 
-    function tampilkanDetailData(idPegawai) {
-        console.log("Membuka arsip untuk:", idPegawai);
-        // Logika tampilan Anda
-    }
-</script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
+            authDomain: "arsip-digital-baru.firebaseapp.com",
+            projectId: "arsip-digital-baru",
+            storageBucket: "arsip-digital-baru.appspot.com",
+            messagingSenderId: "789604072965",
+            appId: "1:789604072965:web:42a2c6be8ac330010a666c"
+        };
+        
+        // ... existing code ...
+
+        function render() {
+            // ... (kode awal render tetap sama) ...
+            
+            // Di bagian loop Kepegawaian, ubah link menjadi button:
+            // Ganti bagian <a>...</a> dengan:
+            /*
+            <button onclick="cekAkses('${doc.link}', '${group}')" class="text-left w-full block judul-link">
+                <div class="text-xs font-bold text-gray-700">
+                    <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
+                </div>
+            </button>
+        </script>
 </body>
 </html>

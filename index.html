@@ -1,891 +1,1081 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARSIP DIGITAL - TATA USAHA SMP FRATER MAMASA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <script>
-        function loadFallbackLogo(targetId) {
-            const target = document.getElementById(targetId);
-            if (target) {
-                // Menggunakan placeholder SVG murni yang kebal blokir sebagai logo sekolah jika Drive gagal dimuat
-                target.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e3a8a' rx='15'/><path d='M30 20 L70 20 L80 40 L50 85 L20 40 Z' fill='%23facc15'/><circle cx='50' cy='45' r='12' fill='%23ffffff'/><text x='50' y='49' font-size='10' font-weight='bold' fill='%231e3a8a' text-anchor='middle'>SMP</text></svg>";
-            }
-        }
-    </script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        body { 
-            font-family: sans-serif; 
-            margin: 0;
-            min-height: 100vh;
-            background-color: #f1f5f9;
-        }
-        /* Latar Belakang Gambar Sekolah - Dibuat Sangat Terang Tanpa Kegelapan */
-        .bg-sekolah {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-color: #f1f5f9; 
-            /* Menggunakan filter transparan putih yang sangat terang agar gambar sekolah bersinar cerah */
-            background-image: linear-gradient(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25)), 
-                              url('https://images.weserv.nl/?url=drive.google.com/uc?id=1yLTwIT6zhF9PcyTau-Sos5K7Sh6b4-NN');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        /* Menu Tab Aktif di Sidebar (Warna Biru Navy Terang Mewah) */
-        .tab-aktif { 
-            background-color: #1e3a8a !important; 
-            color: white !important; 
-            border-left: 4px solid #3b82f6 !important;
-            font-weight: 800 !important;
-        }
-       .no-scrollbar::-webkit-scrollbar { display: none; }
-        /* Grup Header Table */
-        .group-header { 
-            cursor: pointer;
-            user-select: none;
-            transition: all 0.2s;
-        }
-        .group-header:hover { background-color: rgba(219, 234, 254, 0.95); }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
-        }
-       /* WARNA BIRU NAVY KHAS SMP FRATER MAMASA (Warna Biru Navy Terang Mewah) */
-        .nav-blue {
-            background-color: #1e3a8a !important; /* Biru Navy Terang Mewah */
-            backdrop-filter: blur(10px);
-        }
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-        }
-        .judul-link {
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .judul-link:hover {
-            color: #2563eb;
-            text-decoration: underline;
-        }
-        .chevron-icon {
-            transition: transform 0.3s ease;
-        }
-        .rotated {
-            transform: rotate(-90deg);
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.4s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        /* ANIMASI TEKS BERJALAN MODERN */
-        .marquee-container {
-            display: flex;
-            overflow: hidden;
-            user-select: none;
-            width: 100%;
-        }
-        .marquee-content {
-            display: flex;
-            gap: 6rem;
-            white-space: nowrap;
-            animation: marquee-animation 35s linear infinite;
-        }
-        /* Jeda saat kursor mouse diarahkan ke teks */
-        .marquee-container:hover .marquee-content {
-            animation-play-state: paused;
-       }
-        @keyframes marquee-animation {
-            0% {
-                transform: translateX(0%);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARSIP DIGITAL - TATA USAHA SMP FRATER MAMASA</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    function loadFallbackLogo(targetId) {
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e3a8a' rx='15'/><path d='M30 20 L70 20 L80 40 L50 85 L20 40 Z' fill='%23facc15'/><circle cx='50' cy='45' r='12' fill='%23ffffff'/><text x='50' y='49' font-size='10' font-weight='bold' fill='%231e3a8a' text-anchor='middle'>SMP</text></svg>";
+      }
+    }
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background-color: #f1f5f9;
+    }
+    .bg-sekolah {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-color: #f1f5f9;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+        url('https://images.weserv.nl/?url=drive.google.com/uc?id=1yLTwIT6zhF9PcyTau-Sos5K7Sh6b4-NN');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    .tab-aktif {
+      background-color: #1e3a8a !important;
+      color: white !important;
+      border-left: 4px solid #3b82f6 !important;
+      font-weight: 800 !important;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .group-header {
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+    .group-header:hover { background-color: rgba(219, 234, 254, 0.95); }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+    }
+    .nav-blue {
+      background-color: #1e3a8a !important;
+      backdrop-filter: blur(10px);
+    }
+    .text-shadow {
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+    .judul-link {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .judul-link:hover {
+      color: #2563eb;
+      text-decoration: underline;
+    }
+    .chevron-icon {
+      transition: transform 0.3s ease;
+    }
+    .rotated {
+      transform: rotate(-90deg);
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .marquee-container {
+      display: flex;
+      overflow: hidden;
+      user-select: none;
+      width: 100%;
+    }
+    .marquee-content {
+      display: flex;
+      gap: 6rem;
+      white-space: nowrap;
+      animation: marquee-animation 35s linear infinite;
+    }
+    .marquee-container:hover .marquee-content {
+      animation-play-state: paused;
+    }
+    @keyframes marquee-animation {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
 </head>
 <body class="min-h-screen overflow-hidden">
-    <div class="bg-sekolah"></div>
-       <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-        <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
-            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
-                <i class="fas fa-info-circle fa-lg"></i>
-            </div>
-            <h3 class="text-base font-bold text-gray-800 mb-2">Pemberitahuan</h3>
-            <p id="customAlertMsg" class="text-xs text-gray-600 mb-6 leading-relaxed"></p>
-            <button onclick="closeCustomAlert()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all">OK</button>
-        </div>
-    </div>
-       <div id="customConfirm" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-        <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
-            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
-                <i class="fas fa-exclamation-triangle fa-lg"></i>
-            </div>
-            <h3 class="text-base font-bold text-gray-800 mb-2">Konfirmasi</h3>
-            <p id="customConfirmMsg" class="text-xs text-gray-600 mb-6 leading-relaxed"></p>
-            <div class="flex gap-3">
-                <button onclick="closeCustomConfirm(false)" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl text-xs uppercase transition-all">Batal</button>
-                <button id="customConfirmYesBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs uppercase transition-all">Hapus</button>
-            </div>
-        </div>
-    </div>
-     <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
-        <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50">
-                   <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
-                <div class="relative w-full h-full flex items-center justify-center">
-                    <img id="imgLogin" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-                         onerror="loadFallbackLogo('imgLogin')"
-                         alt="Logo Sekolah" 
-                         class="w-full h-full object-contain">
-                </div>
-            </div>
-               <div id="formLogin">
-                <h1 class="text-2xl font-black text-blue-900 mb-1 leading-tight">ARSIP DIGITAL</h1>
-                <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-widest leading-none">SMP Frater Mamasa</p>
-                <div class="space-y-4">
-                   <div class="relative">
-                        <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
-                        <input type="password" id="loginPass" placeholder="Masukkan Kata Sandi" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-bold text-sm">
-                    </div>
-                    <button onclick="prosesLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-xl active:scale-95 transition-all uppercase tracking-wider text-xs">
-                        Masuk Ke Sistem
-                    </button>
-                </div>
-                <p class="mt-6 text-[10px] text-gray-400 uppercase font-black tracking-wide italic">Gunakan Sandi Admin atau User</p>
-            </div>
-        </div>
-    </div>
-     <div id="mainContent" class="hidden h-screen w-screen flex flex-col md:flex-row overflow-hidden">
-            <header class="md:hidden w-full nav-blue text-white flex items-center justify-between p-4 border-b border-blue-800 z-50">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleMobileSidebar()" class="text-white hover:text-blue-300 p-2 focus:outline-none">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-                <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-blue-400 p-0.5 flex-shrink-0">
-                    <img id="imgMobile" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-                         onerror="loadFallbackLogo('imgMobile')"
-                         alt="Logo Sekolah" 
-                         class="w-full h-full object-contain">
-                </div>
-                <div class="flex flex-col text-left">
-                    <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
-                    <span class="text-[9px] text-gray-200 font-bold uppercase">SMP Frater Mamasa</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <span id="mobileStatus" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">...</span>
-            </div>
-        </header>
-        <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"></div>
-        <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 nav-blue text-white flex flex-col flex-shrink-0 border-r border-blue-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full z-40">
-                <div class="p-6 border-b border-blue-800 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-blue-400 p-1 flex-shrink-0">
-                        <div class="relative w-full h-full flex items-center justify-center">
-                                 <img id="imgSidebar" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-                                 onerror="loadFallbackLogo('imgSidebar')"
-                                 alt="Logo Sekolah" 
-                                 class="w-full h-full object-contain">
-                        </div>
-                    </div>
-                    <div class="flex flex-col text-left">
-                        <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
-                        <span class="text-[10px] text-gray-200 font-bold uppercase tracking-wider">SMP Frater Mamasa</span>
-                    </div>
-                </div>
-                    <button onclick="toggleMobileSidebar()" class="md:hidden text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-lg"></i>
-                </button>
-            </div>
-             <div class="flex-grow p-4 space-y-0.5 overflow-y-auto no-scrollbar" id="menu-tab">
-                <button data-cat="beranda" class="btn-tab tab-aktif w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold transition-all hover:bg-white/10">
-                    <i class="fas fa-home w-5 text-center text-sm text-blue-200"></i> Beranda
-                </button>
-                <button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Arsip Kepegawaian
-                </button>
-                <button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> SK Kepanitiaan
-                </button>
-                <button data-cat="surat-masuk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-envelope-open-text w-5 text-center text-sm text-blue-200"></i> Surat Masuk
-                </button>
-                <button data-cat="surat-keluar" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-paper-plane w-5 text-center text-sm text-blue-200"></i> Surat Keluar
-                </button>
-                <button data-cat="absen" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-clipboard-list w-5 text-center text-sm text-blue-200"></i> Rekap Absen Pegawai
-                </button>
-                <button data-cat="sk-lainnya" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
-                    <i class="fas fa-folder-open w-5 text-center text-sm text-blue-200"></i> Arsip Lainnya
-                </button>
-           </div>
-            <div class="p-4 border-t border-blue-800 bg-slate-950/40 flex flex-col gap-3">
-            <div class="flex items-center justify-between text-[10px] text-gray-300 font-bold px-2">
-                   <span>STATUS:</span>
-                    <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
-                </div>
-                   <div id="userProfile" class="text-[9px] text-emerald-300 font-black px-2 uppercase tracking-wide flex items-center gap-1.5 leading-none break-all">
-                    <i class="fas fa-user-circle text-xs"></i> <span>MENGHUBUNGKAN...</span>
-                </div>
-                  <div class="text-[9px] text-blue-200 font-semibold px-2 flex items-center gap-1.5 break-all">
-                    <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
-                </div>
-                <button onclick="logout()" class="w-full bg-red-600/90 hover:bg-red-700 text-white py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                    <i class="fas fa-sign-out-alt"></i> Keluar Aplikasi
-                </button>
-            </div>
-        </aside>
-  <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
-        <div class="nav-blue text-white py-2 px-4 rounded-xl mb-3 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
-                <div class="marquee-container">
-                    <div class="marquee-content font-semibold text-blue-100 uppercase">
-                        <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"</span>
-                        <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"
-                    </div>
-                </div>
-            </div>
-         <div id="section-beranda" class="glass-card rounded-2xl p-4 md:p-6 mb-4 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-0">
-                <div>
-                    <div class="text-center mb-4">
-                        <h3 class="text-xl font-black text-blue-900 mb-1 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
-                        <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
-                    </div>
-                   <div class="space-y-3 text-gray-700 leading-relaxed text-xs max-w-2xl mx-auto">
-                        <p class="font-medium italic text-blue-600 text-sm text-center">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
-                        <p class="text-center">Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan <strong>SMP Frater Mamasa</strong> secara aman, cepat, dan berbasis Cloud.</p>
-                    </div>
-                </div>
-              <div class="mt-6 pt-4 border-t border-gray-200">
-                    <h4 class="text-xs font-black text-blue-900 uppercase tracking-wider mb-2 text-center md:text-left">
-                        <i class="fas fa-users text-blue-600 mr-2"></i> Tim Tata Usaha & Pelayanan
-                    </h4>
-                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
-                   <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-user-tie text-sm"></i>
-                            </div>
-                            <div>
-                                <div class="font-black text-gray-800 text-xs">MARKUS D.</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Kepegawaian dan Keuangan</div>
-                            </div>
-                        </div>
-                    <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-user-graduate text-sm"></i>
-                            </div>
-                            <div>
-                                <div class="font-black text-gray-800 text-xs">STEPHEN EKO SETIAWAN</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Kesiswaan</div>
-                            </div>
-                        </div>
-                <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-wallet text-sm"></i>
-                            </div>
-                            <div>
-                                <div class="font-black text-gray-800 text-xs">Fr. SIMEON LOPI KOBAN, HHK</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
-                            </div>
-                        </div>
-                      <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
-                                <i class="fas fa-wallet text-sm"></i>
-                            </div>
-                            <div>
-                                <div class="font-black text-gray-800 text-xs">Fr. METODIUS LAMBE, HHK</div>
-                                <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
-                            </div>
-                        </div>
-                    </div>
-                   <div class="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-gray-500 font-semibold">
-                        <span>m@rkus_TU_SMP Frater Mamasa &copy; 2026</span>
-                        <a href="mailto:smpsfratermamsa@gmail.com" class="flex items-center gap-1 text-blue-600 hover:underline">
-                            <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
-                        </a>
-                    </div>
-                </div>
-            </div>
-           <div id="section-data" class="hidden max-w-4xl mx-auto">
-               <div id="search-container" class="mb-6">
-                    <div class="relative">
-                        <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
-                        <input type="text" id="searchTerm" placeholder="Cari dokumen, nama, atau periode..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-xl focus:ring-4 focus:ring-blue-500/30 outline-none glass-card font-medium text-gray-800 text-sm">
-                    </div>
-                </div>
-              <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead class="bg-gray-100/50 text-[10px] uppercase font-bold text-gray-500 tracking-widest border-b border-gray-200">
-                                <tr id="head-tabel">
-                                    <th class="p-5 border-b">Detail Berkas (Klik Judul untuk Membuka)</th>
-                                    <th id="kolomAksi" class="p-5 border-b text-center w-24 hidden">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="isi-tabel"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-     <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
-            <i class="fas fa-plus fa-lg"></i>
-        </button>
-    </div>
-    <div id="modalInput" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-black text-blue-900 flex items-center gap-3">
-                    <i class="fas fa-folder-plus text-blue-600"></i> Tambah Arsip
-                </h2>
-                <button onclick="tutupModal()" class="text-gray-400 hover:text-red-500 transition-colors"><i class="fas fa-times fa-lg"></i></button>
-            </div>
-            <div class="space-y-4 text-xs md:text-sm">
-                <div>
-                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
-                    <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-blue-50 font-bold text-blue-800">
-                        <option value="kepegawaian">Arsip Kepegawaian</option>
-                        <option value="sk">SK Kepanitiaan</option>
-                        <option value="surat-masuk">Surat Masuk</option>
-                        <option value="surat-keluar">Surat Keluar</option>
-                        <option value="absen">Rekap Absen Pegawai</option>
-                        <option value="sk-lainnya">Arsip Lainnya</option>
-                    </select>
-                </div>
-                <div id="fieldNamaPegawai" class="hidden">
-                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1 text-blue-600">Pilih Nama Pegawai</label>
-                    <select id="inEmployeeName" class="w-full p-3 mt-1 border-2 border-blue-200 rounded-xl outline-none focus:border-blue-500 bg-blue-50 font-bold">
-                        <option value="">-- Pilih Pegawai --</option>
-                        <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
-                        <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
-                        <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
-                        <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
-                        <option value="Fr. METODIUS LAMBE, HHK">Fr. METODIUS LAMBE, HHK</option>
-                        <option value="RATTONO SAMBOKARUA, S.Pd., Gr.">RATTONO SAMBOKARUA, S.Pd., Gr.</option>
-                        <option value="SERLIANTY SULI', S.Pd., Gr.">SERLIANTY SULI', S.Pd., Gr.</option>
-                        <option value="NOPIANTI,S.Pd.">NOPIANTI,S.Pd.</option>
-                        <option value="LEONADRDUS BONGGABULAWAN,S.Pd., Gr.">LEONADRDUS BONGGABULAWAN,S.Pd., Gr.</option>
-                        <option value="AGUSTINA BULAWAN, S.Pd.">AGUSTINA BULAWAN, S.Pd.</option>
-                        <option value="DEMMALIO, S.Pd., Gr.">DEMMALIO, S.Pd., Gr.</option>
-                        <option value="JUANDA HIRAWAN, S.Pd., Gr.">JUANDA HIRAWAN, S.Pd., Gr.</option>
-                        <option value="MARIA FRANSISKA SEPE, S.Si, Gr.">MARIA FRANSISKA SEPE, S.Si, Gr.</option>
-                        <option value="HESRON PALILLINAN, S.Pd., Gr.">HESRON PALILLINAN, S.Pd., Gr.</option>
-                        <option value="FRIEDMI EKA FERONICA, S.Pd., Gr.">FRIEDMI EKA FERONICA, S.Pd., Gr.</option>
-                        <option value="OCTOVIANUS DEMMARRAPA, S.Pd., Gr.">OCTOVIANUS DEMMARRAPA, S.Pd., Gr.</option>
-                        <option value="SUDIRMAN FIRMIN, SS, M.Pd.">SUDIRMAN FIRMIN, SS, M.Pd.</option>
-                        <option value="ASTUTI KRISDAYANTI, S.Pd., Gr.">ASTUTI KRISDAYANTI, S.Pd., Gr.</option>
-                        <option value="ELDI SINTYA, S.Pd., Gr.">ELDI SINTYA, S.Pd., Gr.</option>
-                        <option value="YUDYARWIN, S.Pd., Gr.">YUDYARWIN, S.Pd., Gr.</option>
-                        <option value="CRISTIN OKTAVIA, S.Pd., Gr.">CRISTIN OKTAVIA, S.Pd., Gr.</option>
-                        <option value="AGUSTINA POLIK, S.Pd.">AGUSTINA POLIK, S.Pd.</option>
-                        <option value="LUSIMASNORITU, S.Pd.">LUSIMASNORITU, S.Pd.</option>
-                        <option value="PETRINA, S.Pd., Gr.">PETRINA, S.Pd., Gr.</option>
-                        <option value="WINDI LEONIKA, S.Pd.">WINDI LEONIKA, S.Pd.</option>
-                        <option value="KELVIN B, S.Pd.">KELVIN B, S.Pd.</option>
-                        <option value="MERY, S.Tr.Kom.">MERY, S.Tr.Kom.</option>
-                        <option value="MARIA EIBEL FRANKELISTYA, S.Psi.">MARIA EIBEL FRANKELISTYA, S.Psi.</option>
-                        <option value="MELDA PARE, S.Pd.">MELDA PARE, S.Pd.</option>
-                        <option value="STEPHEN EKO SETIAWAN">STEPHEN EKO SETIAWAN</option>
-                        <option value="MARKUS D.">MARKUS D.</option>
-                        <option value="MUHIDIN">MUHIDIN</option>
-                        <option value="ASTIN SRININGSI, S.Kep.">ASTIN SRININGSI, S.Kep.</option>
-                        <option value="WENNI RAVILLA, S.IP.">WENNI RAVILLA, S.IP.</option>
-                        <option value="LOBIANUS ARDI">LOBIANUS ARDI</option>               
-                     </select>
-                </div>            
-                <div>
-                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Judul Dokumen</label>
-                    <input type="text" id="inTitle" placeholder="Misal: SK Panitia Ujian Semester" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
-                </div>
-                <div>
-                    <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Link File Drive</label>
-                    <input type="text" id="inLink" placeholder="Tempel Link Shareable" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none">
-                </div>
-            </div>
-            <div class="mt-6">
-                <button id="btnSimpan" class="w-full py-3 bg-blue-600 text-white rounded-xl font-black text-base shadow-xl shadow-blue-200 hover:bg-blue-700 active:scale-95 transition-all">
-                    SIMPAN DATA
-                </button>
-            </div>
-        </div>
-    </div>
 
+  <div class="bg-sekolah"></div>
+
+  <!-- MODAL CUSTOM PEMBERITAHUAN -->
+  <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+    <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
+      <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+        <i class="fas fa-info-circle fa-lg"></i>
+      </div>
+      <h3 class="text-base font-bold text-gray-800 mb-2">Pemberitahuan</h3>
+      <p id="customAlertMsg" class="text-xs text-gray-600 mb-6 leading-relaxed"></p>
+      <button onclick="closeCustomAlert()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all">OK</button>
+    </div>
+  </div>
+
+  <!-- MODAL CUSTOM KONFIRMASI -->
+  <div id="customConfirm" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+    <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
+      <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
+        <i class="fas fa-exclamation-triangle fa-lg"></i>
+      </div>
+      <h3 class="text-base font-bold text-gray-800 mb-2">Konfirmasi</h3>
+      <p id="customConfirmMsg" class="text-xs text-gray-600 mb-6 leading-relaxed"></p>
+      <div class="flex gap-3">
+        <button onclick="closeCustomConfirm(false)" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl text-xs uppercase transition-all">Batal</button>
+        <button id="customConfirmYesBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs uppercase transition-all">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYAR AUTENTIKASI KATA SANDI (LOGIN AWAL) -->
+  <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
+    <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50">
+      <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
+        <div class="relative w-full h-full flex items-center justify-center">
+          <img id="imgLogin"
+               src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB"
+               onerror="loadFallbackLogo('imgLogin')"
+               alt="Logo Sekolah"
+               class="w-full h-full object-contain">
+        </div>
+      </div>
+
+      <div id="formLogin">
+        <h1 class="text-2xl font-black text-blue-900 mb-1 leading-tight">ARSIP DIGITAL</h1>
+        <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-widest leading-none">SMP Frater Mamasa</p>
+        <div class="space-y-4">
+          <div class="relative">
+            <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
+            <input type="password" id="loginPass" placeholder="Masukkan Kata Sandi" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-bold text-sm">
+          </div>
+          <button onclick="prosesLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-xl active:scale-95 transition-all uppercase tracking-wider text-xs">
+            Masuk Ke Sistem
+          </button>
+        </div>
+        <p class="mt-6 text-[10px] text-gray-400 uppercase font-black tracking-wide italic">Gunakan Sandi Admin atau User</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KONTEN UTAMA (Selesai Login) -->
+  <div id="mainContent" class="hidden h-screen w-screen flex flex-col md:flex-row overflow-hidden">
     
-     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
-        import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+    <!-- HEADER MOBILE -->
+    <header class="md:hidden w-full nav-blue text-white flex items-center justify-between p-4 border-b border-blue-800 z-50">
+      <div class="flex items-center gap-3">
+        <button onclick="toggleMobileSidebar()" class="text-white hover:text-blue-300 p-2 focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-blue-400 p-0.5 flex-shrink-0">
+          <img id="imgMobile"
+               src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB"
+               onerror="loadFallbackLogo('imgMobile')"
+               alt="Logo Sekolah"
+               class="w-full h-full object-contain">
+        </div>
+        <div class="flex flex-col text-left">
+          <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
+          <span class="text-[9px] text-gray-200 font-bold uppercase">SMP Frater Mamasa</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="mobileStatus" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">...</span>
+      </div>
+    </header>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
-            authDomain: "arsip-digital-baru.firebaseapp.com",
-            projectId: "arsip-digital-baru",
-            storageBucket: "arsip-digital-baru.appspot.com",
-            messagingSenderId: "789604072965",
-            appId: "1:789604072965:web:42a2c6be8ac330010a666c"
-        };
+    <!-- OVERLAY SIDEBAR MOBILE -->
+    <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"></div>
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+    <!-- SIDEBAR MENU -->
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 nav-blue text-white flex flex-col flex-shrink-0 border-r border-blue-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full z-40">
+      <div class="p-6 border-b border-blue-800 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-blue-400 p-1 flex-shrink-0">
+            <img id="imgSidebar"
+                 src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB"
+                 onerror="loadFallbackLogo('imgSidebar')"
+                 alt="Logo Sekolah"
+                 class="w-full h-full object-contain">
+          </div>
+          <div class="flex flex-col text-left">
+            <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
+            <span class="text-[10px] text-gray-200 font-bold uppercase tracking-wider">SMP Frater Mamasa</span>
+          </div>
+        </div>
+        <button onclick="toggleMobileSidebar()" class="md:hidden text-gray-400 hover:text-white">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
 
-        // Sandi Sistem
-        const SANDI_SISTEM = "admintufrms";
+      <!-- TAB MENU -->
+      <div class="flex-grow p-4 space-y-0.5 overflow-y-auto no-scrollbar" id="menu-tab">
+        <button data-cat="beranda" class="btn-tab tab-aktif w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold transition-all hover:bg-white/10">
+          <i class="fas fa-home w-5 text-center text-sm text-blue-200"></i> Beranda
+        </button>
+        <button data-cat="kepegawaian" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+          <i class="fas fa-id-card w-5 text-center text-sm text-blue-200"></i> Arsip Kepegawaian
+        </button>
+        <button data-cat="sk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+          <i class="fas fa-file-signature w-5 text-center text-sm text-blue-200"></i> SK Kepanitiaan
+        </button>
+        <button data-cat="surat-masuk" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+          <i class="fas fa-envelope-open-text w-5 text-center text-sm text-blue-200"></i> Surat Masuk
+        </button>
+        <button data-cat="surat-keluar" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+          <i class="fas fa-paper-plane w-5 text-center text-sm text-blue-200"></i> Surat Keluar
+        </button>
+        <button data-cat="absen" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+          <i class="fas fa-clipboard-list w-5 text-center text-sm text-blue-200"></i> Rekap Absen Pegawai
+        </button>
+        <button data-cat="sk-lainnya" class="btn-tab w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white">
+          <i class="fas fa-folder-open w-5 text-center text-sm text-blue-200"></i> Arsip Lainnya
+        </button>
+      </div>
 
-        signInAnonymously(auth).then(() => {
-            const statusEl = document.getElementById('status');
-            if (statusEl) {
-                statusEl.innerText = "ONLINE";
-                statusEl.className = "bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide";
-            }
+      <!-- FOOTER SIDEBAR -->
+      <div class="p-4 border-t border-blue-800 bg-slate-950/40 flex flex-col gap-3">
+        <div class="flex items-center justify-between text-[10px] text-gray-300 font-bold px-2">
+          <span>STATUS:</span>
+          <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
+        </div>
+        <div id="userProfile" class="text-[9px] text-emerald-300 font-black px-2 uppercase tracking-wide flex items-center gap-1.5 leading-none break-all">
+          <i class="fas fa-user-circle text-xs"></i> <span>MENGHUBUNGKAN...</span>
+        </div>
+        <div class="text-[9px] text-blue-200 font-semibold px-2 flex items-center gap-1.5 break-all">
+          <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
+        </div>
+        <button onclick="logout()" class="w-full bg-red-600/90 hover:bg-red-700 text-white py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+          <i class="fas fa-sign-out-alt"></i> Keluar Aplikasi
+        </button>
+      </div>
+    </aside>
+
+    <!-- KONTEN UTAMA SEBELAH KANAN -->
+    <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
+      
+      <!-- TEKS BERJALAN -->
+      <div class="nav-blue text-white py-2 px-4 rounded-xl mb-3 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
+        <div class="marquee-container">
+          <div class="marquee-content font-semibold text-blue-100 uppercase">
+            <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"</span>
+            <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION BERANDA -->
+      <div id="section-beranda" class="glass-card rounded-2xl p-4 md:p-6 mb-4 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-0">
+        <div>
+          <div class="text-center mb-4">
+            <h3 class="text-xl font-black text-blue-900 mb-1 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
+            <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
+          </div>
+          <div class="space-y-3 text-gray-700 leading-relaxed text-xs max-w-2xl mx-auto">
+            <p class="font-medium italic text-blue-600 text-sm text-center">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
+            <p class="text-center">Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan <strong>SMP Frater Mamasa</strong> secara aman, cepat, dan berbasis Cloud.</p>
+          </div>
+        </div>
+
+        <!-- TIM TATA USAHA -->
+        <div class="mt-6 pt-4 border-t border-gray-200">
+          <div class="flex flex-col sm:flex-row justify-between items-center mb-3">
+            <h4 class="text-xs font-black text-blue-900 uppercase tracking-wider">
+              <i class="fas fa-users text-blue-600 mr-2"></i> Tim Tata Usaha & Pelayanan
+            </h4>
+            <!-- Tombol Kelola Sandi (Hanya muncul untuk Admin) -->
+            <button id="btnKelolaSandi" onclick="bukaModalSandi()" class="hidden text-[10px] bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1.5 px-3 rounded-lg shadow transition-all">
+              <i class="fas fa-key mr-1"></i> Kelola Sandi Pegawai
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
+            <!-- 1. Markus D -->
+            <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <i class="fas fa-user-tie text-sm"></i>
+              </div>
+              <div>
+                <div class="font-black text-gray-800 text-xs">MARKUS D.</div>
+                <div class="text-[10px] font-semibold text-blue-600">Staf Kepegawaian dan Keuangan</div>
+              </div>
+            </div>
+            <!-- 2. Stephen Eko Setiawan -->
+            <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <i class="fas fa-user-graduate text-sm"></i>
+              </div>
+              <div>
+                <div class="font-black text-gray-800 text-xs">STEPHEN EKO SETIAWAN</div>
+                <div class="text-[10px] font-semibold text-blue-600">Staf Kesiswaan</div>
+              </div>
+            </div>
+            <!-- 3. Fr. Simeon Lopi Koban -->
+            <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <i class="fas fa-wallet text-sm"></i>
+              </div>
+              <div>
+                <div class="font-black text-gray-800 text-xs">Fr. SIMEON LOPI KOBAN, HHK</div>
+                <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
+              </div>
+            </div>
+            <!-- 4. Fr. Metodius Lambe -->
+            <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <i class="fas fa-wallet text-sm"></i>
+              </div>
+              <div>
+                <div class="font-black text-gray-800 text-xs">Fr. METODIUS LAMBE, HHK</div>
+                <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-gray-500 font-semibold">
+            <span>m@rkus_TU_SMP Frater Mamasa &copy; 2026</span>
+            <a href="mailto:smpsfratermamsa@gmail.com" class="flex items-center gap-1 text-blue-600 hover:underline">
+              <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION TABEL DATA -->
+      <div id="section-data" class="hidden max-w-4xl mx-auto">
+        <!-- Search Box -->
+        <div id="search-container" class="mb-6">
+          <div class="relative">
+            <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
+            <input type="text" id="searchTerm" placeholder="Cari dokumen, nama, atau periode..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-xl focus:ring-4 focus:ring-blue-500/30 outline-none glass-card font-medium text-gray-800 text-sm">
+          </div>
+        </div>
+
+        <!-- Tabel Card -->
+        <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-gray-100/50 text-[10px] uppercase font-bold text-gray-500 tracking-widest border-b border-gray-200">
+                <tr id="head-tabel">
+                  <th class="p-5 border-b">Detail Berkas (Klik Judul untuk Membuka)</th>
+                  <th id="kolomAksi" class="p-5 border-b text-center w-24 hidden">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="isi-tabel"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Tombol Floating Tambah Dokumen (Hanya Admin) -->
+    <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
+      <i class="fas fa-plus fa-lg"></i>
+    </button>
+  </div>
+
+  <!-- MODAL INPUT DOKUMEN -->
+  <div id="modalInput" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-black text-blue-900 flex items-center gap-3">
+          <i class="fas fa-folder-plus text-blue-600"></i> Tambah Arsip
+        </h2>
+        <button onclick="tutupModal()" class="text-gray-400 hover:text-red-500 transition-colors">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+      <div class="space-y-4 text-xs md:text-sm">
+        <div>
+          <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
+          <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-blue-50 font-bold text-blue-800">
+            <option value="kepegawaian">Arsip Kepegawaian</option>
+            <option value="sk">SK Kepanitiaan</option>
+            <option value="surat-masuk">Surat Masuk</option>
+            <option value="surat-keluar">Surat Keluar</option>
+            <option value="absen">Rekap Absen Pegawai</option>
+            <option value="sk-lainnya">Arsip Lainnya</option>
+          </select>
+        </div>
+
+        <div id="fieldNamaPegawai" class="hidden">
+          <label class="font-bold text-gray-500 text-[10px] uppercase ml-1 text-blue-600">Pilih Nama Pegawai</label>
+          <select id="inEmployeeName" class="w-full p-3 mt-1 border-2 border-blue-200 rounded-xl outline-none focus:border-blue-500 bg-blue-50 font-bold">
+            <option value="">-- Pilih Pegawai --</option>
+            <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
+            <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
+            <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
+            <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
+            <option value="Fr. METODIUS LAMBE, HHK">Fr. METODIUS LAMBE, HHK</option>
+            <option value="RATTONO SAMBOKARUA, S.Pd., Gr.">RATTONO SAMBOKARUA, S.Pd., Gr.</option>
+            <option value="SERLIANTY SULI', S.Pd., Gr.">SERLIANTY SULI', S.Pd., Gr.</option>
+            <option value="NOPIANTI,S.Pd.">NOPIANTI,S.Pd.</option>
+            <option value="LEONADRDUS BONGGABULAWAN,S.Pd., Gr.">LEONADRDUS BONGGABULAWAN,S.Pd., Gr.</option>
+            <option value="AGUSTINA BULAWAN, S.Pd.">AGUSTINA BULAWAN, S.Pd.</option>
+            <option value="DEMMALIO, S.Pd., Gr.">DEMMALIO, S.Pd., Gr.</option>
+            <option value="JUANDA HIRAWAN, S.Pd., Gr.">JUANDA HIRAWAN, S.Pd., Gr.</option>
+            <option value="MARIA FRANSISKA SEPE, S.Si, Gr.">MARIA FRANSISKA SEPE, S.Si, Gr.</option>
+            <option value="HESRON PALILLINAN, S.Pd., Gr.">HESRON PALILLINAN, S.Pd., Gr.</option>
+            <option value="FRIEDMI EKA FERONICA, S.Pd., Gr.">FRIEDMI EKA FERONICA, S.Pd., Gr.</option>
+            <option value="OCTOVIANUS DEMMARRAPA, S.Pd., Gr.">OCTOVIANUS DEMMARRAPA, S.Pd., Gr.</option>
+            <option value="SUDIRMAN FIRMIN, SS, M.Pd.">SUDIRMAN FIRMIN, SS, M.Pd.</option>
+            <option value="ASTUTI KRISDAYANTI, S.Pd., Gr.">ASTUTI KRISDAYANTI, S.Pd., Gr.</option>
+            <option value="ELDI SINTYA, S.Pd., Gr.">ELDI SINTYA, S.Pd., Gr.</option>
+            <option value="YUDYARWIN, S.Pd., Gr.">YUDYARWIN, S.Pd., Gr.</option>
+            <option value="CRISTIN OKTAVIA, S.Pd., Gr.">CRISTIN OKTAVIA, S.Pd., Gr.</option>
+            <option value="AGUSTINA POLIK, S.Pd.">AGUSTINA POLIK, S.Pd.</option>
+            <option value="LUSIMASNORITU, S.Pd.">LUSIMASNORITU, S.Pd.</option>
+            <option value="PETRINA, S.Pd., Gr.">PETRINA, S.Pd., Gr.</option>
+            <option value="WINDI LEONIKA, S.Pd.">WINDI LEONIKA, S.Pd.</option>
+            <option value="KELVIN B, S.Pd.">KELVIN B, S.Pd.</option>
+            <option value="MERY, S.Tr.Kom.">MERY, S.Tr.Kom.</option>
+            <option value="MARIA EIBEL FRANKELISTYA, S.Psi.">MARIA EIBEL FRANKELISTYA, S.Psi.</option>
+            <option value="MELDA PARE, S.Pd.">MELDA PARE, S.Pd.</option>
+            <option value="STEPHEN EKO SETIAWAN">STEPHEN EKO SETIAWAN</option>
+            <option value="MARKUS D.">MARKUS D.</option>
+            <option value="MUHIDIN">MUHIDIN</option>
+            <option value="ASTIN SRININGSI, S.Kep.">ASTIN SRININGSI, S.Kep.</option>
+            <option value="WENNI RAVILLA, S.IP.">WENNI RAVILLA, S.IP.</option>
+            <option value="LOBIANUS ARDI">LOBIANUS ARDI</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Judul Dokumen</label>
+          <input type="text" id="inTitle" placeholder="Misal: SK Panitia Ujian Semester" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Link File Drive</label>
+          <input type="text" id="inLink" placeholder="Tempel Link Shareable" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none">
+        </div>
+      </div>
+      <div class="mt-6">
+        <button id="btnSimpan" class="w-full py-3 bg-blue-600 text-white rounded-xl font-black text-base shadow-xl shadow-blue-200 hover:bg-blue-700 active:scale-95 transition-all">
+          SIMPAN DATA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL KELOLA SANDI PEGAWAI (Khusus Admin) -->
+  <div id="modalSandi" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-md p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-black text-blue-900 flex items-center gap-2">
+          <i class="fas fa-key text-blue-600"></i> Kelola Sandi Pegawai
+        </h2>
+        <button onclick="tutupModalSandi()" class="text-gray-400 hover:text-red-500 transition-colors">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+      <p class="text-[10px] text-gray-500 mb-4 leading-relaxed">
+        Pilih nama pegawai di bawah ini untuk membuat atau mengubah sandi akses pribadi mereka secara dinamis ke database awan.
+      </p>
+      <div class="space-y-4 text-xs md:text-sm">
+        <div>
+          <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Nama Pegawai</label>
+          <select id="editPassEmployeeName" onchange="loadCurrentEmployeePassword()" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-slate-50 font-bold text-gray-800">
+            <option value="">-- Pilih Pegawai --</option>
+            <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
+            <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
+            <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
+            <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
+            <option value="Fr. METODIUS LAMBE, HHK">Fr. METODIUS LAMBE, HHK</option>
+            <option value="RATTONO SAMBOKARUA, S.Pd., Gr.">RATTONO SAMBOKARUA, S.Pd., Gr.</option>
+            <option value="SERLIANTY SULI', S.Pd., Gr.">SERLIANTY SULI', S.Pd., Gr.</option>
+            <option value="NOPIANTI,S.Pd.">NOPIANTI,S.Pd.</option>
+            <option value="LEONADRDUS BONGGABULAWAN,S.Pd., Gr.">LEONADRDUS BONGGABULAWAN,S.Pd., Gr.</option>
+            <option value="AGUSTINA BULAWAN, S.Pd.">AGUSTINA BULAWAN, S.Pd.</option>
+            <option value="DEMMALIO, S.Pd., Gr.">DEMMALIO, S.Pd., Gr.</option>
+            <option value="JUANDA HIRAWAN, S.Pd., Gr.">JUANDA HIRAWAN, S.Pd., Gr.</option>
+            <option value="MARIA FRANSISKA SEPE, S.Si, Gr.">MARIA FRANSISKA SEPE, S.Si, Gr.</option>
+            <option value="HESRON PALILLINAN, S.Pd., Gr.">HESRON PALILLINAN, S.Pd., Gr.</option>
+            <option value="FRIEDMI EKA FERONICA, S.Pd., Gr.">FRIEDMI EKA FERONICA, S.Pd., Gr.</option>
+            <option value="OCTOVIANUS DEMMARRAPA, S.Pd., Gr.">OCTOVIANUS DEMMARRAPA, S.Pd., Gr.</option>
+            <option value="SUDIRMAN FIRMIN, SS, M.Pd.">SUDIRMAN FIRMIN, SS, M.Pd.</option>
+            <option value="ASTUTI KRISDAYANTI, S.Pd., Gr.">ASTUTI KRISDAYANTI, S.Pd., Gr.</option>
+            <option value="ELDI SINTYA, S.Pd., Gr.">ELDI SINTYA, S.Pd., Gr.</option>
+            <option value="YUDYARWIN, S.Pd., Gr.">YUDYARWIN, S.Pd., Gr.</option>
+            <option value="CRISTIN OKTAVIA, S.Pd., Gr.">CRISTIN OKTAVIA, S.Pd., Gr.</option>
+            <option value="AGUSTINA POLIK, S.Pd.">AGUSTINA POLIK, S.Pd.</option>
+            <option value="LUSIMASNORITU, S.Pd.">LUSIMASNORITU, S.Pd.</option>
+            <option value="PETRINA, S.Pd., Gr.">PETRINA, S.Pd., Gr.</option>
+            <option value="WINDI LEONIKA, S.Pd.">WINDI LEONIKA, S.Pd.</option>
+            <option value="KELVIN B, S.Pd.">KELVIN B, S.Pd.</option>
+            <option value="MERY, S.Tr.Kom.">MERY, S.Tr.Kom.</option>
+            <option value="MARIA EIBEL FRANKELISTYA, S.Psi.">MARIA EIBEL FRANKELISTYA, S.Psi.</option>
+            <option value="MELDA PARE, S.Pd.">MELDA PARE, S.Pd.</option>
+            <option value="STEPHEN EKO SETIAWAN">STEPHEN EKO SETIAWAN</option>
+            <option value="MARKUS D.">MARKUS D.</option>
+            <option value="MUHIDIN">MUHIDIN</option>
+            <option value="ASTIN SRININGSI, S.Kep.">ASTIN SRININGSI, S.Kep.</option>
+            <option value="WENNI RAVILLA, S.IP.">WENNI RAVILLA, S.IP.</option>
+            <option value="LOBIANUS ARDI">LOBIANUS ARDI</option>
+          </select>
+        </div>
+        <div>
+          <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Sandi Baru Pegawai</label>
+          <input type="text" id="editPassValue" placeholder="Masukkan Sandi Pribadi" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none focus:border-indigo-500">
+        </div>
+      </div>
+      <div class="mt-6 flex gap-2">
+        <button id="btnSimpanSandi" class="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-black text-sm shadow-xl shadow-indigo-100 transition-all">
+          PERBARUI SANDI
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT UTAMA KONEKSI FIRESTORE (MODUL TUNGGAL) -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+    import { getFirestore, collection, onSnapshot, query, addDoc, doc, deleteDoc, getDocs, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
+      authDomain: "arsip-digital-baru.firebaseapp.com",
+      projectId: "arsip-digital-baru",
+      storageBucket: "arsip-digital-baru.appspot.com",
+      messagingSenderId: "789604072965",
+      appId: "1:789604072965:web:42a2c6be8ac330010a666c"
+    };
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+    let dataSemua = [];
+    let passwordsPegawai = {}; // Objek map password yang dimuat dari Firestore secara dinamis
+    let kategoriSekarang = 'beranda';
+    let filterKata = '';
+    let openGroups = new Set();
+    let userRole = 'none';
+    let loggedInName = '';
+    let loggedInUsername = '';
+
+    // Custom Alert Global
+    window.showCustomAlert = (msg) => {
+      document.getElementById('customAlertMsg').innerText = msg;
+      document.getElementById('customAlert').classList.remove('hidden');
+    };
+    window.closeCustomAlert = () => {
+      document.getElementById('customAlert').classList.add('hidden');
+    };
+
+    // Custom Confirm Global
+    let confirmResolve = null;
+    window.showCustomConfirm = (msg) => {
+      document.getElementById('customConfirmMsg').innerText = msg;
+      document.getElementById('customConfirm').classList.remove('hidden');
+      return new Promise((resolve) => {
+        confirmResolve = resolve;
+      });
+    };
+    window.closeCustomConfirm = (bool) => {
+      document.getElementById('customConfirm').classList.add('hidden');
+      if (confirmResolve) confirmResolve(bool);
+    };
+
+    // Toggle Mobile Sidebar
+    window.toggleMobileSidebar = () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (sidebar.classList.contains('-translate-x-full')) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    };
+
+    // Proses masuk login sistem
+    window.prosesLogin = () => {
+      const passInput = document.getElementById('loginPass').value;
+      if (!passInput) {
+        showCustomAlert("Harap isi Kata Sandi!");
+        return;
+      }
+      if (passInput === "admintufrms") {
+        userRole = 'admin';
+        loggedInName = 'Administrator TU';
+        loggedInUsername = 'admin';
+        masukAplikasi();
+      } else if (passInput === "user123") {
+        userRole = 'user';
+        loggedInName = 'Guru & Staf';
+        loggedInUsername = 'user';
+        masukAplikasi();
+      } else {
+        showCustomAlert("Kata Sandi salah! Hubungi TU untuk mendapatkan akses masuk.");
+      }
+    };
+
+    window.logout = () => {
+      location.reload();
+    };
+
+    function masukAplikasi() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('mainContent').classList.remove('hidden');
+
+      const floatingAdd = document.getElementById('floatingAdd');
+      const kolomAksi = document.getElementById('kolomAksi');
+      const btnKelolaSandi = document.getElementById('btnKelolaSandi');
+
+      if (userRole === 'admin') {
+        floatingAdd.classList.remove('hidden');
+        floatingAdd.classList.add('flex');
+        if (kolomAksi) kolomAksi.classList.remove('hidden');
+        if (btnKelolaSandi) btnKelolaSandi.classList.remove('hidden');
+      } else {
+        floatingAdd.classList.remove('flex');
+        floatingAdd.classList.add('hidden');
+        if (kolomAksi) kolomAksi.classList.add('hidden');
+        if (btnKelolaSandi) btnKelolaSandi.classList.add('hidden');
+      }
+
+      start();
+    }
+
+    // Mulai Sektor Sinkronisasi database
+    async function start() {
+      try {
+        await signInAnonymously(auth);
+        
+        // Perbarui Tampilan Profil
+        const userProfileEl = document.querySelector('#userProfile span');
+        if (userProfileEl) {
+          userProfileEl.innerText = `${loggedInName} (${userRole.toUpperCase()})`;
+        }
+
+        // Sinkronisasi data sandi pegawai dari Firestore
+        syncPasswords();
+
+        // JALUR MEMBACA DATA ARSIP (DUAL-PATH FALLBACK):
+        const pathUtama = `artifacts/${appId}/public/data/arsip`;
+        const colUtamaRef = collection(db, pathUtama);
+
+        onSnapshot(query(colUtamaRef), (snapUtama) => {
+          if (!snapUtama.empty) {
+            dataSemua = snapUtama.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            render();
+          } else {
+            // Backup cadangan root seandainya kosong
+            const colCadanganRef = collection(db, 'arsip');
+            onSnapshot(query(colCadanganRef), (snapCadangan) => {
+              dataSemua = snapCadangan.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+              render();
+            });
+          }
+          updateStatusUI();
+        }, (err) => {
+          console.warn("Membaca jalur utama gagal, beralih ke koleksi cadangan root...");
+          const colCadanganRef = collection(db, 'arsip');
+          onSnapshot(query(colCadanganRef), (snapCadangan) => {
+            dataSemua = snapCadangan.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            render();
+          });
+          updateStatusUI();
         });
 
-        // Fungsi Validasi Akses Link
-        window.cekAkses = async (link, grup) => {
-            const { value: password } = await Swal.fire({
-                title: 'Masukkan Sandi Akses',
-                input: 'password',
-                inputPlaceholder: 'Sandi untuk ' + grup,
-                showCancelButton: true,
-                confirmButtonText: 'Buka',
-                cancelButtonText: 'Batal',
-                allowOutsideClick: false
+      } catch (err) {
+        console.error("Autentikasi Anonim Gagal:", err);
+      }
+    }
+
+    // Sinkronisasi Database Kata Sandi Pegawai
+    function syncPasswords() {
+      const colPassRef = collection(db, 'artifacts', appId, 'public', 'data', 'employee_passwords');
+      onSnapshot(query(colPassRef), (snapshot) => {
+        passwordsPegawai = {};
+        snapshot.forEach((doc) => {
+          passwordsPegawai[doc.id] = doc.data().password || '';
+        });
+      }, (err) => {
+        console.error("Gagal sinkronisasi data sandi pegawai:", err);
+      });
+    }
+
+    function updateStatusUI() {
+      const statusEl = document.getElementById('status');
+      const mobileStatusEl = document.getElementById('mobileStatus');
+      const textStatus = userRole === 'admin' ? "ADMIN" : "USER";
+
+      if (statusEl) {
+        statusEl.innerText = textStatus;
+        statusEl.className = `text-[8px] md:text-[9px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
+      }
+      if (mobileStatusEl) {
+        mobileStatusEl.innerText = textStatus;
+        mobileStatusEl.className = `text-[8px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
+      }
+    }
+
+    // Aksi menghapus dokumen arsip
+    window.hapusDokumen = async (id, title) => {
+      if (userRole !== 'admin') return;
+
+      const setujuHapus = await showCustomConfirm(`Apakah Anda yakin ingin menghapus permanen dokumen "${title}"?`);
+      if (setujuHapus) {
+        try {
+          const snapCheck = await getDocs(query(collection(db, `artifacts/${appId}/public/data/arsip`)));
+          const isExistInUtama = snapCheck.docs.some(doc => doc.id === id);
+
+          const pathHapus = isExistInUtama ? `artifacts/${appId}/public/data/arsip` : `arsip`;
+          await deleteDoc(doc(db, pathHapus, id));
+          showCustomAlert("Berkas berhasil dihapus secara permanen!");
+        } catch (e) {
+          console.error("Error hapus:", e);
+          try {
+            await deleteDoc(doc(db, 'arsip', id));
+            showCustomAlert("Berkas berhasil dihapus secara permanen!");
+          } catch (err2) {
+            console.error("Hapus cadangan gagal:", err2);
+            showCustomAlert("Gagal menghapus berkas.");
+          }
+        }
+      }
+      document.getElementById('customConfirm').classList.add('hidden');
+    };
+
+    window.toggleGroup = (groupName) => {
+      if (openGroups.has(groupName)) {
+        openGroups.delete(groupName);
+      } else {
+        openGroups.add(groupName);
+      }
+      render();
+    };
+
+    // Fungsi Pengaman untuk Akses Link Arsip Berdasarkan Nama Pegawai
+    window.cekAkses = async (link, namaPegawai) => {
+      // Jika yang mengakses adalah admin, berikan akses langsung tanpa sandi pegawai
+      if (userRole === 'admin') {
+        window.open(link, '_blank');
+        return;
+      }
+
+      // Membaca sandi terdaftar untuk pegawai bersangkutan dari database lokal hasil sync
+      const sandiTerdaftar = passwordsPegawai[namaPegawai];
+
+      if (!sandiTerdaftar) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Akses Terkunci',
+          text: 'Sandi untuk pegawai ini belum disetel oleh Admin TU. Silakan hubungi TU.',
+          confirmButtonColor: '#1e3a8a'
+        });
+        return;
+      }
+
+      const { value: password } = await Swal.fire({
+        title: 'Verifikasi Keamanan',
+        text: `Masukkan sandi pribadi untuk membuka arsip ${namaPegawai}:`,
+        input: 'password',
+        inputPlaceholder: 'Sandi...',
+        showCancelButton: true,
+        confirmButtonText: 'Buka Arsip',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#1e3a8a'
+      });
+
+      if (password !== undefined) {
+        if (password === sandiTerdaftar) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Akses Diberikan',
+            timer: 1000,
+            showConfirmButton: false
+          });
+          setTimeout(() => {
+            window.open(link, '_blank');
+          }, 1000);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Akses Ditolak',
+            text: 'Sandi salah!'
+          });
+        }
+      }
+    };
+
+    // Modifikasi fungsi render utama
+    function render() {
+      const tabelBody = document.getElementById('isi-tabel');
+      const secBeranda = document.getElementById('section-beranda');
+      const secData = document.getElementById('section-data');
+
+      if (kategoriSekarang === 'beranda') {
+        secBeranda.classList.remove('hidden');
+        secData.classList.add('hidden');
+        return;
+      } else {
+        secBeranda.classList.add('hidden');
+        secData.classList.remove('hidden');
+      }
+
+      let filtered = dataSemua.filter(i => {
+        const itemCat = i.category;
+        if (kategoriSekarang === 'absen') {
+          return itemCat === 'absen' || itemCat === 'rekap-absen';
+        }
+        return itemCat === kategoriSekarang;
+      });
+
+      if (filterKata) {
+        filtered = filtered.filter(i => 
+          (i.title || '').toLowerCase().includes(filterKata.toLowerCase()) || 
+          (i.employeeName || '').toLowerCase().includes(filterKata.toLowerCase())
+        );
+      }
+
+      const isKepegawaian = kategoriSekarang === 'kepegawaian';
+      let htmlContent = '';
+
+      if (isKepegawaian) {
+        const groups = {};
+        filtered.forEach(item => {
+          let groupName = item.employeeName || "Pegawai Umum";
+          if (!groups[groupName]) groups[groupName] = [];
+          groups[groupName].push(item);
+        });
+
+        const sortedGroups = Object.keys(groups).sort((a, b) => a.localeCompare(b));
+        sortedGroups.forEach(group => {
+          const isOpen = openGroups.has(group) || filterKata !== '';
+          htmlContent += `
+            <tr class="group-header" onclick="toggleGroup('${group}')">
+              <td colspan="${userRole === 'admin' ? 2 : 1}" class="p-3 pl-4 border-b text-[10px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm flex items-center justify-between animate-fade-in">
+                <span class="flex items-center">
+                  <i class="fas fa-id-card mr-3 text-blue-600"></i> ${group}
+                  <span class="ml-2 bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full text-[8px] font-bold">${groups[group].length} Berkas</span>
+                </span>
+                <i class="fas fa-chevron-down chevron-icon ${!isOpen ? 'rotated' : ''} text-blue-400"></i>
+              </td>
+            </tr>
+          `;
+
+          if (isOpen) {
+            groups[group].forEach(doc => {
+              htmlContent += `
+                <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white transition-all">
+                  <td class="p-4 pl-8">
+                    <button onclick="cekAkses('${doc.link}', '${group}')" class="judul-link text-left w-full block outline-none">
+                      <div class="text-xs font-bold text-gray-700">
+                        <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
+                      </div>
+                      <div class="text-[9px] text-blue-500 font-semibold mt-0.5 ml-6">${group} <span class="text-gray-400 font-normal">(Perlu Sandi Pribadi)</span></div>
+                    </button>
+                  </td>
+                  ${userRole === 'admin' ? `
+                  <td class="p-4 text-center">
+                    <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all mx-auto">
+                      <i class="fas fa-trash-alt text-xs"></i>
+                    </button>
+                  </td>` : ''}
+                </tr>
+              `;
             });
+          }
+        });
+      } else {
+        filtered.forEach(doc => {
+          htmlContent += `
+            <tr class="border-b border-gray-100 hover:bg-gray-50/50 bg-white transition-all">
+              <td class="p-4 pl-6">
+                <a href="${doc.link}" target="_blank" class="judul-link block">
+                  <div class="text-xs font-bold text-gray-700">
+                    <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
+                  </div>
+                  ${doc.employeeName ? `<div class="text-[9px] text-blue-500 font-semibold mt-0.5 ml-6">${doc.employeeName}</div>` : ''}
+                </a>
+              </td>
+              ${userRole === 'admin' ? `
+              <td class="p-4 text-center w-24">
+                <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all mx-auto">
+                  <i class="fas fa-trash-alt text-xs"></i>
+                </button>
+              </td>` : ''}
+            </tr>
+          `;
+        });
+      }
 
-            console.log("Input password:", password); // Debugging
-            
-            if (password !== undefined && password !== null) {
-                if (password.trim() === SANDI_SISTEM) {
-                    Swal.fire('Berhasil', 'Membuka dokumen...', 'success');
-                    window.open(link, '_blank');
-                } else {
-                    console.log("Sandi salah, input adalah:", password);
-                    Swal.fire('Gagal', 'Sandi salah!', 'error');
-                }
-            }
-        };
+      tabelBody.innerHTML = htmlContent || '<tr><td colspan="3" class="p-20 text-center text-gray-400 font-medium">Data tidak ditemukan.</td></tr>';
+    }
 
-        // Fungsi Login Utama
-        window.prosesLogin = () => {
-            const pass = document.getElementById('loginPass').value;
-            console.log("Login password:", pass); // Debugging
-            
-            if(pass.trim() === SANDI_SISTEM) {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-            } else {
-                Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Sandi salah!' });
-            }
-        };
+    // Simpan dokumen arsip baru ke Firestore
+    document.getElementById('btnSimpan').onclick = async () => {
+      if (userRole !== 'admin') return;
 
-        window.toggleMobileSidebar = () => {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar) sidebar.classList.toggle('-translate-x-full');
-        };
-    </script>
-</head>
-<body class="bg-slate-100">
-    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-blue-900">
-        <div class="bg-white p-8 rounded-3xl w-80 text-center shadow-xl">
-            <h1 class="text-xl font-black text-blue-900 mb-4">ARSIP DIGITAL</h1>
-            <input type="password" id="loginPass" class="w-full p-3 mb-4 border rounded-xl" placeholder="Sandi">
-            <button onclick="prosesLogin()" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold">MASUK</button>
-        </div>
-    </div>
+      const titleInput = document.getElementById('inTitle').value.trim();
+      const catInput = document.getElementById('inCat').value;
+      const linkInput = document.getElementById('inLink').value.trim();
+      const empInput = document.getElementById('inEmployeeName').value || '';
 
-    <div id="mainContent" class="hidden h-screen flex">
-        <aside id="sidebar" class="w-64 bg-blue-900 text-white p-6 transition-transform transform md:translate-x-0 -translate-x-full absolute md:static z-40 h-full">
-            <h2 class="font-bold mb-6">MENU</h2>
-            <div id="status" class="bg-gray-500 text-[10px] w-fit px-2 rounded">MENGHUBUNGKAN...</div>
-            <button onclick="location.reload()" class="mt-6 w-full text-left p-2 hover:bg-blue-800 rounded">Beranda</button>
-        </aside>
+      if (!titleInput || !linkInput) {
+        showCustomAlert("Judul dokumen dan link file harus diisi!");
+        return;
+      }
+
+      const listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      const tglHariIni = new Date();
+      const formatTanggalOtomatis = `${tglHariIni.getDate()} ${listBulan[tglHariIni.getMonth()]} ${tglHariIni.getFullYear()}`;
+
+      const docBaru = {
+        title: titleInput,
+        category: catInput,
+        date: formatTanggalOtomatis,
+        link: linkInput,
+        employeeName: empInput
+      };
+
+      try {
+        const arsipCol = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
+        await addDoc(arsipCol, docBaru);
+        tutupModal();
+        document.getElementById('inTitle').value = "";
+        document.getElementById('inLink').value = "";
+        document.getElementById('inEmployeeName').value = "";
+        showCustomAlert("Arsip baru berhasil disimpan!");
+      } catch (e) {
+        console.error("Gagal menyimpan ke jalur utama, mencoba ke root cadangan...", e);
+        try {
+          await addDoc(collection(db, 'arsip'), docBaru);
+          tutupModal();
+          document.getElementById('inTitle').value = "";
+          document.getElementById('inLink').value = "";
+          document.getElementById('inEmployeeName').value = "";
+          showCustomAlert("Arsip baru berhasil disimpan!");
+        } catch (err2) {
+          console.error("Gagal di kedua jalur:", err2);
+          showCustomAlert("Gagal menyimpan dokumen. Periksa koneksi Anda!");
+        }
+      }
+    };
+
+    // FUNGSI MANAGEMENT KATA SANDI (KHUSUS ADMIN)
+    window.bukaModalSandi = () => {
+      document.getElementById('editPassEmployeeName').value = "";
+      document.getElementById('editPassValue').value = "";
+      document.getElementById('modalSandi').classList.remove('hidden');
+    };
+
+    window.tutupModalSandi = () => {
+      document.getElementById('modalSandi').classList.add('hidden');
+    };
+
+    // Tampilkan password saat ini ketika admin memilih nama pegawai
+    window.loadCurrentEmployeePassword = () => {
+      const selectedEmp = document.getElementById('editPassEmployeeName').value;
+      if (selectedEmp && passwordsPegawai[selectedEmp]) {
+        document.getElementById('editPassValue').value = passwordsPegawai[selectedEmp];
+      } else {
+        document.getElementById('editPassValue').value = "";
+      }
+    };
+
+    // Menyimpan perubahan sandi pegawai ke Firestore
+    document.getElementById('btnSimpanSandi').onclick = async () => {
+      if (userRole !== 'admin') return;
+
+      const selectedEmp = document.getElementById('editPassEmployeeName').value;
+      const newPassword = document.getElementById('editPassValue').value.trim();
+
+      if (!selectedEmp) {
+        showCustomAlert("Pilih nama pegawai terlebih dahulu!");
+        return;
+      }
+      if (!newPassword) {
+        showCustomAlert("Kata sandi tidak boleh kosong!");
+        return;
+      }
+
+      try {
+        // Disimpan dalam konfigurasi database di path yang diizinkan sistem /artifacts/{appId}/public/data/employee_passwords
+        const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'employee_passwords', selectedEmp);
+        await setDoc(docRef, { password: newPassword }, { merge: true });
         
-        <main class="flex-1 p-6">
-            <button onclick="toggleMobileSidebar()" class="md:hidden p-2 bg-white rounded shadow">Menu</button>
-            <h1 class="text-2xl font-black text-blue-900 mt-4">Selamat Datang di Sistem Arsip</h1>
-            <p class="mt-4 text-sm text-gray-600">Gunakan fungsi <code>cekAkses('URL', 'Grup')</code> untuk membatasi dokumen.</p>
-        </main>
-    </div>
+        tutupModalSandi();
+        showCustomAlert(`Sandi untuk ${selectedEmp} berhasil diperbarui.`);
+      } catch (err) {
+        console.error("Gagal memperbarui sandi pegawai:", err);
+        showCustomAlert("Gagal memperbarui sandi. Pastikan Anda terhubung ke jaringan!");
+      }
+    };
+
+    document.getElementById('searchTerm').oninput = (e) => {
+      filterKata = e.target.value;
+      render();
+    };
+
+    window.toggleNamaField = () => {
+      const cat = document.getElementById('inCat').value;
+      if (cat === 'kepegawaian') {
+        document.getElementById('fieldNamaPegawai').classList.remove('hidden');
+      } else {
+        document.getElementById('fieldNamaPegawai').classList.add('hidden');
+      }
+    };
+
+    window.bukaModal = () => {
+      toggleNamaField();
+      document.getElementById('modalInput').classList.remove('hidden');
+    };
+
+    window.tutupModal = () => {
+      document.getElementById('modalInput').classList.add('hidden');
+    };
+
+    document.getElementById('menu-tab').onclick = (e) => {
+      const b = e.target.closest('.btn-tab');
+      if (!b) return;
+
+      document.querySelectorAll('.btn-tab').forEach(x => {
+        x.classList.remove('tab-aktif');
+        x.classList.add('text-gray-300');
+        x.classList.add('hover:text-white');
+      });
+      b.classList.add('tab-aktif');
+      b.classList.remove('text-gray-300');
+      b.classList.remove('hover:text-white');
+
+      kategoriSekarang = b.dataset.cat;
+      filterKata = '';
+      openGroups.clear();
+      document.getElementById('searchTerm').value = '';
+
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (!sidebar.classList.contains('-translate-x-full')) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+
+      render();
+    };
+
+    document.getElementById('loginPass').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') prosesLogin();
+    });
+
+    document.getElementById('customConfirmYesBtn').onclick = () => {
+      closeCustomConfirm(true);
+    };
+  </script>
 </body>
-
-
-    
-    
-    <div id="mainContent" class="hidden h-screen flex">
-        <aside id="sidebar" class="w-64 bg-blue-900 text-white p-6 transition-transform transform md:translate-x-0 -translate-x-full absolute md:static z-40 h-full">
-            <h2 class="font-bold mb-6">MENU</h2>
-            <div id="status" class="bg-gray-500 text-[10px] w-fit px-2 rounded">MENGHUBUNGKAN...</div>
-            <button onclick="location.reload()" class="mt-6 w-full text-left p-2 hover:bg-blue-800 rounded">Beranda</button>
-        </aside>
-        <main class="flex-1 p-6">
-            <button onclick="toggleMobileSidebar()" class="md:hidden p-2 bg-white rounded shadow">Menu</button>
-            <h1 class="text-2xl font-black text-blue-900 mt-4">Selamat Datang di Sistem Arsip</h1>
-        </main>
-    </div>
-</body>
-<body class="bg-gray-100 p-4">
-    <div id="login-screen" class="max-w-md mx-auto mt-20 bg-white p-8 rounded-lg shadow-lg text-center">
-        <h2 class="text-xl font-bold mb-6 text-gray-800">Login Sistem</h2>
-        <input type="password" id="initial-password" placeholder="Masukkan Sandi Akses..." class="w-full p-2 border rounded mb-4">
-        <button onclick="cekLogin()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-800">Masuk</button>
-    </div>
-    <div id="main-app" class="hidden">
-        <h1 class="text-2xl font-bold mb-4">Arsip Kepegawaian</h1>
-        <div id="arsip-container"></div>
-    </div>
-  // Sistem Kustom Alert
-        window.showCustomAlert = (msg) => {
-            document.getElementById('customAlertMsg').innerText = msg;
-            document.getElementById('customAlert').classList.remove('hidden');
-        };
-        window.closeCustomAlert = () => {
-            document.getElementById('customAlert').classList.add('hidden');
-        };
-        // Sistem Kustom Konfirmasi (Hapus Berkas)
-        let confirmResolve = null;
-        window.showCustomConfirm = (msg) => {
-            document.getElementById('customConfirmMsg').innerText = msg;
-            document.getElementById('customConfirm').classList.remove('hidden');
-            return new Promise((resolve) => {
-                confirmResolve = resolve;
-            });
-        };
-        window.closeCustomConfirm = (bool) => {
-            document.getElementById('customConfirm').classList.add('hidden');
-            if (confirmResolve) confirmResolve(bool);
-        };
-        // Logika Toggle Mobile Sidebar
-        window.toggleMobileSidebar = () => {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            if (sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-        };
-        // PROSES MASUK KATA SANDI (LOGIN AWAL YANG DIKEMBALIKAN)
-        window.prosesLogin = () => {
-            const passInput = document.getElementById('loginPass').value;
-            if (!passInput) {
-                showCustomAlert("Harap isi Kata Sandi!");
-                return;
-            }
-            // Memeriksa sandi Admin atau User
-            if (passInput === "admintufrms") {
-                userRole = 'admin';
-                loggedInName = 'Administrator TU';
-                loggedInUsername = 'admin';
-                masukAplikasi();
-            } else if (passInput === "user123") {
-                userRole = 'user';
-                loggedInName = 'Guru & Staf';
-                loggedInUsername = 'user';
-                masukAplikasi();
-            } else {
-                showCustomAlert("Kata Sandi salah! Hubungi TU untuk mendapatkan akses masuk.");
-            }
-        };
-
-        window.logout = () => {
-            location.reload();
-        };
-
-        function masukAplikasi() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-            
-            const floatingAdd = document.getElementById('floatingAdd');
-            const kolomAksi = document.getElementById('kolomAksi');
-
-            if (userRole === 'admin') {
-                floatingAdd.classList.remove('hidden');
-                floatingAdd.classList.add('flex');
-                if (kolomAksi) kolomAksi.classList.remove('hidden');
-            } else {
-                floatingAdd.classList.remove('flex');
-                floatingAdd.classList.add('hidden');
-                if (kolomAksi) kolomAksi.classList.add('hidden');
-            }
-           start();
-        }
-       async function start() {
-            try {
-               await signInAnonymously(auth);
-                const userProfileEl = document.querySelector('#userProfile span');
-                if (userProfileEl) {
-                    userProfileEl.innerText = `${loggedInName} (${userRole.toUpperCase()})`;
-                }
-                const pathUtama = `artifacts/${appId}/public/data/arsip`;
-                const colUtamaRef = collection(db, pathUtama);
-                onSnapshot(query(colUtamaRef), (snapUtama) => {
-                    if (!snapUtama.empty) {
-                        dataSemua = snapUtama.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        render();
-                    } else {
-                      const colCadanganRef = collection(db, 'arsip');
-                        onSnapshot(query(colCadanganRef), (snapCadangan) => {
-                            dataSemua = snapCadangan.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                            render();
-                        });
-                    }
-                    
-                    updateStatusUI();
-                }, (err) => {
-                    console.warn("Membaca jalur utama gagal, beralih ke koleksi cadangan root...");
-                  const colCadanganRef = collection(db, 'arsip');
-                    onSnapshot(query(colCadanganRef), (snapCadangan) => {
-                        dataSemua = snapCadangan.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        render();
-                    });
-                    updateStatusUI();
-                });
-
-            } catch (err) {
-                console.error("Autentikasi Anonim Gagal:", err);
-            }
-        }
-
-        function updateStatusUI() {
-            const statusEl = document.getElementById('status');
-            const mobileStatusEl = document.getElementById('mobileStatus');
-            const textStatus = userRole === 'admin' ? "ADMIN" : "USER";
-            
-            if (statusEl) {
-                statusEl.innerText = textStatus;
-                statusEl.className = `text-[8px] md:text-[9px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
-            }
-            if (mobileStatusEl) {
-                mobileStatusEl.innerText = textStatus;
-                mobileStatusEl.className = `text-[8px] font-bold ${userRole === 'admin' ? 'bg-green-500' : 'bg-blue-500'} px-2 py-0.5 rounded-full uppercase shadow-lg`;
-            }
-        }
-        window.hapusDokumen = async (id, title) => {
-            if (userRole !== 'admin') return;
-                  const setujuHapus = await showCustomConfirm(`Apakah Anda yakin ingin menghapus permanen dokumen "${title}"?`);
-            if (setujuHapus) {
-                try { 
-                    const snapCheck = await getDocs(query(collection(db, `artifacts/${appId}/public/data/arsip`)));
-                    const isExistInUtama = snapCheck.docs.some(doc => doc.id === id);
-                    const pathHapus = isExistInUtama 
-                        ? `artifacts/${appId}/public/data/arsip` 
-                        : `arsip`;
-                    const docRef = doc(db, pathHapus, id);
-                    await deleteDoc(docRef); 
-                    showCustomAlert("Berkas berhasil dihapus secara permanen!");
-                } catch (e) { 
-                    console.error("Error hapus:", e); 
-                    try {
-                        await deleteDoc(doc(db, 'arsip', id));
-                        showCustomAlert("Berkas berhasil dihapus secara permanen!");
-                    } catch (err2) {
-                        console.error("Hapus cadangan gagal:", err2);
-                    }
-                }
-            }
-            document.getElementById('customConfirm').classList.add('hidden');
-        };
-        window.toggleGroup = (groupName) => {
-            if (openGroups.has(groupName)) {
-                openGroups.delete(groupName);
-            } else {
-                openGroups.add(groupName);
-            }
-            render();
-        };
-
-        function render() {
-            const tabelBody = document.getElementById('isi-tabel');
-            const secBeranda = document.getElementById('section-beranda');
-            const secData = document.getElementById('section-data');
-            if (kategoriSekarang === 'beranda') {
-                secBeranda.classList.remove('hidden');
-                secData.classList.add('hidden');
-                return;
-            } else {
-                secBeranda.classList.add('hidden');
-                secData.classList.remove('hidden');
-            }
-           let filtered = dataSemua.filter(i => {
-                const itemCat = i.category;
-                if (kategoriSekarang === 'absen') {
-                    return itemCat === 'absen' || itemCat === 'rekap-absen';
-                }
-                return itemCat === kategoriSekarang;
-            });
-
-            if (filterKata) {
-                filtered = filtered.filter(i => 
-                    (i.title || '').toLowerCase().includes(filterKata.toLowerCase()) || 
-                    (i.employeeName || '').toLowerCase().includes(filterKata.toLowerCase())
-                );
-            }
-           const isKepegawaian = kategoriSekarang === 'kepegawaian';
-            let htmlContent = '';
-            if (isKepegawaian) {
-              const groups = {};
-                filtered.forEach(item => {
-                    let groupName = item.employeeName || "Pegawai Umum";
-                    if (!groups[groupName]) groups[groupName] = [];
-                    groups[groupName].push(item);
-                });
-                const sortedGroups = Object.keys(groups).sort((a, b) => a.localeCompare(b));
-                sortedGroups.forEach(group => {
-                    const isOpen = openGroups.has(group) || filterKata !== ''; 
-                    htmlContent += `
-                        <tr class="group-header" onclick="toggleGroup('${group}')">
-                            <td colspan="${userRole === 'admin' ? 2 : 1}" class="p-3 pl-4 border-b text-[10px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm flex items-center justify-between animate-fade-in">
-                                <span class="flex items-center">
-                                    <i class="fas fa-id-card mr-3 text-blue-600"></i> ${group}
-                                    <span class="ml-2 bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full text-[8px] font-bold">${groups[group].length} Berkas</span>
-                                </span>
-                                <i class="fas fa-chevron-down chevron-icon ${!isOpen ? 'rotated' : ''} text-blue-400"></i>
-                            </td>
-                        </tr>
-                    `;
-                    
-                    if (isOpen) {
-                        groups[group].forEach(doc => {
-                            htmlContent += `
-                                <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white transition-all">
-                                    <td class="p-4 pl-8">
-                                        <a href="${doc.link}" target="_blank" class="judul-link block">
-                                            <div class="text-xs font-bold text-gray-700">
-                                                <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
-                                            </div>
-                                            <div class="text-[9px] text-blue-500 font-semibold mt-0.5 ml-6">${group}</div>
-                                        </a>
-                                    </td>
-                                    ${userRole === 'admin' ? `
-                                    <td class="p-4 text-center">
-                                        <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all mx-auto">
-                                            <i class="fas fa-trash-alt text-xs"></i>
-                                        </button>
-                                    </td>` : ''}
-                                </tr>
-                            `;
-                        });
-                    }
-                });
-            } else {
-                // LOGIKA DAFTAR BIASA (Tanpa Pengelompokkan untuk Surat Masuk, Surat Keluar, SK, Absen)
-                filtered.forEach(doc => {
-                    htmlContent += `
-                        <tr class="border-b border-gray-100 hover:bg-gray-50/50 bg-white transition-all">
-                            <td class="p-4 pl-6">
-                                <a href="${doc.link}" target="_blank" class="judul-link block">
-                                    <div class="text-xs font-bold text-gray-700">
-                                        <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
-                                    </div>
-                                    ${doc.employeeName ? `<div class="text-[9px] text-blue-500 font-semibold mt-0.5 ml-6">${doc.employeeName}</div>` : ''}
-                                </a>
-                            </td>
-                            ${userRole === 'admin' ? `
-                            <td class="p-4 text-center w-24">
-                                <button onclick="hapusDokumen('${doc.id}', '${doc.title}')" class="w-8 h-8 rounded-lg bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-600 hover:text-white transition-all mx-auto">
-                                    <i class="fas fa-trash-alt text-xs"></i>
-                                </button>
-                            </td>` : ''}
-                        </tr>
-                    `;
-                });
-            }
-
-            tabelBody.innerHTML = htmlContent || '<tr><td colspan="3" class="p-20 text-center text-gray-400 font-medium">Data tidak ditemukan.</td></tr>';
-        }
-
-        // Menyimpan Dokumen Baru ke Firestore secara Dinamis dengan Tanggal Otomatis
-        document.getElementById('btnSimpan').onclick = async () => {
-            if (userRole !== 'admin') return;
-            // Membuat Tanggal Otomatis dengan Format Indonesia (Contoh: 19 Mei 2026)
-            const listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            const tglHariIni = new Date();
-            const formatTanggalOtomatis = `${tglHariIni.getDate()} ${listBulan[tglHariIni.getMonth()]} ${tglHariIni.getFullYear()}`;
-
-            const docBaru = {
-                title: document.getElementById('inTitle').value,
-                category: document.getElementById('inCat').value,
-                date: formatTanggalOtomatis, // Diisi otomatis sistem
-                link: document.getElementById('inLink').value,
-                employeeName: document.getElementById('inEmployeeName').value || ''
-            };
-            if(!docBaru.title || !docBaru.link) return;
-            try {
-                // Untuk dokumen BARU, kita simpan di jalur utama terstruktur agar aman
-                const arsipCol = collection(db, 'artifacts', appId, 'public', 'data', 'arsip');
-                await addDoc(arsipCol, docBaru);
-                tutupModal();
-                document.querySelectorAll('#modalInput input').forEach(el => el.value = "");
-                showCustomAlert("Arsip baru berhasil disimpan!");
-            } catch (e) { 
-                console.error("Gagal Simpan ke jalur utama, mencoba menyimpan ke root cadangan:", e);
-                try {
-                    await addDoc(collection(db, 'arsip'), docBaru);
-                    tutupModal();
-                    document.querySelectorAll('#modalInput input').forEach(el => el.value = "");
-                    showCustomAlert("Arsip baru berhasil disimpan!");
-                } catch (err2) {
-                    console.error("Gagal menyimpan ke kedua jalur:", err2);
-                    showCustomAlert("Gagal menyimpan dokumen. Silakan periksa koneksi atau izin database!");
-                }
-            }
-        };
-
-        document.getElementById('searchTerm').oninput = (e) => {
-            filterKata = e.target.value;
-            render();
-        };
-        window.toggleNamaField = () => {
-            const cat = document.getElementById('inCat').value;
-            if (cat === 'kepegawaian') {
-                document.getElementById('fieldNamaPegawai').classList.remove('hidden');
-            } else {
-                document.getElementById('fieldNamaPegawai').classList.add('hidden');
-            }
-        };
-        window.bukaModal = () => {
-            toggleNamaField();
-            document.getElementById('modalInput').classList.remove('hidden');
-        };
-        
-        window.tutupModal = () => document.getElementById('modalInput').classList.add('hidden');
-        
-        document.getElementById('menu-tab').onclick = (e) => {
-            const b = e.target.closest('.btn-tab');
-            if(!b) return;
-           // Atur status aktif tab
-            document.querySelectorAll('.btn-tab').forEach(x => { 
-                x.classList.remove('tab-aktif'); 
-                x.classList.add('text-gray-300');
-                x.classList.add('hover:text-white');
-            });
-            b.classList.add('tab-aktif');
-            b.classList.remove('text-gray-300');
-            b.classList.remove('hover:text-white');
-           kategoriSekarang = b.dataset.cat;
-            filterKata = '';
-            openGroups.clear(); 
-            document.getElementById('searchTerm').value = '';
-          // Jika diakses dari perangkat mobile, sembunyikan sidebar secara otomatis saat menu diklik
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            if (!sidebar.classList.contains('-translate-x-full')) {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-       </body>
 </html>

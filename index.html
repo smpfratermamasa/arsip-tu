@@ -961,11 +961,10 @@
         </div>
     </div>
     <script type="module">
-   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, onSnapshot, query, addDoc, deleteDoc, doc, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        // Inisialisasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
             authDomain: "arsip-digital-baru.firebaseapp.com",
@@ -974,75 +973,66 @@
             messagingSenderId: "789604072965",
             appId: "1:789604072965:web:42a2c6be8ac330010a666c"
         };
+        
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-        const appId = 'default-app-id';
 
-        // State Global
-        let userRole = '';
-        let loggedInName = '';
-        let dataSemua = [];
-        let kategoriSekarang = 'beranda';
-        let filterKata = '';
-        let openGroups = new Set();
-
-        // FUNGSI UTAMA
+        // Menambahkan fungsi ke window agar bisa diakses via onclick=""
         window.prosesLogin = () => {
             const passInput = document.getElementById('loginPass').value;
-            if (passInput === "admintufrms") {
-                userRole = 'admin';
-                loggedInName = 'Administrator TU';
-                masukAplikasi();
-            } else if (passInput === "user123") {
-                userRole = 'user';
-                loggedInName = 'Guru & Staf';
+            const btn = document.querySelector('button[onclick="prosesLogin()"]');
+            
+            btn.innerText = "Menghubungkan...";
+            btn.disabled = true;
+
+            if (passInput === "admintufrms" || passInput === "user123") {
                 masukAplikasi();
             } else {
-                Swal.fire({ icon: 'error', title: 'Gagal', text: 'Kata sandi salah!' });
+                Swal.fire({ icon: 'error', title: 'Login Gagal', text: 'Kata sandi salah!' });
+                btn.innerText = "Masuk";
+                btn.disabled = false;
             }
         };
 
         function masukAplikasi() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
-            startSync();
-        }
-
-        async function startSync() {
-            await signInAnonymously(auth);
-            const colRef = collection(db, 'arsip');
-            onSnapshot(query(colRef), (snap) => {
-                dataSemua = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                render();
+            
+            // Inisialisasi sinkronisasi
+            signInAnonymously(auth).then(() => {
+                const colRef = collection(db, 'arsip');
+                onSnapshot(query(colRef), (snap) => {
+                    const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    render(data);
+                });
             });
         }
 
-        function render() {
-            // Logika render tabel sesuai kategori...
-            console.log("Rendering data:", dataSemua);
+        function render(data) {
+            const container = document.getElementById('section-data');
+            container.innerHTML = `<p class="text-green-600 font-bold">Data berhasil dimuat (${data.length} berkas).</p>`;
+            // Logika render tabel Anda di sini
         }
 
-        window.logout = () => location.reload();
+        window.logout = () => window.location.reload();
     </script>
 </head>
 <body class="bg-gray-100">
 
-    <!-- Login Screen -->
     <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-xl shadow-lg max-w-sm w-full text-center">
             <h2 class="text-2xl font-bold mb-6">Login Sistem</h2>
             <input type="password" id="loginPass" placeholder="Masukkan Sandi..." class="w-full p-3 border rounded-lg mb-4">
-            <button onclick="prosesLogin()" class="w-full bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-800">Masuk</button>
+            <button onclick="prosesLogin()" class="w-full bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-800 transition-all">Masuk</button>
         </div>
     </div>
 
-    <!-- Main Content -->
     <div id="mainContent" class="hidden p-4">
-        <h1 class="text-2xl font-bold">Selamat Datang</h1>
-        <button onclick="logout()" class="text-red-500 mt-4">Keluar</button>
+        <h1 class="text-2xl font-bold mb-4">Arsip Kepegawaian</h1>
+        <button onclick="logout()" class="text-red-500 underline">Keluar</button>
         <div id="section-data" class="mt-4">
-            <!-- Tabel Data -->
+            <p>Menunggu data...</p>
         </div>
     </div>
 </body>

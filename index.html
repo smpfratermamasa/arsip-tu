@@ -58,302 +58,138 @@
         .group-header:hover { background-color: rgba(219, 234, 254, 0.95); }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
-
             backdrop-filter: blur(12px);
-
             border: 1px solid rgba(255, 255, 255, 0.4);
-
             box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
-
         }
-
-        
-
-        /* WARNA BIRU NAVY KHAS SMP FRATER MAMASA (Warna Biru Navy Terang Mewah) */
-
+       /* WARNA BIRU NAVY KHAS SMP FRATER MAMASA (Warna Biru Navy Terang Mewah) */
         .nav-blue {
-
             background-color: #1e3a8a !important; /* Biru Navy Terang Mewah */
-
             backdrop-filter: blur(10px);
-
         }
-
-
-
         .text-shadow {
-
             text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
-
         }
-
-
-
         .judul-link {
-
             cursor: pointer;
-
             transition: color 0.2s;
-
         }
-
         .judul-link:hover {
-
             color: #2563eb;
-
             text-decoration: underline;
-
         }
-
-
-
         .chevron-icon {
-
             transition: transform 0.3s ease;
-
         }
-
         .rotated {
-
             transform: rotate(-90deg);
-
         }
-
-
-
         .animate-fade-in {
-
             animation: fadeIn 0.4s ease-out;
-
         }
-
         @keyframes fadeIn {
-
             from { opacity: 0; transform: translateY(10px); }
-
             to { opacity: 1; transform: translateY(0); }
-
         }
-
-
-
         /* ANIMASI TEKS BERJALAN MODERN */
-
         .marquee-container {
-
             display: flex;
-
             overflow: hidden;
-
             user-select: none;
-
             width: 100%;
-
         }
-
-
-
         .marquee-content {
-
             display: flex;
-
             gap: 6rem;
-
             white-space: nowrap;
-
             animation: marquee-animation 35s linear infinite;
-
         }
-
-
-
         /* Jeda saat kursor mouse diarahkan ke teks */
-
         .marquee-container:hover .marquee-content {
-
             animation-play-state: paused;
-
-        }
-
-
-
+       }
         @keyframes marquee-animation {
-
             0% {
-
                 transform: translateX(0%);
-
             }
-
             100% {
-
                 transform: translateX(-50%);
-
             }
-
         }
-
     </style>
-
 </head>
-
 <body class="min-h-screen overflow-hidden">
-
-
-
     <div class="bg-sekolah"></div>
     <!-- MODAL CUSTOM PEMBERITAHUAN (MENGGANTIKAN ALERT) -->
-
     <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-
         <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
-
             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
-
                 <i class="fas fa-info-circle fa-lg"></i>
-
             </div>
-
             <h3 class="text-base font-bold text-gray-800 mb-2">Pemberitahuan</h3>
-
             <p id="customAlertMsg" class="text-xs text-gray-600 mb-6 leading-relaxed"></p>
-
             <button onclick="closeCustomAlert()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all">OK</button>
-
         </div>
-
     </div>
-
-
-
     <!-- MODAL CUSTOM KONFIRMASI (MENGGANTIKAN CONFIRM) -->
-
     <div id="customConfirm" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
-
         <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
-
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
-
                 <i class="fas fa-exclamation-triangle fa-lg"></i>
-
             </div>
-
             <h3 class="text-base font-bold text-gray-800 mb-2">Konfirmasi</h3>
-
             <p id="customConfirmMsg" class="text-xs text-gray-600 mb-6 leading-relaxed"></p>
-
             <div class="flex gap-3">
-
                 <button onclick="closeCustomConfirm(false)" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl text-xs uppercase transition-all">Batal</button>
-
                 <button id="customConfirmYesBtn" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs uppercase transition-all">Hapus</button>
-
             </div>
-
         </div>
-
     </div>
-
-
-
     <!-- LAYAR AUTENTIKASI KATA SANDI (LOGIN AWAL) -->
-
     <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
-
         <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50">
-
             <!-- Container Logo dengan Sistem Cadangan Tampilan -->
-
             <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
-
                 <div class="relative w-full h-full flex items-center justify-center">
-
                     <img id="imgLogin" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-
                          onerror="loadFallbackLogo('imgLogin')"
-
                          alt="Logo Sekolah" 
-
                          class="w-full h-full object-contain">
-
                 </div>
-
             </div>
-
-            
-
             <!-- FORM LOGIN SANDI -->
-
             <div id="formLogin">
-
                 <h1 class="text-2xl font-black text-blue-900 mb-1 leading-tight">ARSIP DIGITAL</h1>
-
                 <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-widest leading-none">SMP Frater Mamasa</p>
-
-                
-
                 <div class="space-y-4">
-
-                    <div class="relative">
-
+                   <div class="relative">
                         <i class="fas fa-lock absolute left-4 top-4 text-gray-400"></i>
-
                         <input type="password" id="loginPass" placeholder="Masukkan Kata Sandi" class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-gray-100 focus:border-blue-500 outline-none transition-all font-bold text-sm">
-
                     </div>
-
                     <button onclick="prosesLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-xl active:scale-95 transition-all uppercase tracking-wider text-xs">
-
                         Masuk Ke Sistem
-
                     </button>
-
                 </div>
-
                 <p class="mt-6 text-[10px] text-gray-400 uppercase font-black tracking-wide italic">Gunakan Sandi Admin atau User</p>
-
             </div>
-
         </div>
-
     </div>
-
-
-
-    <!-- Konten Utama (Setelah Login Sukses) -->
-
+   <!-- Konten Utama (Setelah Login Sukses) -->
     <div id="mainContent" class="hidden h-screen w-screen flex flex-col md:flex-row overflow-hidden">
-
-        
-
         <!-- HEADER MOBILE (Gunakan Warna Biru Navy Terang Mewah) -->
-
         <header class="md:hidden w-full nav-blue text-white flex items-center justify-between p-4 border-b border-blue-800 z-50">
-
             <div class="flex items-center gap-3">
-
                 <button onclick="toggleMobileSidebar()" class="text-white hover:text-blue-300 p-2 focus:outline-none">
-
                     <i class="fas fa-bars text-xl"></i>
-
                 </button>
-
                 <!-- LOGO SEKOLAH DI MOBILE HEADER (Menggunakan Weserv proxy) -->
-
                 <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-blue-400 p-0.5 flex-shrink-0">
-
                     <img id="imgMobile" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
-
                          onerror="loadFallbackLogo('imgMobile')"
-
                          alt="Logo Sekolah" 
-
                          class="w-full h-full object-contain">
-
                 </div>
-
                 <div class="flex flex-col text-left">
-
                     <span class="font-black text-xs uppercase leading-tight tracking-wide text-blue-100">Arsip Digital</span>
 
                     <span class="text-[9px] text-gray-200 font-bold uppercase">SMP Frater Mamasa</span>
@@ -369,17 +205,9 @@
             </div>
 
         </header>
-
-
-
         <!-- OVERLAY LATAR BELAKANG MOBILE SIDEBAR (Klik untuk Menutup) -->
-
         <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"></div>
-
-
-
         <!-- SIDEBAR MENU (Samping Kiri) -->
-
         <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 nav-blue text-white flex flex-col flex-shrink-0 border-r border-blue-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full z-40">
 
             <!-- Header Sekolah di Atas Sidebar -->
@@ -721,11 +549,11 @@
         </div>
     </div>
     <script type="module">
-      import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, onSnapshot, query, addDoc, doc, deleteDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-
+        // Konfigurasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
             authDomain: "arsip-digital-baru.firebaseapp.com",
@@ -734,81 +562,63 @@
             messagingSenderId: "789604072965",
             appId: "1:789604072965:web:42a2c6be8ac330010a666c"
         };
-        
+
+        // Inisialisasi app, db, dan auth dalam urutan yang benar
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
+        const auth = getAuth(app); // Menggunakan app sebagai argumen
 
-        window.prosesLogin = async () => {
-            const passInput = document.getElementById('loginPass').value;
-            const btn = document.querySelector('button[onclick="prosesLogin()"]');
-            
-            if (!passInput) {
-                Swal.fire('Peringatan', 'Masukkan kata sandi!', 'warning');
-                return;
+        // Inisialisasi Auth setelah app terinisialisasi
+        signInAnonymously(auth).then(() => {
+            console.log("Terhubung ke Firebase");
+            const statusEl = document.getElementById('status');
+            if (statusEl) {
+                statusEl.innerText = "ONLINE";
+                statusEl.className = "bg-emerald-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide";
             }
+        }).catch(err => {
+            console.error("Gagal koneksi:", err);
+            const statusEl = document.getElementById('status');
+            if (statusEl) statusEl.innerText = "GAGAL KONEKSI";
+        });
 
-            btn.innerText = "Menghubungkan...";
-            btn.disabled = true;
-
-            try {
-                // Autentikasi dulu
-                await signInAnonymously(auth);
-                
-                if (passInput === "admintufrms" || passInput === "user123") {
-                    masukAplikasi();
-                } else {
-                    throw new Error("Kata sandi salah");
-                }
-            } catch (err) {
-                console.error(err);
-                Swal.fire('Gagal', 'Terjadi kesalahan: ' + err.message, 'error');
-                btn.innerText = "Masuk";
-                btn.disabled = false;
+        // Fungsi Login Global
+        window.prosesLogin = () => {
+            const pass = document.getElementById('loginPass').value;
+            if(pass === "admintufrms") {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+            } else {
+                Swal.fire('Gagal', 'Sandi Salah', 'error');
             }
         };
 
-        function masukAplikasi() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-            
-            const colRef = collection(db, 'arsip');
-            onSnapshot(query(colRef), (snap) => {
-                const data = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                render(data);
-            }, (err) => {
-                console.error("Gagal ambil data:", err);
-                document.getElementById('section-data').innerHTML = 
-                    `<p class="text-red-600 font-bold">Gagal memuat data! (Periksa Database/Rules).</p>`;
-            });
-        }
-
-        function render(data) {
-            const container = document.getElementById('section-data');
-            container.innerHTML = `<p class="text-green-600 font-bold p-4 bg-white rounded shadow">Data berhasil dimuat (${data.length} berkas).</p>`;
-        }
-
-        window.logout = () => window.location.reload();
+        window.toggleMobileSidebar = () => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('-translate-x-full');
+        };
     </script>
 </head>
-<body class="bg-gray-100">
-
-    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-xl shadow-lg max-w-sm w-full text-center">
-            <h2 class="text-2xl font-bold mb-6 text-blue-900">Login Sistem</h2>
-            <input type="password" id="loginPass" placeholder="Masukkan Sandi..." class="w-full p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 outline-none">
-            <button onclick="prosesLogin()" class="w-full bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-800 transition-all font-semibold">Masuk</button>
+<body class="bg-slate-100">
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-blue-900">
+        <div class="bg-white p-8 rounded-3xl w-80 text-center shadow-xl">
+            <h1 class="text-xl font-black text-blue-900 mb-4">ARSIP DIGITAL</h1>
+            <input type="password" id="loginPass" class="w-full p-3 mb-4 border rounded-xl" placeholder="Sandi">
+            <button onclick="prosesLogin()" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold">MASUK</button>
         </div>
     </div>
 
-    <div id="mainContent" class="hidden min-h-screen p-4">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-xl font-bold text-gray-800">Arsip Kepegawaian</h1>
-            <button onclick="logout()" class="text-sm text-red-600 hover:text-red-800 font-bold">Keluar</button>
-        </div>
-        <div id="section-data" class="mt-4">
-            <p class="text-gray-500 animate-pulse">Menghubungkan ke database...</p>
-        </div>
+    <div id="mainContent" class="hidden h-screen flex">
+        <aside id="sidebar" class="w-64 bg-blue-900 text-white p-6 transition-transform transform md:translate-x-0 -translate-x-full absolute md:static z-40 h-full">
+            <h2 class="font-bold mb-6">MENU</h2>
+            <div id="status" class="bg-gray-500 text-[10px] w-fit px-2 rounded">MENGHUBUNGKAN...</div>
+            <button onclick="location.reload()" class="mt-6 w-full text-left p-2 hover:bg-blue-800 rounded">Beranda</button>
+        </aside>
+        
+        <main class="flex-1 p-6">
+            <button onclick="toggleMobileSidebar()" class="md:hidden p-2 bg-white rounded shadow">Menu</button>
+            <h1 class="text-2xl font-black text-blue-900 mt-4">Selamat Datang di Sistem Arsip</h1>
+        </main>
     </div>
 </body>
 <body class="bg-gray-100 p-4">

@@ -960,99 +960,90 @@
             </div>
         </div>
     </div>
-
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-        import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+        import { getFirestore, collection, onSnapshot, query, addDoc, deleteDoc, doc, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
 
-        // 1. Data Password
-        const passwordPegawai = {
-            "MARKUS D.": "pass123",
-            "STEPHEN EKO SETIAWAN": "pass456",
-            "Fr. SIMEON LOPI KOBAN, HHK": "pass789"
-        };
-
-        // Fungsi Login Awal
-        window.cekLogin = () => {
-            const inputPass = document.getElementById('initial-password').value;
-            const validPasswords = ["user123", "admintufrms"];
-            
-            if (validPasswords.includes(inputPass)) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-            } else {
-                Swal.fire({ icon: 'error', title: 'Login Gagal', text: 'Sandi tidak dikenali!' });
-            }
-        };
-
-        // 2. Fungsi Cek Akses
-        window.cekAkses = async (link, namaPegawai) => {
-            const { value: password } = await Swal.fire({
-                title: 'Verifikasi Keamanan',
-                text: `Masukkan sandi untuk membuka arsip ${namaPegawai}:`,
-                input: 'password',
-                showCancelButton: true,
-                confirmButtonText: 'Buka Arsip',
-                cancelButtonText: 'Batal'
-            });
-
-            if (password) {
-                const isUserAdmin = (password === "admintufrms");
-                const isPegawaiValid = (passwordPegawai[namaPegawai] === password);
-
-                if (isUserAdmin || isPegawaiValid) {
-                    window.open(link, '_blank');
-                } else {
-                    Swal.fire('Akses Ditolak', 'Sandi salah!', 'error');
-                }
-            }
-        };
-
-        // 3. Fungsi Render
-        function render(data) {
-            const container = document.getElementById('arsip-container');
-            container.innerHTML = '';
-            
-            data.forEach(doc => {
-                const div = document.createElement('div');
-                div.className = "bg-white p-4 rounded-lg shadow mb-4";
-                div.innerHTML = `
-                    <button onclick="cekAkses('${doc.link}', '${doc.nama_pegawai}')" class="text-left w-full block hover:text-blue-600">
-                        <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // 4. Inisialisasi Firebase & Snapshot
+        // Inisialisasi Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
             authDomain: "arsip-digital-baru.firebaseapp.com",
-            projectId: "arsip-digital-baru", 
+            projectId: "arsip-digital-baru",
             storageBucket: "arsip-digital-baru.appspot.com",
             messagingSenderId: "789604072965",
             appId: "1:789604072965:web:42a2c6be8ac330010a666c"
         };
-
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        
-        onSnapshot(query(collection(db, "arsip")), (snapshot) => {
-            const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-            render(data);
-        });
+        const auth = getAuth(app);
+        const appId = 'default-app-id';
+
+        // State Global
+        let userRole = '';
+        let loggedInName = '';
+        let dataSemua = [];
+        let kategoriSekarang = 'beranda';
+        let filterKata = '';
+        let openGroups = new Set();
+
+        // FUNGSI UTAMA
+        window.prosesLogin = () => {
+            const passInput = document.getElementById('loginPass').value;
+            if (passInput === "admintufrms") {
+                userRole = 'admin';
+                loggedInName = 'Administrator TU';
+                masukAplikasi();
+            } else if (passInput === "user123") {
+                userRole = 'user';
+                loggedInName = 'Guru & Staf';
+                masukAplikasi();
+            } else {
+                Swal.fire({ icon: 'error', title: 'Gagal', text: 'Kata sandi salah!' });
+            }
+        };
+
+        function masukAplikasi() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            startSync();
+        }
+
+        async function startSync() {
+            await signInAnonymously(auth);
+            const colRef = collection(db, 'arsip');
+            onSnapshot(query(colRef), (snap) => {
+                dataSemua = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                render();
+            });
+        }
+
+        function render() {
+            // Logika render tabel sesuai kategori...
+            console.log("Rendering data:", dataSemua);
+        }
+
+        window.logout = () => location.reload();
     </script>
-<body class="bg-gray-100 p-4">
-    <div id="login-screen" class="max-w-md mx-auto mt-20 bg-white p-8 rounded-lg shadow-lg text-center">
-        <h2 class="text-xl font-bold mb-6 text-gray-800">Login Sistem</h2>
-        <input type="password" id="initial-password" placeholder="Masukkan Sandi Akses..." class="w-full p-2 border rounded mb-4">
-        <button onclick="cekLogin()" class="w-full bg-blue-900 text-white py-2 rounded hover:bg-blue-800">Masuk</button>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-sm w-full text-center">
+            <h2 class="text-2xl font-bold mb-6">Login Sistem</h2>
+            <input type="password" id="loginPass" placeholder="Masukkan Sandi..." class="w-full p-3 border rounded-lg mb-4">
+            <button onclick="prosesLogin()" class="w-full bg-blue-900 text-white py-3 rounded-lg hover:bg-blue-800">Masuk</button>
+        </div>
     </div>
 
-    <div id="main-app" class="hidden">
-        <h1 class="text-2xl font-bold mb-4">Arsip Kepegawaian</h1>
-        <div id="arsip-container"></div>
+    <!-- Main Content -->
+    <div id="mainContent" class="hidden p-4">
+        <h1 class="text-2xl font-bold">Selamat Datang</h1>
+        <button onclick="logout()" class="text-red-500 mt-4">Keluar</button>
+        <div id="section-data" class="mt-4">
+            <!-- Tabel Data -->
+        </div>
     </div>
 </body>
 <body class="bg-gray-100 p-4">

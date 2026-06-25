@@ -1429,5 +1429,49 @@
             // ... render ke modal ...
         }
     </script>
+    <script>
+    /**
+     * Data password pegawai (Contoh)
+     * Format: { 'ID_PEGAWAI': 'PASSWORD_PEGAWAI' }
+     */
+    const dataPassword = {
+        "P001": "rahasia123",
+        "P002": "sandi456",
+        "P003": "admin789"
+    };
+
+    /**
+     * Fungsi untuk membuka file arsip secara lokal
+     * @param {string} idPegawai - ID Pegawai yang ditargetkan
+     */
+    async function bukaArsip(idPegawai) {
+        const { value: password } = await Swal.fire({
+            title: 'Verifikasi Keamanan',
+            text: 'Masukkan password pribadi Anda:',
+            input: 'password',
+            inputPlaceholder: 'Masukkan password',
+            showCancelButton: true,
+            confirmButtonText: 'Buka Arsip',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#1e3a8a'
+        });
+
+        if (password) {
+            // Cek apakah ID ada dan apakah password cocok
+            if (dataPassword[idPegawai] && dataPassword[idPegawai] === password) {
+                Swal.fire('Berhasil!', 'Password benar. Membuka arsip...', 'success');
+                // Panggil fungsi untuk menampilkan arsip Anda di sini
+                tampilkanDetailData(idPegawai);
+            } else {
+                Swal.fire('Akses Ditolak', 'Password salah atau Anda tidak memiliki akses ke arsip ini.', 'error');
+            }
+        }
+    }
+
+    function tampilkanDetailData(idPegawai) {
+        console.log("Membuka arsip untuk:", idPegawai);
+        // Logika tampilan Anda
+    }
+</script>
 </body>
 </html>

@@ -120,8 +120,7 @@
 </head>
 <body class="min-h-screen overflow-hidden">
     <div class="bg-sekolah"></div>
-    <!-- MODAL CUSTOM PEMBERITAHUAN (MENGGANTIKAN ALERT) -->
-    <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+       <div id="customAlert" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
         <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
                 <i class="fas fa-info-circle fa-lg"></i>
@@ -131,8 +130,7 @@
             <button onclick="closeCustomAlert()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all">OK</button>
         </div>
     </div>
-    <!-- MODAL CUSTOM KONFIRMASI (MENGGANTIKAN CONFIRM) -->
-    <div id="customConfirm" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+       <div id="customConfirm" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
         <div class="glass-card p-6 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50 animate-fade-in">
             <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-600">
                 <i class="fas fa-exclamation-triangle fa-lg"></i>
@@ -145,11 +143,9 @@
             </div>
         </div>
     </div>
-    <!-- LAYAR AUTENTIKASI KATA SANDI (LOGIN AWAL) -->
-    <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
+     <div id="loginScreen" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
         <div class="glass-card p-8 rounded-3xl w-full max-sm:mx-4 max-w-sm text-center shadow-2xl border border-white/50">
-            <!-- Container Logo dengan Sistem Cadangan Tampilan -->
-            <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
+                   <div class="w-24 h-24 bg-white rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg border-2 border-blue-100 overflow-hidden p-2">
                 <div class="relative w-full h-full flex items-center justify-center">
                     <img id="imgLogin" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
                          onerror="loadFallbackLogo('imgLogin')"
@@ -157,8 +153,7 @@
                          class="w-full h-full object-contain">
                 </div>
             </div>
-            <!-- FORM LOGIN SANDI -->
-            <div id="formLogin">
+               <div id="formLogin">
                 <h1 class="text-2xl font-black text-blue-900 mb-1 leading-tight">ARSIP DIGITAL</h1>
                 <p class="text-[10px] text-gray-500 mb-6 font-bold uppercase tracking-widest leading-none">SMP Frater Mamasa</p>
                 <div class="space-y-4">
@@ -174,15 +169,12 @@
             </div>
         </div>
     </div>
-   <!-- Konten Utama (Setelah Login Sukses) -->
-    <div id="mainContent" class="hidden h-screen w-screen flex flex-col md:flex-row overflow-hidden">
-        <!-- HEADER MOBILE (Gunakan Warna Biru Navy Terang Mewah) -->
-        <header class="md:hidden w-full nav-blue text-white flex items-center justify-between p-4 border-b border-blue-800 z-50">
+     <div id="mainContent" class="hidden h-screen w-screen flex flex-col md:flex-row overflow-hidden">
+            <header class="md:hidden w-full nav-blue text-white flex items-center justify-between p-4 border-b border-blue-800 z-50">
             <div class="flex items-center gap-3">
                 <button onclick="toggleMobileSidebar()" class="text-white hover:text-blue-300 p-2 focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <!-- LOGO SEKOLAH DI MOBILE HEADER (Menggunakan Weserv proxy) -->
                 <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-blue-400 p-0.5 flex-shrink-0">
                     <img id="imgMobile" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
                          onerror="loadFallbackLogo('imgMobile')"
@@ -198,17 +190,13 @@
                 <span id="mobileStatus" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">...</span>
             </div>
         </header>
-        <!-- OVERLAY LATAR BELAKANG MOBILE SIDEBAR (Klik untuk Menutup) -->
         <div id="sidebarOverlay" onclick="toggleMobileSidebar()" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30 md:hidden"></div>
-        <!-- SIDEBAR MENU (Samping Kiri) -->
         <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-64 nav-blue text-white flex flex-col flex-shrink-0 border-r border-blue-800 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out h-full z-40">
-            <!-- Header Sekolah di Atas Sidebar -->
-            <div class="p-6 border-b border-blue-800 flex items-center justify-between gap-3">
+                <div class="p-6 border-b border-blue-800 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden border border-blue-400 p-1 flex-shrink-0">
                         <div class="relative w-full h-full flex items-center justify-center">
-                            <!-- Menggunakan Weserv proxy untuk logo sidebar -->
-                            <img id="imgSidebar" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
+                                 <img id="imgSidebar" src="https://images.weserv.nl/?url=drive.google.com/uc?id=1nrUqzIZP0zTDVH3axW6sBFP2Z_NDoDfB" 
                                  onerror="loadFallbackLogo('imgSidebar')"
                                  alt="Logo Sekolah" 
                                  class="w-full h-full object-contain">
@@ -219,13 +207,11 @@
                         <span class="text-[10px] text-gray-200 font-bold uppercase tracking-wider">SMP Frater Mamasa</span>
                     </div>
                 </div>
-                <!-- Tombol Close Sidebar (Hanya Mobile) -->
-                <button onclick="toggleMobileSidebar()" class="md:hidden text-gray-400 hover:text-white">
+                    <button onclick="toggleMobileSidebar()" class="md:hidden text-gray-400 hover:text-white">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
-            <!-- Daftar Menu Kategori di Samping -->
-            <div class="flex-grow p-4 space-y-0.5 overflow-y-auto no-scrollbar" id="menu-tab">
+             <div class="flex-grow p-4 space-y-0.5 overflow-y-auto no-scrollbar" id="menu-tab">
                 <button data-cat="beranda" class="btn-tab tab-aktif w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-xs font-bold transition-all hover:bg-white/10">
                     <i class="fas fa-home w-5 text-center text-sm text-blue-200"></i> Beranda
                 </button>
@@ -248,18 +234,15 @@
                     <i class="fas fa-folder-open w-5 text-center text-sm text-blue-200"></i> Arsip Lainnya
                 </button>
            </div>
-            <!-- Footer / Status & Logout di Bagian Bawah Sidebar -->
             <div class="p-4 border-t border-blue-800 bg-slate-950/40 flex flex-col gap-3">
             <div class="flex items-center justify-between text-[10px] text-gray-300 font-bold px-2">
                    <span>STATUS:</span>
                     <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
                 </div>
-                <!-- Menampilkan Identitas Pengguna yang sedang Login Aktif -->
-                <div id="userProfile" class="text-[9px] text-emerald-300 font-black px-2 uppercase tracking-wide flex items-center gap-1.5 leading-none break-all">
+                   <div id="userProfile" class="text-[9px] text-emerald-300 font-black px-2 uppercase tracking-wide flex items-center gap-1.5 leading-none break-all">
                     <i class="fas fa-user-circle text-xs"></i> <span>MENGHUBUNGKAN...</span>
                 </div>
-                <!-- Alamat email di bagian bawah sidebar -->
-                <div class="text-[9px] text-blue-200 font-semibold px-2 flex items-center gap-1.5 break-all">
+                  <div class="text-[9px] text-blue-200 font-semibold px-2 flex items-center gap-1.5 break-all">
                     <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
                 </div>
                 <button onclick="logout()" class="w-full bg-red-600/90 hover:bg-red-700 text-white py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
@@ -267,10 +250,8 @@
                 </button>
             </div>
         </aside>
-       <!-- KONTEN UTAMA (Bagian Kanan yang Bersebelahan secara Sempurna) -->
-       <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
-<!-- TULISAN BERJALAN DENGAN INFORMASI PRIMA & MOTTO - Label 'INFORMASI' Dihapus -->
-            <div class="nav-blue text-white py-2 px-4 rounded-xl mb-3 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
+  <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
+        <div class="nav-blue text-white py-2 px-4 rounded-xl mb-3 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
                 <div class="marquee-container">
                     <div class="marquee-content font-semibold text-blue-100 uppercase">
                         <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"</span>
@@ -278,28 +259,23 @@
                     </div>
                 </div>
             </div>
-            <!-- Section Beranda -->
-            <div id="section-beranda" class="glass-card rounded-2xl p-4 md:p-6 mb-4 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-0">
+         <div id="section-beranda" class="glass-card rounded-2xl p-4 md:p-6 mb-4 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-0">
                 <div>
                     <div class="text-center mb-4">
                         <h3 class="text-xl font-black text-blue-900 mb-1 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
                         <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
                     </div>
-                    <!-- Tata Letak Beranda disesuaikan menjadi lebih rapat -->
-                    <div class="space-y-3 text-gray-700 leading-relaxed text-xs max-w-2xl mx-auto">
+                   <div class="space-y-3 text-gray-700 leading-relaxed text-xs max-w-2xl mx-auto">
                         <p class="font-medium italic text-blue-600 text-sm text-center">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
                         <p class="text-center">Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan <strong>SMP Frater Mamasa</strong> secara aman, cepat, dan berbasis Cloud.</p>
                     </div>
                 </div>
-                <!-- SEKTOR STAF / STRUKTUR BARU -->
-                <div class="mt-6 pt-4 border-t border-gray-200">
+              <div class="mt-6 pt-4 border-t border-gray-200">
                     <h4 class="text-xs font-black text-blue-900 uppercase tracking-wider mb-2 text-center md:text-left">
                         <i class="fas fa-users text-blue-600 mr-2"></i> Tim Tata Usaha & Pelayanan
                     </h4>
-                    <!-- Grid gap dikecilkan ke gap-2.5 -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
-                        <!-- 1. Markus D -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4">
+                   <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
                             <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
                                 <i class="fas fa-user-tie text-sm"></i>
                             </div>
@@ -308,8 +284,7 @@
                                 <div class="text-[10px] font-semibold text-blue-600">Staf Kepegawaian dan Keuangan</div>
                             </div>
                         </div>
-                        <!-- 2. Stephen Eko Setiawan -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+                    <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
                             <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
                                 <i class="fas fa-user-graduate text-sm"></i>
                             </div>
@@ -318,8 +293,7 @@
                                 <div class="text-[10px] font-semibold text-blue-600">Staf Kesiswaan</div>
                             </div>
                         </div>
-                        <!-- 3. Fr. Simeon Lopi Koban, HHK -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+                <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
                             <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
                                 <i class="fas fa-wallet text-sm"></i>
                             </div>
@@ -328,8 +302,7 @@
                                 <div class="text-[10px] font-semibold text-blue-600">Staf Penerima Uang Sekolah</div>
                             </div>
                         </div>
-                        <!-- 4. Fr. Metodius Lambe, HHK -->
-                        <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
+                      <div class="bg-white/60 p-2.5 rounded-xl border border-gray-100 flex items-center gap-3 shadow-sm hover:shadow-md transition-all">
                             <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
                                 <i class="fas fa-wallet text-sm"></i>
                             </div>
@@ -339,8 +312,7 @@
                             </div>
                         </div>
                     </div>
-                   <!-- MENAMPILKAN EMAIL DAN COPYRIGHT DI BAGIAN FOOTER BERANDA -->
-                    <div class="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-gray-500 font-semibold">
+                   <div class="pt-2 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-gray-500 font-semibold">
                         <span>m@rkus_TU_SMP Frater Mamasa &copy; 2026</span>
                         <a href="mailto:smpsfratermamsa@gmail.com" class="flex items-center gap-1 text-blue-600 hover:underline">
                             <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
@@ -348,17 +320,14 @@
                     </div>
                 </div>
             </div>
-            <!-- Section Tabel Data -->
-            <div id="section-data" class="hidden max-w-4xl mx-auto">
-                <!-- Search Box -->
-                <div id="search-container" class="mb-6">
+           <div id="section-data" class="hidden max-w-4xl mx-auto">
+               <div id="search-container" class="mb-6">
                     <div class="relative">
                         <i class="fas fa-search absolute left-4 top-4 text-gray-400"></i>
                         <input type="text" id="searchTerm" placeholder="Cari dokumen, nama, atau periode..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl border-none shadow-xl focus:ring-4 focus:ring-blue-500/30 outline-none glass-card font-medium text-gray-800 text-sm">
                     </div>
                 </div>
-                <!-- Card Tabel -->
-                <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
+              <div class="glass-card rounded-3xl shadow-2xl overflow-hidden border border-white/50">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead class="bg-gray-100/50 text-[10px] uppercase font-bold text-gray-500 tracking-widest border-b border-gray-200">
@@ -373,8 +342,7 @@
                 </div>
             </div>
         </main>
-        <!-- Floating Button Tambah (Hanya Admin) -->
-        <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
+     <button id="floatingAdd" onclick="bukaModal()" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white w-16 h-16 rounded-full shadow-2xl items-center justify-center hover:bg-blue-700 hover:scale-110 active:scale-95 transition-all z-40 border-4 border-white">
             <i class="fas fa-plus fa-lg"></i>
         </button>
     </div>
@@ -477,8 +445,10 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
+        // Sandi Sistem
+        const SANDI_SISTEM = "admintufrms";
+
         signInAnonymously(auth).then(() => {
-            console.log("Terhubung ke Firebase");
             const statusEl = document.getElementById('status');
             if (statusEl) {
                 statusEl.innerText = "ONLINE";
@@ -491,21 +461,23 @@
             const { value: password } = await Swal.fire({
                 title: 'Masukkan Sandi Akses',
                 input: 'password',
-                inputPlaceholder: 'Masukkan sandi untuk ' + grup,
-                showCancelButton: true
+                inputPlaceholder: 'Sandi untuk ' + grup,
+                showCancelButton: true,
+                confirmButtonText: 'Buka',
+                cancelButtonText: 'Batal'
             });
 
-            if (password === "admintufrms") {
-                Swal.fire('Berhasil', 'Membuka dokumen...', 'success');
+            if (password === SANDI_SISTEM) {
                 window.open(link, '_blank');
-            } else if (password) {
+            } else if (password !== undefined) {
                 Swal.fire('Gagal', 'Sandi salah!', 'error');
             }
         };
 
+        // Fungsi Login Utama
         window.prosesLogin = () => {
             const pass = document.getElementById('loginPass').value;
-            if(pass === "admintufrms") {
+            if(pass === SANDI_SISTEM) {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainContent').classList.remove('hidden');
             } else {
@@ -538,9 +510,10 @@
         <main class="flex-1 p-6">
             <button onclick="toggleMobileSidebar()" class="md:hidden p-2 bg-white rounded shadow">Menu</button>
             <h1 class="text-2xl font-black text-blue-900 mt-4">Selamat Datang di Sistem Arsip</h1>
-            <p class="mt-4">Gunakan fungsi <code>cekAkses('URL_LINK', 'Nama Grup')</code> pada tombol menu Anda.</p>
+            <p class="mt-4 text-sm text-gray-600">Gunakan fungsi <code>cekAkses('URL', 'Grup')</code> untuk membatasi dokumen.</p>
         </main>
     </div>
+</body>
 
 
     

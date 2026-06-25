@@ -1,20 +1,12 @@
 <!DOCTYPE html>
-
 <html lang="id">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ARSIP DIGITAL - TATA USAHA SMP FRATER MAMASA</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script type="module">
+<script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
         import { getFirestore, collection, onSnapshot, query } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
 
@@ -120,6 +112,7 @@
         <h1 class="text-2xl font-bold mb-4">Arsip Kepegawaian</h1>
         <div id="arsip-container"></div>
     </div>
+    
 
     <!-- Fungsi Cadangan Logo diletakkan di HEAD agar langsung siap saat onerror dipicu -->
 
@@ -1072,35 +1065,6 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
         import { getFirestore, collection, onSnapshot, query, addDoc, doc, deleteDoc, getDocs } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
         import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
-        // --- TAMBAHKAN INI ---
-const passwordPegawai = {
-    "MARKUS D.": "pass123",
-    "STEPHEN EKO SETIAWAN": "pass456",
-    "Fr. SIMEON LOPI KOBAN, HHK": "pass789"
-};
-
-window.cekAkses = async (link, namaPegawai) => {
-    const { value: password } = await Swal.fire({
-        title: 'Verifikasi Keamanan',
-        text: `Masukkan sandi untuk membuka arsip ${namaPegawai}:`,
-        input: 'password',
-        inputPlaceholder: 'Sandi...',
-        showCancelButton: true,
-        confirmButtonText: 'Buka Arsip',
-        cancelButtonText: 'Batal',
-        confirmButtonColor: '#1e3a8a'
-    });
-
-    if (password) {
-        if (passwordPegawai[namaPegawai] && passwordPegawai[namaPegawai] === password) {
-            Swal.fire({ icon: 'success', title: 'Akses Diberikan', timer: 1500, showConfirmButton: false });
-            window.open(link, '_blank');
-        } else {
-            Swal.fire({ icon: 'error', title: 'Akses Ditolak', text: 'Sandi salah!' });
-        }
-    }
-};
-// --- BATAS TAMBAHAN ---
 
         const firebaseConfig = {
             apiKey: "AIzaSyDbP9tX_U3eWKnKUoo6Ukofdi2rlOrxpuM",
@@ -1376,13 +1340,12 @@ window.cekAkses = async (link, namaPegawai) => {
                             htmlContent += `
                                 <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white transition-all">
                                     <td class="p-4 pl-8">
-                                      div.innerHTML = `
-    <button onclick="cekAkses('${doc.link}', '${doc.nama_pegawai}')" class="text-left w-full block judul-link hover:text-blue-600">
-        <div class="text-xs font-bold text-gray-700">
-            <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
-        </div>
-    </button>
-`;
+                                        <a href="${doc.link}" target="_blank" class="judul-link block">
+                                            <div class="text-xs font-bold text-gray-700">
+                                                <i class="far fa-file-pdf mr-2 text-red-500"></i>${doc.title}
+                                            </div>
+                                            <div class="text-[9px] text-blue-500 font-semibold mt-0.5 ml-6">${group}</div>
+                                        </a>
                                     </td>
                                     ${userRole === 'admin' ? `
                                     <td class="p-4 text-center">

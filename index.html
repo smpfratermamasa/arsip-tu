@@ -1,21 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="id">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ARSIP DIGITAL - TATA USAHA SMP FRATER MAMASA</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-      <!-- Fungsi Cadangan Logo diletakkan di HEAD agar langsung siap saat onerror dipicu -->
-
+<!-- Fungsi Cadangan Logo diletakkan di HEAD agar langsung siap saat onerror dipicu -->
     <script>
 
         function loadFallbackLogo(targetId) {
@@ -548,91 +540,49 @@
                 <div class="flex items-center justify-between text-[10px] text-gray-300 font-bold px-2">
 
                     <span>STATUS:</span>
-
                     <span id="status" class="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[8px] uppercase tracking-wide">MENGHUBUNGKAN...</span>
-
                 </div>
 
                 <!-- Menampilkan Identitas Pengguna yang sedang Login Aktif -->
-
                 <div id="userProfile" class="text-[9px] text-emerald-300 font-black px-2 uppercase tracking-wide flex items-center gap-1.5 leading-none break-all">
-
                     <i class="fas fa-user-circle text-xs"></i> <span>MENGHUBUNGKAN...</span>
-
                 </div>
 
                 <!-- Alamat email di bagian bawah sidebar -->
-
                 <div class="text-[9px] text-blue-200 font-semibold px-2 flex items-center gap-1.5 break-all">
-
                     <i class="fas fa-envelope text-xs"></i> smpsfratermamsa@gmail.com
-
                 </div>
 
                 <button onclick="logout()" class="w-full bg-red-600/90 hover:bg-red-700 text-white py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-
                     <i class="fas fa-sign-out-alt"></i> Keluar Aplikasi
-
                 </button>
-
             </div>
-
         </aside>
 
+       <!-- KONTEN UTAMA (Bagian Kanan yang Bersebelahan secara Sempurna) -->
+       <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
 
-
-        <!-- KONTEN UTAMA (Bagian Kanan yang Bersebelahan secara Sempurna) -->
-
-        <main class="flex-grow p-4 md:p-6 overflow-y-auto h-full">
-
-            
-
-            <!-- TULISAN BERJALAN DENGAN INFORMASI PRIMA & MOTTO - Label 'INFORMASI' Dihapus -->
-
+<!-- TULISAN BERJALAN DENGAN INFORMASI PRIMA & MOTTO - Label 'INFORMASI' Dihapus -->
             <div class="nav-blue text-white py-2 px-4 rounded-xl mb-3 shadow-md overflow-hidden text-xs font-bold tracking-wider flex items-center gap-3 max-w-4xl mx-auto">
-
                 <div class="marquee-container">
-
                     <div class="marquee-content font-semibold text-blue-100 uppercase">
-
                         <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"</span>
-
                         <span>Fraternitas, Humilitas, Perseverantia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TATA USAHA SMP FRATER MAMASA hadir "Melayani dengan Hati, Profesional dalam Kinerja, Responsif dalam Pelayanan, Inovatif untuk Mutu, dan Akuntabel dalam Tanggung Jawab"
-
                     </div>
-
                 </div>
-
             </div>
-
-
-
             <!-- Section Beranda -->
-
             <div id="section-beranda" class="glass-card rounded-2xl p-4 md:p-6 mb-4 animate-fade-in max-w-4xl mx-auto flex flex-col justify-between min-h-0">
-
                 <div>
-
                     <div class="text-center mb-4">
-
                         <h3 class="text-xl font-black text-blue-900 mb-1 uppercase tracking-tight">Selamat Datang di Sistem Arsip Digital</h3>
-
                         <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
-
                     </div>
-
-                    
-
                     <!-- Tata Letak Beranda disesuaikan menjadi lebih rapat -->
-
                     <div class="space-y-3 text-gray-700 leading-relaxed text-xs max-w-2xl mx-auto">
-
                         <p class="font-medium italic text-blue-600 text-sm text-center">"Transformasi Digital untuk Efisiensi Administrasi Sekolah."</p>
-
                         <p class="text-center">Aplikasi ini dirancang khusus untuk mempermudah pengelolaan, penyimpanan, dan pencarian dokumen administratif di lingkungan <strong>SMP Frater Mamasa</strong> secara aman, cepat, dan berbasis Cloud.</p>
-
                     </div>
-
                 </div>
                 <!-- SEKTOR STAF / STRUKTUR BARU -->
 
@@ -839,9 +789,7 @@
             <div class="space-y-4 text-xs md:text-sm">
 
                 <div>
-
                     <label class="font-bold text-gray-500 text-[10px] uppercase ml-1">Kategori Arsip</label>
-
                     <select id="inCat" onchange="toggleNamaField()" class="w-full p-3 mt-1 border-2 border-gray-100 rounded-xl outline-none bg-blue-50 font-bold text-blue-800">
                         <option value="kepegawaian">Arsip Kepegawaian</option>
                         <option value="sk">SK Kepanitiaan</option>

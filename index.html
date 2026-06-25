@@ -14,6 +14,39 @@
         target.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231e3a8a' rx='15'/><path d='M30 20 L70 20 L80 40 L50 85 L20 40 Z' fill='%23facc15'/><circle cx='50' cy='45' r='12' fill='%23ffffff'/><text x='50' y='49' font-size='10' font-weight='bold' fill='%231e3a8a' text-anchor='middle'>SMP</text></svg>";
       }
     }
+
+    // --- SCRIPT PROTEKSI ANTI-INSPEKSI KODE (F12, KLIK KANAN, CTRL+U, CTRL+SHIFT+I) ---
+    // 1. Blokir Menu Klik Kanan (Context Menu)
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+
+    // 2. Blokir Shortcut Keyboard Developer Tools
+    document.addEventListener('keydown', function(e) {
+      // Blokir F12 (keyCode 123)
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Blokir Ctrl+Shift+I (Inspect), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect Element)
+      if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Blokir Ctrl+U (View Source)
+      if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+
+      // Blokir Ctrl+S (Mencegah simpan halaman web mentah-mentah)
+      if (e.ctrlKey && (e.key === 's' || e.key === 'S' || e.keyCode === 83)) {
+        e.preventDefault();
+        return false;
+      }
+    });
   </script>
   
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -24,6 +57,9 @@
       margin: 0;
       min-height: 100vh;
       background-color: #f1f5f9;
+      /* Mencegah pengguna menyalin teks teks penting di aplikasi secara tidak sengaja */
+      user-select: none;
+      -webkit-user-select: none;
     }
     .bg-sekolah {
       position: fixed;
@@ -615,7 +651,7 @@
         masukAplikasi();
       } else if (passInput === "user123") {
         userRole = 'user';
-        loggedInName = 'Created by m@rkus d';
+        loggedInName = 'Login Guru & Staf';
         loggedInUsername = 'user';
         masukAplikasi();
       } else {

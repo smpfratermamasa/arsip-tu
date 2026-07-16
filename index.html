@@ -449,7 +449,7 @@
             <option value="">-- Pilih Pegawai --</option>
             <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
             <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
-            <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
+            <option value="Fr. PREDI PANIMBA, HHK, S.Kom., MM, Gr.">Fr. PREDI PANIMBA, HHK, S.Kom., MM, Gr.</option>
             <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
             <option value="Fr. METODIUS LAMBE, HHK">Fr. METODIUS LAMBE, HHK</option>
             <option value="RATTONO SAMBOKARUA, S.Pd., Gr.">RATTONO SAMBOKARUA, S.Pd., Gr.</option>
@@ -470,7 +470,6 @@
             <option value="CRISTIN OKTAVIA, S.Pd., Gr.">CRISTIN OKTAVIA, S.Pd., Gr.</option>
             <option value="AGUSTINA POLIK, S.Pd.">AGUSTINA POLIK, S.Pd.</option>
             <option value="LUSIMASNORITU, S.Pd.">LUSIMASNORITU, S.Pd.</option>
-            <option value="PETRINA, S.Pd., Gr.">PETRINA, S.Pd., Gr.</option>
             <option value="WINDI LEONIKA, S.Pd.">WINDI LEONIKA, S.Pd.</option>
             <option value="KELVIN B, S.Pd.">KELVIN B, S.Pd.</option>
             <option value="MERY, S.Tr.Kom.">MERY, S.Tr.Kom.</option>
@@ -523,7 +522,7 @@
             <option value="">-- Pilih Pegawai --</option>
             <option value="Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.">Fr. WEMPIRIUS MAUK, HHK, S.Pd., Gr.</option>
             <option value="NELWANTO, S.Pd., Gr.">NELWANTO, S.Pd., Gr.</option>
-            <option value="Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.">Fr. APRIANUS MAXIMUS BERE NAHAK, HHK, S.Pd.</option>
+            <option value="Fr. PREDI PANIMBA, HHK, S.Kom., MM, Gr.">Fr. PREDI PANIMBA, HHK, S.Kom., MM, Gr.</option>
             <option value="Fr. SIMEON LOPI KOBAN, HHK">Fr. SIMEON LOPI KOBAN, HHK</option>
             <option value="Fr. METODIUS LAMBE, HHK">Fr. METODIUS LAMBE, HHK</option>
             <option value="RATTONO SAMBOKARUA, S.Pd., Gr.">RATTONO SAMBOKARUA, S.Pd., Gr.</option>
@@ -544,7 +543,6 @@
             <option value="CRISTIN OKTAVIA, S.Pd., Gr.">CRISTIN OKTAVIA, S.Pd., Gr.</option>
             <option value="AGUSTINA POLIK, S.Pd.">AGUSTINA POLIK, S.Pd.</option>
             <option value="LUSIMASNORITU, S.Pd.">LUSIMASNORITU, S.Pd.</option>
-            <option value="PETRINA, S.Pd., Gr.">PETRINA, S.Pd., Gr.</option>
             <option value="WINDI LEONIKA, S.Pd.">WINDI LEONIKA, S.Pd.</option>
             <option value="KELVIN B, S.Pd.">KELVIN B, S.Pd.</option>
             <option value="MERY, S.Tr.Kom.">MERY, S.Tr.Kom.</option>
@@ -893,6 +891,7 @@
         const sortedGroups = Object.keys(groups).sort((a, b) => a.localeCompare(b));
         sortedGroups.forEach(group => {
           const isOpen = openGroups.has(group) || filterKata !== '';
+          const escapedGroup = group.replace(/'/g, "\\'");
           htmlContent += `
             <tr class="group-header" onclick="toggleGroup('${group}')">
               <td colspan="${userRole === 'admin' ? 2 : 1}" class="p-3 pl-4 border-b text-[10px] uppercase tracking-widest bg-blue-100/90 text-blue-900 font-black shadow-sm flex items-center justify-between animate-fade-in">

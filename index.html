@@ -906,6 +906,8 @@
 
           if (isOpen) {
             groups[group].forEach(doc => {
+              const escapedLink = doc.link.replace(/'/g, "\\'");
+              const escapedDocTitle = doc.title.replace(/'/g, "\\'");
               htmlContent += `
                 <tr class="border-b border-gray-50 hover:bg-gray-50/50 bg-white transition-all">
                   <td class="p-4 pl-8">
@@ -929,6 +931,7 @@
         });
       } else {
         filtered.forEach(doc => {
+          const escapedDocTitle = doc.title.replace(/'/g, "\\'");
           htmlContent += `
             <tr class="border-b border-gray-100 hover:bg-gray-50/50 bg-white transition-all">
               <td class="p-4 pl-6">
